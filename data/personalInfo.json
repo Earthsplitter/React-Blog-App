@@ -1,0 +1,22 @@
+{
+  "favicon": "favicon.png",
+  "firstName": "Ming",
+  "lastName": "Wen",
+  "title": "Front-End Developer",
+  "motto": "Keep curiosity, keep alive",
+  "contactMethod": {
+    "github": "https://www.github.com",
+    "linkedin": "https://www.linkedin.com",
+    "email": "mailto:wmcs@mail.ustc.edu.cn"
+  },
+  "phoneNumber": [
+    {
+      "type": "home",
+      "number": "212 555-1234"
+    },
+    {
+      "type": "fax",
+      "number": "646 555-4567"
+    }
+  ]
+}

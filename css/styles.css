@@ -1,0 +1,31 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+.nav-button-list {
+    width: 300px;
+    margin: 10px 0;
+
+}
+
+.nav-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-decoration: none;
+    width: 300px;
+    height: 30px;
+    color: black;
+}
+.active-nav-button {
+    background-color: white;
+}
+.nav-button:visited {
+    color: black;
+}
