@@ -12,7 +12,7 @@ class SideBar extends React.Component {
     render() {
         return (
             <div>
-                <aside className="sideBar" style={{height: innerHeight, width: '300px', top: '0' }}>
+                <aside className="sideBar" style={{height: innerHeight, width: '350px', top: '0' }}>
                     <Information/>
                     <SideNav/>
                     <About/>
@@ -29,9 +29,9 @@ class About extends React.Component {
 
     render() {
         return (
-            <section>
-                <Link to="/resume">Resume</Link>
-                <p>Made by © Wen Ming</p>
+            <section className="about-info">
+                <Link to="/resume.pdf" className="resume">Resume</Link>
+                <p style={{fontSize: '13px', marginBottom: '5px'}}>Made by © Wen Ming</p>
             </section>
         )
     }

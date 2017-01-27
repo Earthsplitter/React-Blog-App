@@ -8,8 +8,8 @@ class SideNav extends React.Component {
 
     render() {
         return (
-            <nav>
-                <ul style={{ marginTop: '50px', width: '300px', textAlign: 'center', listStyle: 'none', paddingLeft: '0'}}>
+            <nav style={{width: '100%'}}>
+                <ul style={{ width: '100%', textAlign: 'center', listStyle: 'none', paddingLeft: '0'}}>
                     <li className="nav-button-list"><NavLink to="/" onlyActiveOnIndex={true}>Homepage</NavLink></li>
                     <li className="nav-button-list"><NavLink to="/experience">Experience</NavLink></li>
                     <li className="nav-button-list"><NavLink to="/articles">Articles</NavLink></li>

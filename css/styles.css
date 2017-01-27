@@ -14,9 +14,9 @@ body {
     position: fixed;
 
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    align-content: flex-start;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
 }
 
@@ -47,7 +47,7 @@ body {
     color: black;
 }
 .nav-button-list {
-    width: 300px;
+    width: 100%;
     margin: 10px 0;
 
 }
@@ -60,7 +60,7 @@ body {
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
     text-decoration: none;
-    width: 300px;
+    width: 100%;
     height: 40px;
     color: black;
 }
@@ -71,4 +71,31 @@ body {
 }
 .nav-button:visited {
     color: black;
+}
+
+.about-info {
+    height: 20%;
+    width: 100%;
+
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.resume, .resume:visited {
+    height: 40px;
+    width: 90px;
+    border:4px groove #21dad6;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.resume:active {
+    border: 4px inset #21dad6;
 }
