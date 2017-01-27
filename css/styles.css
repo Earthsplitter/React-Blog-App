@@ -7,6 +7,40 @@ body {
     overflow: hidden;
 }
 
+.sideBar {
+    background: green;
+    background: linear-gradient(to right, lightseagreen , deepskyblue);
+
+    position: fixed;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.name {
+    padding-right: 16px;
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+    letter-spacing: 3px;
+    font-size: 24px;
+    text-shadow: 2px 2px 8px black;
+    margin: 10px 0;
+}
+.title {
+    font-family: 'Open Sans', sans-serif;
+    padding-left: 5px;
+    font-weight: 300;
+    margin:0 ;
+}
+.motto {
+    font-family: 'Open Sans', sans-serif;
+    font-style: italic;
+    letter-spacing: 1px;
+    margin-top: 10px;
+
+}
 .nav-button-list {
     width: 300px;
     margin: 10px 0;
@@ -18,13 +52,17 @@ body {
     justify-content: center;
     align-items: center;
 
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
     text-decoration: none;
     width: 300px;
-    height: 30px;
+    height: 40px;
     color: black;
 }
 .active-nav-button {
-    background-color: white;
+    font-style: italic;
+    background: linear-gradient(to right, #208b83, #00a6e2); /* Standard syntax */
+
 }
 .nav-button:visited {
     color: black;

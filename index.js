@@ -5,7 +5,7 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 
-import SideBar from "./components/SideBar"
+import SideBar from "./components/SideBar/SideBar"
 import Home from './components/Home'
 import Articles from './components/Articles'
 import Projects from './components/Projects'
