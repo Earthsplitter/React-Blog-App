@@ -11,16 +11,11 @@ class SideBar extends React.Component {
 
     render() {
         return (
-            <div>
-                <aside className="sideBar" style={{height: innerHeight, width: '350px', top: '0' }}>
-                    <Information/>
-                    <SideNav/>
-                    <About/>
-                </aside>
-                <main>
-                    {this.props.children}
-                </main>
-            </div>
+            <aside className="sideBar" style={{height: innerHeight, width: this.props.width, top: '0'}}>
+                <Information/>
+                <SideNav/>
+                <About/>
+            </aside>
         )
     }
 }

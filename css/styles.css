@@ -99,3 +99,16 @@ body {
 .resume:active {
     border: 4px inset #21dad6;
 }
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 5px rgb(0, 143, 195);
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 10px #2365b2;
+}

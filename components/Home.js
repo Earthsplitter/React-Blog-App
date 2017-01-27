@@ -5,7 +5,13 @@ import React from 'react'
 
 class Home extends React.Component {
     render() {
-        return <div style={{margin: '400px'}}>Home</div>
+        return (
+            <div>
+                <img src="./../assets/image/favicon.png"/>
+                <img src="./../assets/image/favicon.png"/>
+                <img src="./../assets/image/favicon.png"/>
+            </div>
+        )
     }
 }
 
