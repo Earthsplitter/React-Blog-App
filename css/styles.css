@@ -16,6 +16,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    align-content: flex-start;
     flex-wrap: wrap;
 }
 
@@ -38,8 +39,12 @@ body {
     font-family: 'Open Sans', sans-serif;
     font-style: italic;
     letter-spacing: 1px;
-    margin-top: 10px;
+    margin: 10px 0;
 
+}
+.contact-button {
+    margin: 0 5px;
+    color: black;
 }
 .nav-button-list {
     width: 300px;
