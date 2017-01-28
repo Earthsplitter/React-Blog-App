@@ -25,19 +25,19 @@ class MainFrame extends React.Component {
              * Used to style the sideBar background
              */
             sideBarGradient: [
-                "linear-gradient(to left, deepskyblue, lightseagreen)",                //Jade Green Style
-                "linear-gradient(to left, red , yellow)",                              //Summer Fire Style
-                "linear-gradient(to left, #ff6e7f, #bfe9ff)",                          //Noon to Dusk Style
-                "linear-gradient(to left, #003973, #e5e5be)"                           //Horizon Style
+                ["deepskyblue", "lightseagreen"],                                       //Jade Green Style
+                ["red", "yellow"],                              //Summer Fire Style
+                ["#ff6e7f", "#bfe9ff"],                          //Noon to Dusk Style
+                ["#003973", "#e5e5be"]                           //Horizon Style
             ],
             /**
              * Used to style the active navigation button, darker than background
              */
             buttonGradient: [
-                "linear-gradient(to left, #00afef, #208b83)",                          //Jade Green Style
-                "linear-gradient(to left, #cc0000, #e2e200)",                          //Summer Fire Style
-                "linear-gradient(to left, #e46272, #a0c4d6)",                          //Noon to Dusk Style
-                "linear-gradient(to left, #003469, #d9d9b4)"                           //Horizon Style
+                ["#00afef", "#208b83"],                          //Jade Green Style
+                ["#cc0000", "#e2e200"],                          //Summer Fire Style
+                ["#e46272", "#a0c4d6"],                          //Noon to Dusk Style
+                ["#003469", "#d9d9b4"]                           //Horizon Style
             ]
         };
         /**

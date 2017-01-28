@@ -61,8 +61,9 @@ class SideBar extends React.Component {
 
     render() {
         return (
-            <aside onClick={this.state.canBeClick?this.props.handleClick:''} className="sideBar" style={{opacity:this.state.opacity, height: innerHeight, width: this.props.width, top: '0',
-            background: this.props.gradient.sideBar}}>
+            <aside onClick={this.state.canBeClick?this.props.handleClick:''} className="sideBar" style={{
+                opacity:this.state.opacity, height: innerHeight, width: this.props.width, top: '0',
+                background: "linear-gradient(to left," + this.props.gradient.sideBar[0] + "," + this.props.gradient.sideBar[1]}}>
                 <Information/>
                 <SideNav buttonGradient={this.props.gradient.navButton}/>
                 <About/>

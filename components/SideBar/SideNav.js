@@ -10,10 +10,14 @@ class SideNav extends React.Component {
         return (
             <nav style={{width: '100%'}}>
                 <ul style={{ width: '100%', textAlign: 'center', listStyle: 'none', paddingLeft: '0'}}>
-                    <li className="nav-button-list"><NavLink activeStyle={{fontStyle: 'italic', background:this.props.buttonGradient}} to="/" onlyActiveOnIndex={true}>Homepage</NavLink></li>
-                    <li className="nav-button-list"><NavLink activeStyle={{fontStyle: 'italic', background:this.props.buttonGradient}} to="/experience">Experience</NavLink></li>
-                    <li className="nav-button-list"><NavLink activeStyle={{fontStyle: 'italic', background:this.props.buttonGradient}} to="/articles">Articles</NavLink></li>
-                    <li className="nav-button-list"><NavLink activeStyle={{fontStyle: 'italic', background:this.props.buttonGradient}} to="/projects">Projects</NavLink></li>
+                    <li className="nav-button-list"><NavLink activeStyle={{fontStyle: 'italic',
+                        background: "linear-gradient(to left," + this.props.buttonGradient[0] + "," + this.props.buttonGradient[1]}} to="/" onlyActiveOnIndex={true}>Homepage</NavLink></li>
+                    <li className="nav-button-list"><NavLink activeStyle={{fontStyle: 'italic',
+                        background: "linear-gradient(to left," + this.props.buttonGradient[0] + "," + this.props.buttonGradient[1]}} to="/experience">Experience</NavLink></li>
+                    <li className="nav-button-list"><NavLink activeStyle={{fontStyle: 'italic',
+                        background: "linear-gradient(to left," + this.props.buttonGradient[0] + "," + this.props.buttonGradient[1]}} to="/articles">Articles</NavLink></li>
+                    <li className="nav-button-list"><NavLink activeStyle={{fontStyle: 'italic',
+                        background: "linear-gradient(to left," + this.props.buttonGradient[0] + "," + this.props.buttonGradient[1]}} to="/projects">Projects</NavLink></li>
                 </ul>
             </nav>
         )
@@ -30,7 +34,7 @@ class NavLink extends React.Component {
 
     render() {
         return (
-            <Link {...this.props} onClick={this.stopPropagation} className="nav-button"/>
+            <Link {...this.props}  onClick={this.stopPropagation} className="nav-button"/>
         )
     }
 }
