@@ -10,21 +10,27 @@ class SideNav extends React.Component {
         return (
             <nav style={{width: '100%'}}>
                 <ul style={{ width: '100%', textAlign: 'center', listStyle: 'none', paddingLeft: '0'}}>
-                    <li className="nav-button-list"><NavLink to="/" onlyActiveOnIndex={true}>Homepage</NavLink></li>
-                    <li className="nav-button-list"><NavLink to="/experience">Experience</NavLink></li>
-                    <li className="nav-button-list"><NavLink to="/articles">Articles</NavLink></li>
-                    <li className="nav-button-list"><NavLink to="/projects">Projects</NavLink></li>
+                    <li className="nav-button-list"><NavLink activeStyle={{fontStyle: 'italic', background:this.props.buttonGradient}} to="/" onlyActiveOnIndex={true}>Homepage</NavLink></li>
+                    <li className="nav-button-list"><NavLink activeStyle={{fontStyle: 'italic', background:this.props.buttonGradient}} to="/experience">Experience</NavLink></li>
+                    <li className="nav-button-list"><NavLink activeStyle={{fontStyle: 'italic', background:this.props.buttonGradient}} to="/articles">Articles</NavLink></li>
+                    <li className="nav-button-list"><NavLink activeStyle={{fontStyle: 'italic', background:this.props.buttonGradient}} to="/projects">Projects</NavLink></li>
                 </ul>
             </nav>
         )
     }
 }
 
+/**
+ * Wrap Link, style it and stop its propagation
+ */
 class NavLink extends React.Component {
+    stopPropagation(e) {
+        e.stopPropagation();
+    }
 
     render() {
         return (
-            <Link {...this.props} className="nav-button" activeClassName="active-nav-button"/>
+            <Link {...this.props} onClick={this.stopPropagation} className="nav-button"/>
         )
     }
 }

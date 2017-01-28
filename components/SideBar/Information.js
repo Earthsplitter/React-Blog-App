@@ -40,7 +40,9 @@ class ButtonGroup extends React.Component {
 }
 
 class ContactButton extends React.Component {
-
+    stopPropagation(e) {
+        e.stopPropagation();
+    }
     render() {
         const fontAwesome = {
             github: "github-square",
@@ -50,7 +52,7 @@ class ContactButton extends React.Component {
         };
         let address = this.props.addr;
         return (
-            <a href={address}>
+            <a onClick={this.stopPropagation} href={address}>
                 <FontAwesome name={fontAwesome[this.props.name]} size="2x" className="contact-button"/>
             </a>
         )

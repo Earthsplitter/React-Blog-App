@@ -9,8 +9,6 @@ body {
 
 .sideBar {
     background: green;
-    background: linear-gradient(to right, lightseagreen , deepskyblue);
-
     position: fixed;
 
     display: flex;
@@ -43,9 +41,13 @@ body {
 
 }
 .contact-button {
-    margin: 0 5px;
+    margin: 0 10px;
     color: black;
 }
+.contact-button:hover {
+    color: white;
+}
+
 .nav-button-list {
     width: 100%;
     margin: 10px 0;
@@ -65,9 +67,7 @@ body {
     color: black;
 }
 .active-nav-button {
-    font-style: italic;
-    background: linear-gradient(to right, #208b83, #00a6e2); /* Standard syntax */
-
+    background: linear-gradient(to right, #e2e200, #cc0000);
 }
 .nav-button:visited {
     color: black;
@@ -87,7 +87,7 @@ body {
 .resume, .resume:visited {
     height: 40px;
     width: 90px;
-    border:4px groove #21dad6;
+    border:4px groove #e75cf2;
     text-decoration: none;
     font-family: 'Roboto', sans-serif;
     color: white;
@@ -97,7 +97,7 @@ body {
     justify-content: center;
 }
 .resume:active {
-    border: 4px inset #21dad6;
+    border: 4px inset #e75cf2;
 }
 
 ::-webkit-scrollbar {
@@ -111,4 +111,5 @@ body {
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 10px #2365b2;
+    color: linear-gradient(to left, #003469, #d9d9b4);
 }
