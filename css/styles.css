@@ -115,3 +115,12 @@ body {
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 10px #2365b2;
 }
+
+.fade-enter {
+    opacity: 0.01;
+}
+
+.fade-enter.fade-enter-active {
+    opacity: 1;
+    transition: opacity 1000ms;
+}
