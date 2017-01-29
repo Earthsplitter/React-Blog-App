@@ -7,6 +7,10 @@ import { Link } from 'react-router'
 class SideNav extends React.Component {
 
     render() {
+        /**
+         * The paths of navigation buttons should be the same as its name
+         * @type {[*]}
+         */
         const navPath = ["Homepage","Experience", "Articles", "Projects"];
         /**
          * Style Links and group them in an array
@@ -24,14 +28,6 @@ class SideNav extends React.Component {
             <nav style={{width: '100%'}}>
                  <ul style={{ width: '100%', textAlign: 'center', listStyle: 'none', paddingLeft: '0'}}>
                      {navButtons}
-                {/*//      <li className="nav-button-list"><NavLink activeStyle={{fontStyle: 'italic',*/}
-                {/*//          background: "linear-gradient(to left," + this.props.buttonGradient[0] + "," + this.props.buttonGradient[1]}} to="/homepage" onlyActiveOnIndex={true}>Homepage</NavLink></li>*/}
-                {/*//      <li className="nav-button-list"><NavLink activeStyle={{fontStyle: 'italic',*/}
-                {/*//          background: "linear-gradient(to left," + this.props.buttonGradient[0] + "," + this.props.buttonGradient[1]}} to="/experience">Experience</NavLink></li>*/}
-                {/*//      <li className="nav-button-list"><NavLink activeStyle={{fontStyle: 'italic',*/}
-                        {/*background: "linear-gradient(to left," + this.props.buttonGradient[0] + "," + this.props.buttonGradient[1]}} to="/articles">Articles</NavLink></li>*/}
-                    {/*<li className="nav-button-list"><NavLink activeStyle={{fontStyle: 'italic',*/}
-                        {/*background: "linear-gradient(to left," + this.props.buttonGradient[0] + "," + this.props.buttonGradient[1]}} to="/projects">Projects</NavLink></li>*/}
                 </ul>
             </nav>
         )
