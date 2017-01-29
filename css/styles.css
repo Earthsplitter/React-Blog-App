@@ -100,6 +100,9 @@ body {
     border: 4px inset #e75cf2;
 }
 
+/**
+ * Customize the ScrollBar
+ */
 ::-webkit-scrollbar {
     width: 10px;
 }
