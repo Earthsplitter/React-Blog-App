@@ -25,7 +25,7 @@ class SideBar extends React.Component {
      * Start fade in when upper component send new gradient style property
      * @param nextProps The next gradient style
      */
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps() {
             this.setState({
                 canBeClick: false,
             });
@@ -39,9 +39,13 @@ class SideBar extends React.Component {
     render() {
         return (
             <ReactCSSTransitionGroup transitionName="fade" transitionEnterTimeout={1000} transitionLeave={false}>
-                <aside key={this.props.gradient.sideBar[0]} onClick={this.state.canBeClick?this.props.handleClick:''} className="sideBar" style={{
-                    opacity:this.state.opacity, height: innerHeight, width: this.props.width, top: '0',
-                    background: "linear-gradient(to left," + this.props.gradient.sideBar[0] + "," + this.props.gradient.sideBar[1]}}>
+                {/* Key is important here! Any component wants to be animated must have a key */}
+                <aside key={this.props.gradient.sideBar[0]}
+                       onClick={this.state.canBeClick ? this.props.handleClick : ''} className="sideBar"
+                       style={{
+                           height: innerHeight, width: this.props.width, top: '0',
+                           background: "linear-gradient(to left," + this.props.gradient.sideBar[0] + "," + this.props.gradient.sideBar[1]
+                       }}>
                     <Information/>
                     <SideNav buttonGradient={this.props.gradient.navButton}/>
                     <About/>

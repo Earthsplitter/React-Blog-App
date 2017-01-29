@@ -19,7 +19,7 @@ class SideNav extends React.Component {
         const navButtons = navPath.map((path) => (
             <li className="nav-button-list" key={path}>
                 <NavLink activeStyle={{fontStyle: 'italic', background: "linear-gradient(to left," +
-                this.props.buttonGradient[0] + "," + this.props.buttonGradient[1]}} to={path} onlyActiveOnIndex={path === "Homepage"}>
+                this.props.buttonGradient[0] + "," + this.props.buttonGradient[1]}} to={path === "Homepage"?"/":path} onlyActiveOnIndex={path === "Homepage"}>
                     {path}
                 </NavLink>
             </li>

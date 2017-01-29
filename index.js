@@ -15,7 +15,6 @@ render((
     <Router history={browserHistory}>
         <Route path="/" component={App}>
             <IndexRoute component={Home}/>
-            <Route path='/homepage' component={Home}/>
             <Route path="/experience" component={Experience}/>
             <Route path="/articles" component={Articles}/>
             <Route path="/projects" component={Projects}/>
