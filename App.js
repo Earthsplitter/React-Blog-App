@@ -81,15 +81,18 @@ class MainFrame extends React.Component {
          * Wrap properties and pass down to SideBar
          * @type {{}}
          */
-        let sideBarGradient = {};
-        sideBarGradient.sideBar = this.gradient.sideBarGradient[this.state.colorStyle];
-        sideBarGradient.navButton = this.gradient.buttonGradient[this.state.colorStyle];
-
+        let sideBarGradient = {
+            sideBar: this.gradient.sideBarGradient[this.state.colorStyle],
+            navButton: this.gradient.buttonGradient[this.state.colorStyle]
+        };
+        const childrenWithProps = React.Children.map(this.props.children, (child) => {
+           return React.cloneElement(child, {colorStyle: sideBarGradient.sideBar});
+        });
         return (
             <div>
                 <SideBar handleClick={this.handleClick} gradient={sideBarGradient} width={sideBarWidth}/>
                 <main style={{marginLeft: sideBarWidth, height: innerHeight, overflow: 'auto'}}>
-                    {this.props.children}
+                    {childrenWithProps}
                 </main>
             </div>
         )
