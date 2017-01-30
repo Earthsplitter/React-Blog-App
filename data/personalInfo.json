@@ -9,15 +9,5 @@
     "linkedin": "https://www.linkedin.com",
     "email": "mailto:wmcs@mail.ustc.edu.cn",
     "phone": "tel: 15178703506"
-  },
-  "phoneNumber": [
-    {
-      "type": "home",
-      "number": "212 555-1234"
-    },
-    {
-      "type": "fax",
-      "number": "646 555-4567"
-    }
-  ]
+  }
 }

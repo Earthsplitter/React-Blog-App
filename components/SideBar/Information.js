@@ -7,16 +7,45 @@ import FontAwesome from 'react-fontawesome'
 
 
 class Information extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            firstName: "",
+            lastName: "",
+            title: "",
+            motto: "",
+            contactMethod: ""
+        }
+    }
+
+    componentWillMount() {
+        let ajax = new XMLHttpRequest();
+        let self = this;
+        ajax.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let info = JSON.parse(this.responseText);
+                self.setState({
+                    firstName: info.firstName,
+                    lastName: info.lastName,
+                    title: info.title,
+                    motto: info.motto,
+                    contactMethod: info.contactMethod
+                })
+            }
+        };
+        ajax.open("GET", "./../../data/personalInfo.json", true);
+        ajax.send();
+    }
 
     render() {
         return (
             <section style={{ width: '100%', textAlign: 'center', marginTop: '30px'}}>
                 <img src={"../assets/image/"+InfoData.favicon} alt="Wen Ming's portrait"
                      style={{ border: '1px gold solid', width: '150px', height: '120px'}}/>
-                <p className="name">{InfoData.firstName} {InfoData.lastName}</p>
-                <p className="title">{InfoData.title}</p>
-                <p className="motto">{InfoData.motto}</p>
-                <ButtonGroup buttons={InfoData.contactMethod}/>
+                <p className="name">{this.state.firstName} {this.state.lastName}</p>
+                <p className="title">{this.state.title}</p>
+                <p className="motto">{this.state.motto}</p>
+                <ButtonGroup buttons={this.state.contactMethod}/>
             </section>
         )
     }

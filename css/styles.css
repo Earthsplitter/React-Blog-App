@@ -117,7 +117,7 @@ body {
 }
 
 .fade-enter {
-    opacity: 0.01;
+    opacity: 0.2;
 }
 
 .fade-enter.fade-enter-active {
