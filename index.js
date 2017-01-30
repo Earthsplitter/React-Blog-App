@@ -8,7 +8,7 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import Home from './components/Home'
 import Experience from './components/Experience'
 import Articles from './components/Articles'
-import Projects from './components/Projects'
+import Projects from './components/Projects/Projects'
 import App from './App'
 
 render((
