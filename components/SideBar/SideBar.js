@@ -2,11 +2,11 @@
  * Created by wenming on 26/01/2017.
  */
 import React from 'react'
-import { Link } from 'react-router'
 
 import SideNav from './SideNav'
 import Information from './Information'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import Copyright from './Copyright'
 
 /**
  * A side bar shown on left, including introduction and navigation
@@ -47,25 +47,10 @@ class SideBar extends React.Component {
                        }}>
                     <Information/>
                     <SideNav buttonGradient={this.props.gradient.navButton}/>
-                    <About/>
+                    <Copyright/>
                 </aside>
             </ReactCSSTransitionGroup>
         )
     }
 }
-
-/**
- * The bottom of the SideBar, including Resume Link and copyright
- */
-class About extends React.Component {
-    render() {
-        return (
-            <section className="about-info">
-                <Link to="/resume.pdf" className="resume">Resume</Link>
-                <p style={{fontSize: '13px', marginBottom: '5px'}}>Made by © Wen Ming</p>
-            </section>
-        )
-    }
-}
-
 export default SideBar

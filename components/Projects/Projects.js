@@ -2,7 +2,7 @@
  * Created by wenming on 26/01/2017.
  */
 import React from 'react'
-import ProjectGroup from './ProjectGroup'
+import ProjectList from './ProjectList'
 import {browserHistory} from 'react-router'
 
 
@@ -27,7 +27,7 @@ class Projects extends React.Component {
                 }}>MY CODE |</span> "Always code as if the guy who ends up maintaining your code will be a violent
                     psychopath
                     who knows where you live."</p>
-                <ProjectGroup colorStyle={this.props.colorStyle}/>
+                <ProjectList colorStyle={this.props.colorStyle}/>
             </div>);
     }
 }
