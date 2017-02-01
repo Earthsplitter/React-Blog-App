@@ -30,7 +30,7 @@ class ProjectList extends React.Component {
                 });
             }
         };
-        ajax.open("GET", "./../../assets/data/projects.json", true);
+        ajax.open("GET", "assets/data/projects.json", true);
         ajax.send();
     }
 

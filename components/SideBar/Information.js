@@ -34,7 +34,7 @@ class Information extends React.Component {
                 })
             }
         };
-        ajax.open("GET", "./../../assets/data/personalInfo.json", true);
+        ajax.open("GET", "assets/data/personalInfo.json", true);
         ajax.send();
     }
 

@@ -30,7 +30,7 @@ class DegreesList extends React.Component {
                 });
             }
         };
-        ajax.open("GET", "./../../assets/data/education.json", true);
+        ajax.open("GET", "assets/data/education.json", true);
         ajax.send();
     }
 
@@ -42,7 +42,7 @@ class DegreesList extends React.Component {
         });
 
         return (
-            <div style={{margin: "100px 0", display: "flex"}}>
+            <div style={{margin: "100px 0 0 0", display: "flex"}}>
                 {renderDegrees}
             </div>
         )

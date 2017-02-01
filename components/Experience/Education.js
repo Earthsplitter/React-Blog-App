@@ -13,7 +13,7 @@ class Education extends React.Component {
             " need you regret the hours you spent on much that is forgotten, for the shadow of lost knowledge at least " +
             "protects you from many illusions.";
         return (
-            <article>
+            <article style={{width: "100%"}}>
                 <Subheading colorStyle={this.props.colorStyle} title="MY EDUCATION" motto={motto}/>
                 <DegreesList colorStyle={this.props.colorStyle}/>
             </article>

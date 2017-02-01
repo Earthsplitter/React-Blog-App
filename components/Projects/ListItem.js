@@ -23,7 +23,7 @@ class ListItem extends React.Component {
 
     render() {
         const project = this.props.project;
-        const imageSource = "./../assets/image/" + project.img;
+        const imageSource = "/assets/image/" + project.img;
         const borderImage = "linear-gradient(" + this.props.colorStyle[0] + ", " + this.props.colorStyle[1] + ") 10";
         const colorStyle = "-webkit-gradient(linear, 0 0, 0 bottom, from(" + this.props.colorStyle[0] + "), to(" + this.props.colorStyle[1] + "))";
 

@@ -4,6 +4,7 @@
 import React from 'react'
 import {browserHistory} from 'react-router'
 import Education from './Education'
+import Skills from './Skills'
 
 
 class Experience extends React.Component {
@@ -20,6 +21,7 @@ class Experience extends React.Component {
         return (
             <div style={{display: "flex", flexDirection: "column", alignItems: "center", margin: "0 100px"}}>
                 <Education colorStyle={this.props.colorStyle}/>
+                <Skills colorStyle={this.props.colorStyle}/>
             </div>
         );
     }

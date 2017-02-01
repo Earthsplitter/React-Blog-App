@@ -1,0 +1,13 @@
+{
+  "skills": [
+    {
+      "class": "Computer Fundamental",
+      "description": "The essential knowledge of Computer, including Algorithms, Compiler, Architecture, Networking and so on",
+      "items": [
+        {"name": "Computer Organization", "mastery": 3},
+        {"name": "Operating System", "mastery": 3},
+        {"name": "Algorithms", "mastery": 3}
+      ]
+    }
+  ]
+}
