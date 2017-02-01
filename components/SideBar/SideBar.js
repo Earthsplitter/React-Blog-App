@@ -22,8 +22,7 @@ class SideBar extends React.Component {
     }
 
     /**
-     * Start fade in when upper component send new gradient style property
-     * @param nextProps The next gradient style
+     * prevent click when style is changing
      */
     componentWillReceiveProps() {
             this.setState({
@@ -33,7 +32,7 @@ class SideBar extends React.Component {
                 this.setState({
                     canBeClick:true
                 })
-            ),1000)
+            ),800)
     }
 
     render() {

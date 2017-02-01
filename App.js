@@ -57,11 +57,6 @@ class MainFrame extends React.Component {
      * Pass down to SideBar
      */
     handleClick() {
-        // let newState = this.state.colorStyle + 1;
-        // if (newState >= this.gradient.length) {
-        //     newState = 0;
-        // }
-        //pit fall. use self to bind this, see facebook guide
         let self = this;
         self.setState(function (prevState) {
             let newState = Number(prevState.colorStyle) + 1;
