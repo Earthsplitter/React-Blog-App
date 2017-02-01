@@ -124,3 +124,18 @@ body {
     opacity: 1;
     transition: opacity 1000ms;
 }
+.projectModal:hover {
+    cursor: pointer;
+}
+
+.close-tag {
+    display: block;
+    align-self: flex-end;
+    font-size: 28px;
+    color: #aaa;
+    padding: 10px;
+}
+
+.close-tag:hover {
+    cursor: pointer;
+}

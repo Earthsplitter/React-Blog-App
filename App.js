@@ -65,13 +65,13 @@ class MainFrame extends React.Component {
             }
             return {colorStyle: newState};
         });
-        browserHistory.push(self.props.location.pathname + "#" + (Number(self.state.colorStyle)+1)%4);
+        browserHistory.push(self.props.location.pathname + "#" + (Number(self.state.colorStyle) + 1) % 4);
     }
 
     componentWillMount() {
         const style = this.props.location.hash;
         if (!style) {
-           browserHistory.push(this.props.location.pathname+"#0");
+            browserHistory.push(this.props.location.pathname + "#0");
         } else {
             this.setState({
                 colorStyle: style.slice(1)
