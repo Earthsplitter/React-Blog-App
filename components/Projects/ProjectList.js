@@ -42,9 +42,11 @@ class ProjectList extends React.Component {
                 <ListItem key={project.title} project={project} colorStyle={this.props.colorStyle}/>
             )
         });
-        return (<div style={{width: "100%"}}>
+        return (
+            <div style={{width: "100%"}}>
             {renderProjects}
-        </div>);
+            </div>
+        );
     }
 }
 

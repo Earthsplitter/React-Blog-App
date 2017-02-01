@@ -1,0 +1,22 @@
+{
+  "education": [
+    {
+      "title": "Bachelor",
+      "class": "Science",
+      "major": "Computer Science",
+      "schoolName": "University of Science and Technology of China",
+      "location": "Hefei, China",
+      "startDate": "09/2014",
+      "endDate": "06/2018"
+    },
+    {
+      "title": "Master",
+      "class": "Engineering",
+      "major": "Information Technology",
+      "schoolName": "University of New South Wales",
+      "location": "Sydney, Australia",
+      "startDate": "07/2018",
+      "endDate": "06/2020"
+    }
+  ]
+}
