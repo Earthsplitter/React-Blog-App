@@ -3,8 +3,16 @@
  */
 import React from 'react'
 import ProjectGroup from './ProjectGroup'
+import {browserHistory} from 'react-router'
+
 
 class Projects extends React.Component {
+
+    componentWillMount() {
+        browserHistory.push(this.props.location.pathname+"#"+this.props.currentColor);
+    }
+
+
     render() {
         const colorStyle = "-webkit-gradient(linear, 0 0, 0 bottom, from(" + this.props.colorStyle[0] + "), to(" + this.props.colorStyle[1] + "))";
         return (

@@ -4,6 +4,7 @@
 import React from 'react'
 
 import SideBar from './components/SideBar/SideBar'
+import {browserHistory} from 'react-router'
 
 /**
  * The main Component
@@ -62,13 +63,25 @@ class MainFrame extends React.Component {
         // }
         //pit fall. use self to bind this, see facebook guide
         let self = this;
-        this.setState(function (prevState) {
-            let newState = prevState.colorStyle+1;
+        self.setState(function (prevState) {
+            let newState = Number(prevState.colorStyle) + 1;
             if (newState >= self.gradient.length) {
                 newState = 0;
             }
             return {colorStyle: newState};
-        })
+        });
+        browserHistory.push(self.props.location.pathname + "#" + (Number(self.state.colorStyle)+1)%4);
+    }
+
+    componentWillMount() {
+        const style = this.props.location.hash;
+        if (!style) {
+           browserHistory.push(this.props.location.pathname+"#0");
+        } else {
+            this.setState({
+                colorStyle: style.slice(1)
+            });
+        }
     }
 
     render() {
@@ -82,11 +95,12 @@ class MainFrame extends React.Component {
          * @type {{}}
          */
         let sideBarGradient = {
+            num: this.state.colorStyle,
             sideBar: this.gradient.sideBarGradient[this.state.colorStyle],
             navButton: this.gradient.buttonGradient[this.state.colorStyle]
         };
         const childrenWithProps = React.Children.map(this.props.children, (child) => {
-           return React.cloneElement(child, {colorStyle: sideBarGradient.sideBar});
+            return React.cloneElement(child, {currentColor: sideBarGradient.num, colorStyle: sideBarGradient.sideBar});
         });
         return (
             <div>
