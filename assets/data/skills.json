@@ -2,11 +2,11 @@
   "skills": [
     {
       "class": "Computer Fundamental",
-      "description": "The essential knowledge of Computer, including Algorithms, Compiler, Architecture, Networking and so on",
+      "summary": "The essential knowledge of Computer, including Algorithms, Compiler, Architecture, Networking and so on",
       "items": [
-        {"name": "Computer Organization", "mastery": 3},
-        {"name": "Operating System", "mastery": 3},
-        {"name": "Algorithms", "mastery": 3}
+        {"name": "Computer Organization", "description": "Made a MIPS CPU with verilog, including 100+ instructions, pipeline and interrupt system", "mastery": 3},
+        {"name": "Operating System", "description": "Familiar with UNIX, LINUX terminal and shell, understand operating system theory", "mastery": 3},
+        {"name": "Algorithms", "description": "Know data structure including stack, heap, graph, hash and binary tree. familiar with all kinds of sort, search and dynamic programming", "mastery": 3}
       ]
     }
   ]

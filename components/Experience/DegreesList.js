@@ -42,7 +42,7 @@ class DegreesList extends React.Component {
         });
 
         return (
-            <div style={{margin: "100px 0 0 0", display: "flex"}}>
+            <div style={{margin: "100px 0 0 0", display: "flex", flexWrap: "wrap"}}>
                 {renderDegrees}
             </div>
         )
