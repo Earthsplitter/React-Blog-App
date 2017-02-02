@@ -30,7 +30,7 @@ class SkillsList extends React.Component {
                 });
             }
         };
-        ajax.open("GET", "assets/data/skills.json", true);
+        ajax.open("GET", "/data/skills", true);
         ajax.send();
     }
 

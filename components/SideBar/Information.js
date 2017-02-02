@@ -9,7 +9,6 @@ class Information extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            favicon: "",
             firstName: "",
             lastName: "",
             title: "",
@@ -34,14 +33,14 @@ class Information extends React.Component {
                 })
             }
         };
-        ajax.open("GET", "assets/data/personalInfo.json", true);
+        ajax.open("GET", "/data/personalInfo", true);
         ajax.send();
     }
 
     render() {
         return (
             <section style={{ width: '100%', textAlign: 'center', marginTop: '30px'}}>
-                <img src={"../assets/image/"+this.state.favicon} alt="Wen Ming's portrait"
+                <img src={"/assets/image/favicon.png"} alt="Wen Ming's portrait"
                      style={{ border: '1px gold solid', width: '150px', height: '120px'}}/>
                 <p className="name">{this.state.firstName} {this.state.lastName}</p>
                 <p className="title">{this.state.title}</p>
