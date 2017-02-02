@@ -31,12 +31,14 @@ body {
     text-shadow: 2px 2px 8px black;
     margin: 10px 0;
 }
+
 .title {
     font-family: 'Open Sans', sans-serif;
     padding-left: 5px;
     font-weight: 300;
-    margin:0 ;
+    margin: 0;
 }
+
 .motto {
     font-family: 'Open Sans', sans-serif;
     font-style: italic;
@@ -44,10 +46,12 @@ body {
     margin: 10px 0;
 
 }
+
 .contact-button {
     margin: 0 10px;
     color: black;
 }
+
 .contact-button:hover {
     color: white;
 }
@@ -70,9 +74,11 @@ body {
     height: 40px;
     color: black;
 }
+
 .active-nav-button {
     background: linear-gradient(to right, #e2e200, #cc0000);
 }
+
 .nav-button:visited {
     color: black;
 }
@@ -80,7 +86,6 @@ body {
 .about-info {
     height: 20%;
     width: 100%;
-
 
     display: flex;
     align-items: center;
@@ -91,7 +96,7 @@ body {
 .resume, .resume:visited {
     height: 40px;
     width: 90px;
-    border:4px groove #e75cf2;
+    border: 4px groove #e75cf2;
     text-decoration: none;
     font-family: 'Roboto', sans-serif;
     color: white;
@@ -100,6 +105,7 @@ body {
     align-items: center;
     justify-content: center;
 }
+
 .resume:active {
     border: 4px inset #e75cf2;
 }
@@ -128,6 +134,7 @@ body {
     opacity: 1;
     transition: opacity 1000ms;
 }
+
 .projectModal:hover {
     cursor: pointer;
 }
@@ -143,4 +150,15 @@ body {
 .close-tag:hover {
     cursor: pointer;
     color: black;
+}
+
+.login {
+    font-size: 25px;
+    position: fixed;
+    left: 5px;
+    bottom: 5px;
+}
+
+.login:hover {
+    cursor: pointer;
 }

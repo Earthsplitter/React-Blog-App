@@ -136,7 +136,8 @@ class MainFrame extends React.Component {
         });
         return (
             <div>
-                <SideBar loginClick={this.handleLoginModal} handleClick={this.handleClick} gradient={sideBarGradient} width={sideBarWidth}/>
+                <SideBar handleClick={this.handleClick} gradient={sideBarGradient} width={sideBarWidth}/>
+                <span onClick={this.handleLoginModal} className="login fa fa-cog"/>
                 <main style={{marginLeft: sideBarWidth, height: innerHeight, overflow: 'auto'}}>
                     {modal}
                     {childrenWithProps}

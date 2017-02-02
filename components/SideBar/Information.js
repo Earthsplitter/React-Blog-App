@@ -38,7 +38,7 @@ class Information extends React.Component {
     render() {
         return (
             <section style={{ width: '100%', textAlign: 'center', marginTop: '30px'}}>
-                <img onClick={this.props.loginClick} src={"/assets/image/favicon.png"} alt="Wen Ming's portrait"
+                <img src={"/assets/image/favicon.png"} alt="Wen Ming's portrait"
                      style={{ border: '1px gold solid', width: '150px', height: '120px'}}/>
                 <p className="name">{this.state.firstName} {this.state.lastName}</p>
                 <p className="title">{this.state.title}</p>

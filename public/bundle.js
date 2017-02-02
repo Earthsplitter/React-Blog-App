@@ -27834,7 +27834,8 @@
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement(_SideBar2.default, { loginClick: this.handleLoginModal, handleClick: this.handleClick, gradient: sideBarGradient, width: sideBarWidth }),
+	                _react2.default.createElement(_SideBar2.default, { handleClick: this.handleClick, gradient: sideBarGradient, width: sideBarWidth }),
+	                _react2.default.createElement('span', { onClick: this.handleLoginModal, className: 'login fa fa-cog' }),
 	                _react2.default.createElement(
 	                    'main',
 	                    { style: { marginLeft: sideBarWidth, height: innerHeight, overflow: 'auto' } },
@@ -27943,7 +27944,7 @@
 	                            height: innerHeight, width: this.props.width, top: '0',
 	                            background: "linear-gradient(to left," + this.props.gradient.sideBar[0] + "," + this.props.gradient.sideBar[1]
 	                        } },
-	                    _react2.default.createElement(_Information2.default, { loginClick: this.props.loginClick }),
+	                    _react2.default.createElement(_Information2.default, null),
 	                    _react2.default.createElement(_SideNav2.default, { buttonGradient: this.props.gradient.navButton }),
 	                    _react2.default.createElement(_Copyright2.default, null)
 	                )
@@ -28147,7 +28148,7 @@
 	            return _react2.default.createElement(
 	                'section',
 	                { style: { width: '100%', textAlign: 'center', marginTop: '30px' } },
-	                _react2.default.createElement('img', { onClick: this.props.loginClick, src: "/assets/image/favicon.png", alt: 'Wen Ming\'s portrait',
+	                _react2.default.createElement('img', { src: "/assets/image/favicon.png", alt: 'Wen Ming\'s portrait',
 	                    style: { border: '1px gold solid', width: '150px', height: '120px' } }),
 	                _react2.default.createElement(
 	                    'p',
