@@ -2,7 +2,7 @@
  * Created by wenming on 01/02/2017.
  */
 import React from 'react'
-import Subheading from '../Subheading'
+import Subheading from '../Common/Subheading'
 import DegreesList from './DegreesList'
 
 class Education extends React.Component {

@@ -4,7 +4,7 @@
 import React from 'react'
 import ProjectList from './ProjectList'
 import {browserHistory} from 'react-router'
-import Subheading from './../Subheading'
+import Subheading from '../Common/Subheading'
 
 class Projects extends React.Component {
 

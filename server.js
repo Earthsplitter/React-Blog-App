@@ -4,11 +4,13 @@
 // server.js
 const express = require('express');
 const path = require('path');
+const compression = require('compression');
 
 const fs = require("fs");
 
 const app = express();
 
+app.use(compression());
 // serve our static stuff like index.css
 app.use(express.static(path.join(__dirname, 'public')));
 

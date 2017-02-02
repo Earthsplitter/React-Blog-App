@@ -142,4 +142,5 @@ body {
 
 .close-tag:hover {
     cursor: pointer;
+    color: black;
 }

@@ -2,7 +2,7 @@
  * Created by wenming on 01/02/2017.
  */
 import React from 'react'
-import Modal from './Modal'
+import Modal from '../Common/Modal'
 
 class ListItem extends React.Component {
 
