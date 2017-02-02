@@ -45,7 +45,7 @@ class SideBar extends React.Component {
                            height: innerHeight, width: this.props.width, top: '0',
                            background: "linear-gradient(to left," + this.props.gradient.sideBar[0] + "," + this.props.gradient.sideBar[1]
                        }}>
-                    <Information/>
+                    <Information loginClick={this.props.loginClick}/>
                     <SideNav buttonGradient={this.props.gradient.navButton}/>
                     <Copyright/>
                 </aside>

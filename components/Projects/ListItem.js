@@ -22,14 +22,23 @@ class ListItem extends React.Component {
     }
 
     render() {
+        /**
+         * shorthand for props.project
+         */
         const project = this.props.project;
+        /**
+         * Set colorStyle gradient
+         */
         const imageSource = "/assets/image/" + project.img;
         const borderImage = "linear-gradient(" + this.props.colorStyle[0] + ", " + this.props.colorStyle[1] + ") 10";
         const colorStyle = "-webkit-gradient(linear, 0 0, 0 bottom, from(" + this.props.colorStyle[0] + "), to(" + this.props.colorStyle[1] + "))";
 
+        /**
+         * Set modal
+         */
         let modal = null;
         if (this.state.showModal) {
-            modal = <Modal onClick={this.handler}/>;
+            modal = <Modal title={project.title} onClick={this.handler}/>;
         } else {
             modal = null;
         }

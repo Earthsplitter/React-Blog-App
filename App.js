@@ -5,6 +5,7 @@ import React from 'react'
 
 import SideBar from './components/SideBar/SideBar'
 import {browserHistory} from 'react-router'
+import Modal from './components/Common/Modal'
 
 /**
  * The main Component
@@ -46,10 +47,13 @@ class MainFrame extends React.Component {
          * @type {{colorStyle: number}}
          */
         this.state = {
-            colorStyle: 0
+            colorStyle: 0,
+            isLogin: false,
+            showModal: false
         };
 
         this.handleClick = this.handleClick.bind(this);
+        this.handleLoginModal = this.handleLoginModal.bind(this);
     }
 
     /**
@@ -68,6 +72,21 @@ class MainFrame extends React.Component {
         browserHistory.push(self.props.location.pathname + "#" + (Number(self.state.colorStyle) + 1) % 4);
     }
 
+    /**
+     * toggle portrait to login
+     */
+    handleLoginModal(e) {
+        e.stopPropagation();
+        this.setState((prevState) => {
+            return {
+                showModal: !prevState.showModal
+            }
+        })
+    }
+
+    /**
+     * Mark the color in url so that refresh won't reset colorStyle
+     */
     componentWillMount() {
         const style = this.props.location.hash;
         if (!style) {
@@ -80,6 +99,24 @@ class MainFrame extends React.Component {
     }
 
     render() {
+        /**
+         * Control modal hide/show
+         * @type {null}
+         */
+        let modal = null;
+        if (this.state.showModal) {
+            modal = (
+                <Modal title="Login" onClick={this.handleLoginModal}>
+                    <div style={{width: "80%", display: "flex", flexDirection: "column", alignItems: "center"}}>
+                        /**
+                         * Todo: make Login System
+                         */
+                    </div>
+                </Modal>
+            );
+        } else {
+            modal = null;
+        }
         /**
          * The width of Sidebar, recommend > 300px
          * @type {string}
@@ -99,8 +136,9 @@ class MainFrame extends React.Component {
         });
         return (
             <div>
-                <SideBar handleClick={this.handleClick} gradient={sideBarGradient} width={sideBarWidth}/>
+                <SideBar loginClick={this.handleLoginModal} handleClick={this.handleClick} gradient={sideBarGradient} width={sideBarWidth}/>
                 <main style={{marginLeft: sideBarWidth, height: innerHeight, overflow: 'auto'}}>
+                    {modal}
                     {childrenWithProps}
                 </main>
             </div>

@@ -23,7 +23,9 @@ class Modal extends React.Component {
                     boxShadow: '8px 8px 5px #737373', display:'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center'
                 }}>
                     <span className="close-tag" onClick={this.props.onClick}>&times;</span>
-                    <p>Some words</p>
+
+                    <h1 style={{fontFamily: "'Open Sans', sans-serif", fontSize: "24px"}}>{this.props.title}</h1>
+                    {this.props.children}
                 </article>
             </div>
         )

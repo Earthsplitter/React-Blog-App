@@ -27513,14 +27513,23 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            /**
+	             * shorthand for props.project
+	             */
 	            var project = this.props.project;
+	            /**
+	             * Set colorStyle gradient
+	             */
 	            var imageSource = "/assets/image/" + project.img;
 	            var borderImage = "linear-gradient(" + this.props.colorStyle[0] + ", " + this.props.colorStyle[1] + ") 10";
 	            var colorStyle = "-webkit-gradient(linear, 0 0, 0 bottom, from(" + this.props.colorStyle[0] + "), to(" + this.props.colorStyle[1] + "))";
 
+	            /**
+	             * Set modal
+	             */
 	            var modal = null;
 	            if (this.state.showModal) {
-	                modal = _react2.default.createElement(_Modal2.default, { onClick: this.handler });
+	                modal = _react2.default.createElement(_Modal2.default, { title: project.title, onClick: this.handler });
 	            } else {
 	                modal = null;
 	            }
@@ -27629,10 +27638,11 @@
 	                        '\xD7'
 	                    ),
 	                    _react2.default.createElement(
-	                        'p',
-	                        null,
-	                        'Some words'
-	                    )
+	                        'h1',
+	                        { style: { fontFamily: "'Open Sans', sans-serif", fontSize: "24px" } },
+	                        this.props.title
+	                    ),
+	                    this.props.children
 	                )
 	            );
 	        }
@@ -27664,6 +27674,10 @@
 	var _SideBar2 = _interopRequireDefault(_SideBar);
 
 	var _reactRouter = __webpack_require__(178);
+
+	var _Modal = __webpack_require__(246);
+
+	var _Modal2 = _interopRequireDefault(_Modal);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27718,10 +27732,13 @@
 	         * @type {{colorStyle: number}}
 	         */
 	        _this.state = {
-	            colorStyle: 0
+	            colorStyle: 0,
+	            isLogin: false,
+	            showModal: false
 	        };
 
 	        _this.handleClick = _this.handleClick.bind(_this);
+	        _this.handleLoginModal = _this.handleLoginModal.bind(_this);
 	        return _this;
 	    }
 
@@ -27744,6 +27761,26 @@
 	            });
 	            _reactRouter.browserHistory.push(self.props.location.pathname + "#" + (Number(self.state.colorStyle) + 1) % 4);
 	        }
+
+	        /**
+	         * toggle portrait to login
+	         */
+
+	    }, {
+	        key: 'handleLoginModal',
+	        value: function handleLoginModal(e) {
+	            e.stopPropagation();
+	            this.setState(function (prevState) {
+	                return {
+	                    showModal: !prevState.showModal
+	                };
+	            });
+	        }
+
+	        /**
+	         * Mark the color in url so that refresh won't reset colorStyle
+	         */
+
 	    }, {
 	        key: 'componentWillMount',
 	        value: function componentWillMount() {
@@ -27759,6 +27796,24 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            /**
+	             * Control modal hide/show
+	             * @type {null}
+	             */
+	            var modal = null;
+	            if (this.state.showModal) {
+	                modal = _react2.default.createElement(
+	                    _Modal2.default,
+	                    { title: 'Login', onClick: this.handleLoginModal },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { style: { width: "80%", display: "flex", flexDirection: "column", alignItems: "center" } },
+	                        '/** * Todo: make Login System */'
+	                    )
+	                );
+	            } else {
+	                modal = null;
+	            }
 	            /**
 	             * The width of Sidebar, recommend > 300px
 	             * @type {string}
@@ -27779,10 +27834,11 @@
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement(_SideBar2.default, { handleClick: this.handleClick, gradient: sideBarGradient, width: sideBarWidth }),
+	                _react2.default.createElement(_SideBar2.default, { loginClick: this.handleLoginModal, handleClick: this.handleClick, gradient: sideBarGradient, width: sideBarWidth }),
 	                _react2.default.createElement(
 	                    'main',
 	                    { style: { marginLeft: sideBarWidth, height: innerHeight, overflow: 'auto' } },
+	                    modal,
 	                    childrenWithProps
 	                )
 	            );
@@ -27887,7 +27943,7 @@
 	                            height: innerHeight, width: this.props.width, top: '0',
 	                            background: "linear-gradient(to left," + this.props.gradient.sideBar[0] + "," + this.props.gradient.sideBar[1]
 	                        } },
-	                    _react2.default.createElement(_Information2.default, null),
+	                    _react2.default.createElement(_Information2.default, { loginClick: this.props.loginClick }),
 	                    _react2.default.createElement(_SideNav2.default, { buttonGradient: this.props.gradient.navButton }),
 	                    _react2.default.createElement(_Copyright2.default, null)
 	                )
@@ -28074,7 +28130,6 @@
 	                if (this.readyState == 4 && this.status == 200) {
 	                    var info = JSON.parse(this.responseText);
 	                    self.setState({
-	                        favicon: info.favicon,
 	                        firstName: info.firstName,
 	                        lastName: info.lastName,
 	                        title: info.title,
@@ -28092,7 +28147,7 @@
 	            return _react2.default.createElement(
 	                'section',
 	                { style: { width: '100%', textAlign: 'center', marginTop: '30px' } },
-	                _react2.default.createElement('img', { src: "/assets/image/favicon.png", alt: 'Wen Ming\'s portrait',
+	                _react2.default.createElement('img', { onClick: this.props.loginClick, src: "/assets/image/favicon.png", alt: 'Wen Ming\'s portrait',
 	                    style: { border: '1px gold solid', width: '150px', height: '120px' } }),
 	                _react2.default.createElement(
 	                    'p',
