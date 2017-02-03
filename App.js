@@ -5,7 +5,7 @@ import React from 'react'
 
 import {browserHistory} from 'react-router'
 import Navigation from './components/SideBar/Navigation'
-import Modal from './components/Common/Modal'
+import Login from './components/Settings/Login'
 
 /**
  * The main Component
@@ -49,11 +49,10 @@ class MainFrame extends React.Component {
         this.state = {
             colorStyle: 0,
             isLogin: false,
-            showModal: false
         };
 
         this.handleClick = this.handleClick.bind(this);
-        this.handleLoginModal = this.handleLoginModal.bind(this);
+        this.setLogin = this.setLogin.bind(this);
     }
 
     /**
@@ -73,18 +72,6 @@ class MainFrame extends React.Component {
     }
 
     /**
-     * toggle portrait to login
-     */
-    handleLoginModal(e) {
-        e.stopPropagation();
-        this.setState((prevState) => {
-            return {
-                showModal: !prevState.showModal
-            }
-        })
-    }
-
-    /**
      * Mark the color in url so that refresh won't reset colorStyle
      */
     componentWillMount() {
@@ -98,25 +85,11 @@ class MainFrame extends React.Component {
         }
     }
 
+    setLogin() {
+        this.setState({isLogin: true});
+    }
+
     render() {
-        /**
-         * Control modal hide/show
-         * @type {null}
-         */
-        let modal = null;
-        if (this.state.showModal) {
-            modal = (
-                <Modal title="Login" onClick={this.handleLoginModal}>
-                    <div style={{width: "80%", display: "flex", flexDirection: "column", alignItems: "center"}}>
-                        /**
-                         * Todo: make Login System
-                         */
-                    </div>
-                </Modal>
-            );
-        } else {
-            modal = null;
-        }
         /**
          * The width of Sidebar, recommend > 300px
          * @type {string}
@@ -152,9 +125,8 @@ class MainFrame extends React.Component {
         return (
             <div>
                 <Navigation handleClick={this.handleClick} width={sideBarWidth} gradient={sideBarGradient}/>
-                <span onClick={this.handleLoginModal} className="login fa fa-cog"/>
+                <Login setLogin={this.setLogin} login={this.state.isLogin}/>
                 <main style={mainStyle}>
-                    {modal}
                     {childrenWithProps}
                 </main>
             </div>

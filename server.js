@@ -5,6 +5,7 @@
 const express = require('express');
 const path = require('path');
 const compression = require('compression');
+const bodyParser = require('body-parser');
 
 const fs = require("fs");
 
@@ -15,8 +16,18 @@ app.use(compression());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // send all requests to index.html so browserHistory in React Router works
-app.get(['/', '/experience\*', '/articles\*', '/projects\*'], function (req, res) {
+app.get(['/', '/settings\*', '/experience\*', '/articles\*', '/projects\*'], function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+app.post("/login", function (req, res) {
+    let user = req.body;
+    if (user.username == "a" && user.password == "b") {
+        res.send(new Date());
+    } else {
+        res.send("");
+    }
 });
 
 app.get("/data\*", function (req, res) {
@@ -41,7 +52,7 @@ app.get("/data\*", function (req, res) {
                     for (let i = 0; i < projectsArray.length && i < req.query.items; i++) {
                         sendProjects.push(projectsArray[i]);
                     }
-                    res.send({"projects" :sendProjects});
+                    res.send({"projects": sendProjects});
                 }
             });
             break;
