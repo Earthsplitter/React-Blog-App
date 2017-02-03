@@ -14,9 +14,11 @@ class Projects extends React.Component {
 
 
     render() {
+        let mq = window.matchMedia("(max-width: 800px)");
+        const margin = mq.matches?"0 10px":"0 100px";
         let motto = "Always code as if the guy who ends up maintaining your code will be a violent psychopath who knows where you live.";
         return (
-            <div style={{display: "flex", flexDirection: "column", alignItems: "center", margin: "0 100px"}}>
+            <div style={{display: "flex", flexDirection: "column", alignItems: "center", margin: margin}}>
                 <Subheading colorStyle={this.props.colorStyle} title="MY CODES" motto={motto} />
                 <ProjectList colorStyle={this.props.colorStyle}/>
             </div>);

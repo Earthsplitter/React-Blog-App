@@ -18,8 +18,10 @@ class Experience extends React.Component {
             "criticism. A certain amount of knowledge you can indeed with average faculties acquire so as to retain; nor" +
             " need you regret the hours you spent on much that is forgotten, for the shadow of lost knowledge at least " +
             "protects you from many illusions.";
+        let mq = window.matchMedia("(max-width: 800px)");
+        const margin = mq.matches?"0 10px":"0 100px";
         return (
-            <div style={{display: "flex", flexDirection: "column", alignItems: "center", margin: "0 100px"}}>
+            <div style={{display: "flex", flexDirection: "column", alignItems: "center", margin: margin}}>
                 <Education colorStyle={this.props.colorStyle}/>
                 <Skills colorStyle={this.props.colorStyle}/>
             </div>

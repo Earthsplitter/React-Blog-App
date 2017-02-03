@@ -11,6 +11,16 @@ body {
     overflow: hidden;
 }
 
+.topNav {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+
+    top: 0;
+}
+
 .sideBar {
     background: green;
     position: fixed;
@@ -20,6 +30,23 @@ body {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+
+    left: 0;
+    top: 0;
+}
+
+@media screen and (max-width: 800px) {
+    .sideBar {
+        background: green;
+        position: fixed;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        top: 0;
+
+    }
 }
 
 .name {

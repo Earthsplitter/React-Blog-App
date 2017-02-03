@@ -41,10 +41,7 @@ class SideBar extends React.Component {
                 {/* Key is important here! Any component wants to be animated must have a key */}
                 <aside key={this.props.gradient.sideBar[0]}
                        onClick={this.state.canBeClick ? this.props.handleClick : ''} className="sideBar"
-                       style={{
-                           height: innerHeight, width: this.props.width, top: '0',
-                           background: "linear-gradient(to left," + this.props.gradient.sideBar[0] + "," + this.props.gradient.sideBar[1]
-                       }}>
+                       style={this.props.style}>
                     <Information/>
                     <SideNav buttonGradient={this.props.gradient.navButton}/>
                     <Copyright/>

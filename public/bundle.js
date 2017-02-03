@@ -26675,9 +26675,11 @@
 	        key: 'render',
 	        value: function render() {
 	            var motto = "At school you are engaged not so much in acquiring knowledge as in making mental efforts under " + "criticism. A certain amount of knowledge you can indeed with average faculties acquire so as to retain; nor" + " need you regret the hours you spent on much that is forgotten, for the shadow of lost knowledge at least " + "protects you from many illusions.";
+	            var mq = window.matchMedia("(max-width: 800px)");
+	            var margin = mq.matches ? "0 10px" : "0 100px";
 	            return _react2.default.createElement(
 	                'div',
-	                { style: { display: "flex", flexDirection: "column", alignItems: "center", margin: "0 100px" } },
+	                { style: { display: "flex", flexDirection: "column", alignItems: "center", margin: margin } },
 	                _react2.default.createElement(_Education2.default, { colorStyle: this.props.colorStyle }),
 	                _react2.default.createElement(_Skills2.default, { colorStyle: this.props.colorStyle })
 	            );
@@ -26737,6 +26739,7 @@
 	        key: 'render',
 	        value: function render() {
 	            var motto = "At school you are engaged not so much in acquiring knowledge as in making mental efforts under " + "criticism. A certain amount of knowledge you can indeed with average faculties acquire so as to retain; nor" + " need you regret the hours you spent on much that is forgotten, for the shadow of lost knowledge at least " + "protects you from many illusions.";
+
 	            return _react2.default.createElement(
 	                'article',
 	                { style: { width: "100%" } },
@@ -26791,10 +26794,11 @@
 	        key: "render",
 	        value: function render() {
 	            var colorStyle = "-webkit-gradient(linear, 0 0, 0 bottom, from(" + this.props.colorStyle[0] + "), to(" + this.props.colorStyle[1] + "))";
-
+	            var mq = window.matchMedia("(max-width: 800px)");
+	            var margin = mq.matches ? "40px 0 20px 0" : "80px 0 20px 0";
 	            return _react2.default.createElement(
 	                "p",
-	                { style: { margin: "80px 0 20px 0", font: "italic 16px 'Open Sans', sans-serif" } },
+	                { style: { margin: margin, font: "italic 16px 'Open Sans', sans-serif" } },
 	                _react2.default.createElement(
 	                    "span",
 	                    { style: {
@@ -26900,10 +26904,11 @@
 	            this.state.education.forEach(function (element) {
 	                renderDegrees.push(_react2.default.createElement(_DegreeItem2.default, { key: element.title, degree: element, colorStyle: _this3.props.colorStyle }));
 	            });
-
+	            var mq = window.matchMedia("(max-width: 800px)");
+	            var margin = mq.matches ? "50px 0 0 0" : "100px 0 0 0";
 	            return _react2.default.createElement(
 	                'div',
-	                { style: { margin: "100px 0 0 0", display: "flex", flexWrap: "wrap" } },
+	                { style: { margin: margin, display: "flex", flexWrap: "wrap" } },
 	                renderDegrees
 	            );
 	        }
@@ -27347,10 +27352,12 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var mq = window.matchMedia("(max-width: 800px)");
+	            var margin = mq.matches ? "0 10px" : "0 100px";
 	            var motto = "Always code as if the guy who ends up maintaining your code will be a violent psychopath who knows where you live.";
 	            return _react2.default.createElement(
 	                'div',
-	                { style: { display: "flex", flexDirection: "column", alignItems: "center", margin: "0 100px" } },
+	                { style: { display: "flex", flexDirection: "column", alignItems: "center", margin: margin } },
 	                _react2.default.createElement(_Subheading2.default, { colorStyle: this.props.colorStyle, title: 'MY CODES', motto: motto }),
 	                _react2.default.createElement(_ProjectList2.default, { colorStyle: this.props.colorStyle })
 	            );
@@ -27669,11 +27676,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _SideBar = __webpack_require__(248);
-
-	var _SideBar2 = _interopRequireDefault(_SideBar);
-
 	var _reactRouter = __webpack_require__(178);
+
+	var _Navigation = __webpack_require__(248);
+
+	var _Navigation2 = _interopRequireDefault(_Navigation);
 
 	var _Modal = __webpack_require__(246);
 
@@ -27819,6 +27826,7 @@
 	             * @type {string}
 	             */
 	            var sideBarWidth = '350px';
+	            var topNavHeight = '50px';
 	            /**
 	             * Wrap properties and pass down to SideBar
 	             * @type {{}}
@@ -27828,17 +27836,28 @@
 	                sideBar: this.gradient.sideBarGradient[this.state.colorStyle],
 	                navButton: this.gradient.buttonGradient[this.state.colorStyle]
 	            };
+	            /**
+	             * use Media query to control Style
+	             */
+	            var mq = window.matchMedia("(max-width: 800px)");
+	            var mainStyle = null;
+	            if (mq.matches) {
+	                sideBarWidth = '250px';
+	                mainStyle = { marginTop: topNavHeight, height: innerHeight, overflow: 'auto' };
+	            } else {
+	                mainStyle = { marginLeft: sideBarWidth, height: innerHeight, overflow: 'auto' };
+	            }
 	            var childrenWithProps = _react2.default.Children.map(this.props.children, function (child) {
 	                return _react2.default.cloneElement(child, { currentColor: sideBarGradient.num, colorStyle: sideBarGradient.sideBar });
 	            });
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement(_SideBar2.default, { handleClick: this.handleClick, gradient: sideBarGradient, width: sideBarWidth }),
+	                _react2.default.createElement(_Navigation2.default, { handleClick: this.handleClick, width: sideBarWidth, gradient: sideBarGradient }),
 	                _react2.default.createElement('span', { onClick: this.handleLoginModal, className: 'login fa fa-cog' }),
 	                _react2.default.createElement(
 	                    'main',
-	                    { style: { marginLeft: sideBarWidth, height: innerHeight, overflow: 'auto' } },
+	                    { style: mainStyle },
 	                    modal,
 	                    childrenWithProps
 	                )
@@ -27867,19 +27886,102 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _SideNav = __webpack_require__(249);
+	var _SideBar = __webpack_require__(249);
+
+	var _SideBar2 = _interopRequireDefault(_SideBar);
+
+	var _TopNav = __webpack_require__(269);
+
+	var _TopNav2 = _interopRequireDefault(_TopNav);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by wenming on 03/02/2017.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+	var Navigation = function (_React$Component) {
+	    _inherits(Navigation, _React$Component);
+
+	    function Navigation() {
+	        _classCallCheck(this, Navigation);
+
+	        return _possibleConstructorReturn(this, (Navigation.__proto__ || Object.getPrototypeOf(Navigation)).apply(this, arguments));
+	    }
+
+	    _createClass(Navigation, [{
+	        key: 'render',
+	        value: function render() {
+	            var sideBarGradient = this.props.gradient;
+	            var mq = window.matchMedia("(max-width: 800px)");
+	            var sideBarStyle = null;
+	            var sideBar = null;
+
+	            if (mq.matches) {
+	                sideBarStyle = {
+	                    height: innerHeight, width: this.props.width,
+	                    background: "linear-gradient(to left," + sideBarGradient.sideBar[0] + "," + sideBarGradient.sideBar[1]
+	                };
+	                sideBar = _react2.default.createElement(
+	                    _TopNav2.default,
+	                    { style: sideBarGradient },
+	                    _react2.default.createElement(_SideBar2.default, { style: sideBarStyle, handleClick: this.props.handleClick, gradient: sideBarGradient })
+	                );
+	            } else {
+	                sideBarStyle = {
+	                    height: innerHeight, width: this.props.width,
+	                    background: "linear-gradient(to left," + sideBarGradient.sideBar[0] + "," + sideBarGradient.sideBar[1]
+	                };
+	                sideBar = _react2.default.createElement(_SideBar2.default, { style: sideBarStyle, handleClick: this.props.handleClick, gradient: sideBarGradient });
+	            }
+
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                sideBar
+	            );
+	        }
+	    }]);
+
+	    return Navigation;
+	}(_react2.default.Component);
+
+	exports.default = Navigation;
+
+/***/ },
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _SideNav = __webpack_require__(250);
 
 	var _SideNav2 = _interopRequireDefault(_SideNav);
 
-	var _Information = __webpack_require__(250);
+	var _Information = __webpack_require__(252);
 
 	var _Information2 = _interopRequireDefault(_Information);
 
-	var _reactAddonsCssTransitionGroup = __webpack_require__(253);
+	var _reactAddonsCssTransitionGroup = __webpack_require__(255);
 
 	var _reactAddonsCssTransitionGroup2 = _interopRequireDefault(_reactAddonsCssTransitionGroup);
 
-	var _Copyright = __webpack_require__(266);
+	var _Copyright = __webpack_require__(268);
 
 	var _Copyright2 = _interopRequireDefault(_Copyright);
 
@@ -27940,10 +28042,7 @@
 	                    'aside',
 	                    { key: this.props.gradient.sideBar[0],
 	                        onClick: this.state.canBeClick ? this.props.handleClick : '', className: 'sideBar',
-	                        style: {
-	                            height: innerHeight, width: this.props.width, top: '0',
-	                            background: "linear-gradient(to left," + this.props.gradient.sideBar[0] + "," + this.props.gradient.sideBar[1]
-	                        } },
+	                        style: this.props.style },
 	                    _react2.default.createElement(_Information2.default, null),
 	                    _react2.default.createElement(_SideNav2.default, { buttonGradient: this.props.gradient.navButton }),
 	                    _react2.default.createElement(_Copyright2.default, null)
@@ -27958,7 +28057,7 @@
 	exports.default = SideBar;
 
 /***/ },
-/* 249 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27967,15 +28066,15 @@
 	    value: true
 	});
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(178);
+	var _NavLink = __webpack_require__(251);
+
+	var _NavLink2 = _interopRequireDefault(_NavLink);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28016,7 +28115,7 @@
 	                    'li',
 	                    { className: 'nav-button-list', key: path },
 	                    _react2.default.createElement(
-	                        NavLink,
+	                        _NavLink2.default,
 	                        { activeStyle: { fontStyle: 'italic', background: "linear-gradient(to left," + _this2.props.buttonGradient[0] + "," + _this2.props.buttonGradient[1] }, to: path === "Homepage" ? "/" : path, onlyActiveOnIndex: path === "Homepage" },
 	                        path
 	                    )
@@ -28037,13 +28136,44 @@
 	    return SideNav;
 	}(_react2.default.Component);
 
+	exports.default = SideNav;
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(178);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by wenming on 03/02/2017.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
 	/**
 	 * Wrap Link, style it and stop its propagation
 	 */
-
-
-	var NavLink = function (_React$Component2) {
-	    _inherits(NavLink, _React$Component2);
+	var NavLink = function (_React$Component) {
+	    _inherits(NavLink, _React$Component);
 
 	    function NavLink() {
 	        _classCallCheck(this, NavLink);
@@ -28071,10 +28201,10 @@
 	    return NavLink;
 	}(_react2.default.Component);
 
-	exports.default = SideNav;
+	exports.default = NavLink;
 
 /***/ },
-/* 250 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28089,7 +28219,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactFontawesome = __webpack_require__(251);
+	var _reactFontawesome = __webpack_require__(253);
 
 	var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
 
@@ -28242,7 +28372,7 @@
 	exports.default = Information;
 
 /***/ },
-/* 251 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28257,7 +28387,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _screenReaderStyles = __webpack_require__(252);
+	var _screenReaderStyles = __webpack_require__(254);
 
 	var _screenReaderStyles2 = _interopRequireDefault(_screenReaderStyles);
 
@@ -28363,7 +28493,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 252 */
+/* 254 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28384,13 +28514,13 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 253 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(254);
+	module.exports = __webpack_require__(256);
 
 /***/ },
-/* 254 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28415,8 +28545,8 @@
 
 	var React = __webpack_require__(2);
 
-	var ReactTransitionGroup = __webpack_require__(255);
-	var ReactCSSTransitionGroupChild = __webpack_require__(258);
+	var ReactTransitionGroup = __webpack_require__(257);
+	var ReactCSSTransitionGroupChild = __webpack_require__(260);
 
 	function createTransitionTimeoutPropValidator(transitionType) {
 	  var timeoutPropName = 'transition' + transitionType + 'Timeout';
@@ -28499,7 +28629,7 @@
 	module.exports = ReactCSSTransitionGroup;
 
 /***/ },
-/* 255 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28523,7 +28653,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var React = __webpack_require__(2);
-	var ReactTransitionChildMapping = __webpack_require__(256);
+	var ReactTransitionChildMapping = __webpack_require__(258);
 
 	var emptyFunction = __webpack_require__(12);
 
@@ -28732,7 +28862,7 @@
 	module.exports = ReactTransitionGroup;
 
 /***/ },
-/* 256 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -28747,7 +28877,7 @@
 
 	'use strict';
 
-	var flattenChildren = __webpack_require__(257);
+	var flattenChildren = __webpack_require__(259);
 
 	var ReactTransitionChildMapping = {
 	  /**
@@ -28840,7 +28970,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 257 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -28921,7 +29051,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 258 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28937,10 +29067,10 @@
 	'use strict';
 
 	var React = __webpack_require__(2);
-	var ReactAddonsDOMDependencies = __webpack_require__(259);
+	var ReactAddonsDOMDependencies = __webpack_require__(261);
 
-	var CSSCore = __webpack_require__(264);
-	var ReactTransitionEvents = __webpack_require__(265);
+	var CSSCore = __webpack_require__(266);
+	var ReactTransitionEvents = __webpack_require__(267);
 
 	var onlyChild = __webpack_require__(31);
 
@@ -29092,7 +29222,7 @@
 	module.exports = ReactCSSTransitionGroupChild;
 
 /***/ },
-/* 259 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -29119,14 +29249,14 @@
 
 	  exports.getReactPerf = function () {
 	    if (!ReactPerf) {
-	      ReactPerf = __webpack_require__(260);
+	      ReactPerf = __webpack_require__(262);
 	    }
 	    return ReactPerf;
 	  };
 
 	  exports.getReactTestUtils = function () {
 	    if (!ReactTestUtils) {
-	      ReactTestUtils = __webpack_require__(261);
+	      ReactTestUtils = __webpack_require__(263);
 	    }
 	    return ReactTestUtils;
 	  };
@@ -29134,7 +29264,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 260 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -29640,7 +29770,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 261 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -29658,7 +29788,7 @@
 	var _prodInvariant = __webpack_require__(35),
 	    _assign = __webpack_require__(4);
 
-	var EventConstants = __webpack_require__(262);
+	var EventConstants = __webpack_require__(264);
 	var EventPluginHub = __webpack_require__(42);
 	var EventPluginRegistry = __webpack_require__(43);
 	var EventPropagators = __webpack_require__(41);
@@ -29669,7 +29799,7 @@
 	var ReactInstanceMap = __webpack_require__(116);
 	var ReactUpdates = __webpack_require__(56);
 	var SyntheticEvent = __webpack_require__(53);
-	var ReactShallowRenderer = __webpack_require__(263);
+	var ReactShallowRenderer = __webpack_require__(265);
 
 	var findDOMNode = __webpack_require__(172);
 	var invariant = __webpack_require__(8);
@@ -30057,7 +30187,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 262 */
+/* 264 */
 /***/ function(module, exports) {
 
 	/**
@@ -30153,7 +30283,7 @@
 	module.exports = EventConstants;
 
 /***/ },
-/* 263 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -30293,7 +30423,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 264 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -30420,7 +30550,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 265 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -30497,7 +30627,7 @@
 	module.exports = ReactTransitionEvents;
 
 /***/ },
-/* 266 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30561,6 +30691,100 @@
 	}(_react2.default.Component);
 
 	exports.default = Copyright;
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _NavLink = __webpack_require__(251);
+
+	var _NavLink2 = _interopRequireDefault(_NavLink);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by wenming on 02/02/2017.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+	var TopNav = function (_React$Component) {
+	    _inherits(TopNav, _React$Component);
+
+	    function TopNav(props) {
+	        _classCallCheck(this, TopNav);
+
+	        var _this = _possibleConstructorReturn(this, (TopNav.__proto__ || Object.getPrototypeOf(TopNav)).call(this, props));
+
+	        _this.state = {
+	            showSideBar: false
+	        };
+	        _this.handleClick = _this.handleClick.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(TopNav, [{
+	        key: 'handleClick',
+	        value: function handleClick() {
+	            console.log(this.state.showSideBar);
+	            this.setState(function (prevState) {
+	                return { showSideBar: !prevState.showSideBar };
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            var backColor = "linear-gradient(to bottom," + this.props.style.sideBar[0] + "," + this.props.style.sideBar[1] + ")";
+	            var navPath = ["Homepage", "Experience", "Articles", "Projects"];
+	            var navButtons = navPath.map(function (path) {
+	                return _react2.default.createElement(
+	                    _NavLink2.default,
+	                    { key: path, style: { height: '100%' }, activeStyle: {
+	                            fontStyle: 'italic', background: "linear-gradient(to bottom," + _this2.props.style.navButton[0] + "," + _this2.props.style.navButton[1]
+	                        }, to: path === "Homepage" ? "/" : path, onlyActiveOnIndex: path === "Homepage" },
+	                    path
+	                );
+	            });
+
+	            return _react2.default.createElement(
+	                'nav',
+	                { className: 'topNav', style: { background: backColor, left: this.state.showSideBar ? "250px" : "0" } },
+	                _react2.default.createElement(
+	                    'div',
+	                    { onClick: this.handleClick, style: { width: "50%", textAlign: "center" } },
+	                    _react2.default.createElement('span', { className: 'fa fa-bars' })
+	                ),
+	                navButtons,
+	                _react2.default.createElement(
+	                    'div',
+	                    { style: { display: this.state.showSideBar ? "initial" : "none" } },
+	                    this.props.children
+	                )
+	            );
+	        }
+	    }]);
+
+	    return TopNav;
+	}(_react2.default.Component);
+
+	exports.default = TopNav;
 
 /***/ }
 /******/ ]);

@@ -3,8 +3,8 @@
  */
 import React from 'react'
 
-import SideBar from './components/SideBar/SideBar'
 import {browserHistory} from 'react-router'
+import Navigation from './components/SideBar/Navigation'
 import Modal from './components/Common/Modal'
 
 /**
@@ -122,6 +122,7 @@ class MainFrame extends React.Component {
          * @type {string}
          */
         let sideBarWidth = '350px';
+        let topNavHeight = '50px';
         /**
          * Wrap properties and pass down to SideBar
          * @type {{}}
@@ -131,14 +132,25 @@ class MainFrame extends React.Component {
             sideBar: this.gradient.sideBarGradient[this.state.colorStyle],
             navButton: this.gradient.buttonGradient[this.state.colorStyle]
         };
+        /**
+         * use Media query to control Style
+         */
+        let mq = window.matchMedia("(max-width: 800px)");
+        let mainStyle = null;
+        if (mq.matches) {
+            sideBarWidth = '250px';
+            mainStyle = {marginTop: topNavHeight, height: innerHeight, overflow: 'auto'}
+        } else {
+            mainStyle = {marginLeft: sideBarWidth, height: innerHeight, overflow: 'auto'};
+        }
         const childrenWithProps = React.Children.map(this.props.children, (child) => {
             return React.cloneElement(child, {currentColor: sideBarGradient.num, colorStyle: sideBarGradient.sideBar});
         });
         return (
             <div>
-                <SideBar handleClick={this.handleClick} gradient={sideBarGradient} width={sideBarWidth}/>
+                <Navigation handleClick={this.handleClick} width={sideBarWidth} gradient={sideBarGradient}/>
                 <span onClick={this.handleLoginModal} className="login fa fa-cog"/>
-                <main style={{marginLeft: sideBarWidth, height: innerHeight, overflow: 'auto'}}>
+                <main style={mainStyle}>
                     {modal}
                     {childrenWithProps}
                 </main>

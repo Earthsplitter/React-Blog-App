@@ -40,9 +40,10 @@ class DegreesList extends React.Component {
             renderDegrees.push(
                 <DegreeItem key={element.title} degree={element} colorStyle={this.props.colorStyle}/>);
         });
-
+        let mq = window.matchMedia("(max-width: 800px)");
+        const margin = mq.matches?"50px 0 0 0":"100px 0 0 0";
         return (
-            <div style={{margin: "100px 0 0 0", display: "flex", flexWrap: "wrap"}}>
+            <div style={{margin: margin, display: "flex", flexWrap: "wrap"}}>
                 {renderDegrees}
             </div>
         )
