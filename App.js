@@ -138,11 +138,14 @@ class MainFrame extends React.Component {
         let mq = window.matchMedia("(max-width: 800px)");
         let mainStyle = null;
         if (mq.matches) {
+            // For mobile devices
             sideBarWidth = '250px';
             mainStyle = {marginTop: topNavHeight, height: innerHeight, overflow: 'auto'}
         } else {
+            // For laptop and pc
             mainStyle = {marginLeft: sideBarWidth, height: innerHeight, overflow: 'auto'};
         }
+        // pass colorStyle down to children
         const childrenWithProps = React.Children.map(this.props.children, (child) => {
             return React.cloneElement(child, {currentColor: sideBarGradient.num, colorStyle: sideBarGradient.sideBar});
         });

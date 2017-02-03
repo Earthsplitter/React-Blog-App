@@ -3,7 +3,6 @@
  */
 import React from 'react'
 import NavLink from '../Common/NavLink'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 
 class TopNav extends React.Component {
@@ -24,7 +23,7 @@ class TopNav extends React.Component {
 
 
     render() {
-        const backColor = "linear-gradient(to bottom," + this.props.style.sideBar[0] + "," + this.props.style.sideBar[1]+")";
+        const backColor = "linear-gradient(to bottom," + this.props.style.sideBar[0] + "," + this.props.style.sideBar[1] + ")";
         const navPath = ["Homepage", "Experience", "Articles", "Projects"];
         const navButtons = navPath.map((path) => (
             <NavLink key={path} style={{height: '100%'}} activeStyle={{
@@ -36,12 +35,12 @@ class TopNav extends React.Component {
         ));
 
         return (
-            <nav className="topNav" style={{background: backColor, left: this.state.showSideBar?"250px":"0"}}>
+            <nav className="topNav" style={{background: backColor, left: this.state.showSideBar ? "250px" : "0"}}>
                 <div onClick={this.handleClick} style={{width: "50%", textAlign: "center"}}>
                     <span className="fa fa-bars"/>
                 </div>
                 {navButtons}
-                <div style={{display: this.state.showSideBar?"initial":"none"}}>
+                <div style={{display: this.state.showSideBar ? "initial" : "none"}}>
                     {this.props.children}
                 </div>
             </nav>
@@ -49,4 +48,4 @@ class TopNav extends React.Component {
     }
 }
 
-export default TopNav
+export default TopNav;
