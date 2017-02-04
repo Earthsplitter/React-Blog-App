@@ -16,7 +16,7 @@
 
 1. Install `npm` (skip if already have npm).
 2. In the project's root directory, run `npm install`
-3. run `npm start` to start localhost.(development)
+3. Run `npm start` to start localhost.(development) or run `NODE_ENV=production npm start`(production)
 4. open [http://localhost:8080/](http://localhost:8080/).
 
 ##Structure
