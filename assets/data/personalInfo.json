@@ -1,12 +1,1 @@
-{
-  "firstName": "Ming",
-  "lastName": "Wen",
-  "title": "Front-End Developer",
-  "motto": "Keep curiosity, keep alive",
-  "contactMethod": {
-    "github": "https://github.com/Earthsplitter",
-    "linkedin": "https://www.linkedin.com",
-    "email": "mailto:wmcs@mail.ustc.edu.cn",
-    "phone": "tel: 15178703506"
-  }
-}
+{"firstName":"Ming","lastName":"Wen","title":"Front-End Developer","motto":"Keep curiosity, keep alive","contactMethod":{"github":"https://github.com/Earthsplitter","linkedin":"https://www.linkedin.com","email":"mailto:wmcs@mail.ustc.edu.cn","phone":"tel: 15178703506"}}

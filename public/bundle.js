@@ -30926,7 +30926,6 @@
 	                if (this.readyState == 4 && this.status == 200) {
 	                    var token = this.responseText;
 	                    if (token === "") {
-	                        window.alert("a");
 	                        //    Todo: send error message
 	                    } else {
 	                        window.localStorage.setItem("LoginToken", token);
@@ -30967,7 +30966,7 @@
 	                            'Username: '
 	                        )
 	                    ),
-	                    _react2.default.createElement('input', { size: 20, style: { lineHeight: "1.5em" }, type: 'text', name: 'username',
+	                    _react2.default.createElement('input', { size: 20, style: { lineHeight: "1.5em" }, type: 'text', id: 'username', name: 'username',
 	                        value: this.state.username, onChange: this.handleInput }),
 	                    _react2.default.createElement('br', null),
 	                    _react2.default.createElement(
@@ -30979,7 +30978,7 @@
 	                            'Password: '
 	                        )
 	                    ),
-	                    _react2.default.createElement('input', { size: 20, style: { lineHeight: "1.5em" }, type: 'password', name: 'password',
+	                    _react2.default.createElement('input', { size: 20, style: { lineHeight: "1.5em" }, type: 'password', id: 'password', name: 'password',
 	                        value: this.state.password, onChange: this.handleInput }),
 	                    _react2.default.createElement('br', null),
 	                    _react2.default.createElement(
@@ -31017,6 +31016,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -31029,16 +31030,65 @@
 	var Settings = function (_React$Component) {
 	    _inherits(Settings, _React$Component);
 
-	    function Settings() {
+	    function Settings(props) {
 	        _classCallCheck(this, Settings);
 
-	        return _possibleConstructorReturn(this, (Settings.__proto__ || Object.getPrototypeOf(Settings)).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, (Settings.__proto__ || Object.getPrototypeOf(Settings)).call(this, props));
+
+	        _this.state = {
+	            firstName: ""
+	        };
+
+	        _this.handleInput = _this.handleInput.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
 	    }
 
 	    _createClass(Settings, [{
 	        key: 'componentWillMount',
 	        value: function componentWillMount() {
 	            _reactRouter.browserHistory.push(this.props.location.pathname + "#" + this.props.currentColor);
+	            var xhr = new XMLHttpRequest();
+	            var self = this;
+	            xhr.onreadystatechange = function () {
+	                if (this.readyState == 4 && this.status == 200) {
+	                    var info = JSON.parse(this.responseText);
+	                    self.setState({
+	                        firstName: info.firstName
+	                    });
+	                }
+	            };
+	            xhr.open("GET", "/data/personalInfo", true);
+	            xhr.send();
+	        }
+	    }, {
+	        key: 'handleInput',
+	        value: function handleInput(e) {
+	            var name = e.target.name;
+	            this.setState(_defineProperty({}, name, e.target.value));
+	        }
+	    }, {
+	        key: 'handleSubmit',
+	        value: function handleSubmit(e) {
+	            e.preventDefault();
+	            var xhr = new XMLHttpRequest();
+	            var self = this;
+	            xhr.onreadystatechange = function () {
+	                if (this.readyState == 4 && this.status == 200) {
+	                    var state = this.responseText;
+	                    if (state === "fail") {
+	                        //    Todo: send error message
+	                    } else {
+	                        location.reload();
+	                    }
+	                }
+	            };
+	            xhr.open("POST", "/settings", true);
+	            xhr.setRequestHeader("Content-type", "application/json");
+	            xhr.send(JSON.stringify({
+	                "token": localStorage.getItem("token"),
+	                "firstName": self.state.firstName
+	            }));
 	        }
 	    }, {
 	        key: 'render',
@@ -31046,7 +31096,27 @@
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                'Settings'
+	                _react2.default.createElement(
+	                    'form',
+	                    { onSubmit: this.handleSubmit },
+	                    _react2.default.createElement(
+	                        'label',
+	                        { htmlFor: 'firstName' },
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'first name: '
+	                        )
+	                    ),
+	                    _react2.default.createElement('input', { size: 20, style: { lineHeight: "1.5em" }, type: 'text', id: 'firstName', name: 'firstName',
+	                        value: this.state.firstName, onChange: this.handleInput }),
+	                    _react2.default.createElement('br', null),
+	                    _react2.default.createElement(
+	                        'button',
+	                        { style: { margin: "20px 0" }, type: 'submit' },
+	                        'Login'
+	                    )
+	                )
 	            );
 	        }
 	    }]);

@@ -12,7 +12,7 @@ const fs = require("fs");
 const app = express();
 
 app.use(compression());
-// serve our static stuff like index.css
+// serve static stuff like index.css
 app.use(express.static(path.join(__dirname, 'public')));
 
 // send all requests to index.html so browserHistory in React Router works
@@ -28,6 +28,21 @@ app.post("/login", function (req, res) {
     } else {
         res.send("");
     }
+});
+
+app.post("/settings",function (req, res) {
+    let personalInfo = req.body;
+    fs.readFile("assets/data/personalInfo.json", "utf-8", function (err, data) {
+        if (err) {
+            console.log(err);
+        } else {
+            let writeData = JSON.parse(data);
+            writeData.firstName = personalInfo.firstName;
+            fs.writeFile("assets/data/personalInfo.json", JSON.stringify(writeData), function () {
+                res.send("success");
+            });
+        }
+    })
 });
 
 app.get("/data\*", function (req, res) {

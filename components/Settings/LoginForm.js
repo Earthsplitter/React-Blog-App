@@ -52,10 +52,10 @@ class LoginForm extends React.Component {
             <div style={{width: "80%", display: "flex", flexDirection: "column", alignItems: "center"}}>
                 <form onSubmit={this.handleSubmit}>
                     <label htmlFor="username"><p>Username: </p></label>
-                    <input size={20} style={{lineHeight: "1.5em"}} type="text" name="username"
+                    <input size={20} style={{lineHeight: "1.5em"}} type="text" id="username" name="username"
                            value={this.state.username} onChange={this.handleInput}/><br/>
                     <label htmlFor="password"><p>Password: </p></label>
-                    <input size={20} style={{lineHeight: "1.5em"}} type="password" name="password"
+                    <input size={20} style={{lineHeight: "1.5em"}} type="password" id="password" name="password"
                            value={this.state.password} onChange={this.handleInput}/><br/>
                     <button style={{margin: "20px 0"}} type="submit">Login</button>
                 </form>
