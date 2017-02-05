@@ -31120,6 +31120,7 @@
 	        _this.state = {
 	            tabs: 0
 	        };
+	        _this.handleQuit = _this.handleQuit.bind(_this);
 	        return _this;
 	    }
 
@@ -31129,6 +31130,12 @@
 	            _reactRouter.browserHistory.push(this.props.location.pathname + "#" + this.props.currentColor);
 	        }
 	    }, {
+	        key: 'handleQuit',
+	        value: function handleQuit() {
+	            localStorage.setItem("LoginToken", "0");
+	            _reactRouter.browserHistory.push("/");
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var mq = window.matchMedia("(max-width: 800px)");
@@ -31136,9 +31143,24 @@
 	                'div',
 	                { style: { display: "flex", flexWrap: "wrap" } },
 	                _react2.default.createElement(
+	                    'h1',
+	                    { style: { marginTop: "25px", marginLeft: "auto", marginRight: "auto", fontSize: "24px" } },
+	                    'Management System'
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { style: { width: "100%" } },
+	                    _react2.default.createElement(
+	                        'p',
+	                        { className: 'quitLogo', onClick: this.handleQuit, style: { margin: "0 auto 0 80%", fontSize: "25px" } },
+	                        _react2.default.createElement('span', { className: 'fa fa-arrow-left' }),
+	                        'quit'
+	                    )
+	                ),
+	                _react2.default.createElement(
 	                    'ul',
 	                    { style: { listStyleType: "none", display: "flex", border: "1px solid #ccc", backgroundColor: "#f1f1f1",
-	                            padding: "0", width: mq.matches ? "100%" : "80%", margin: mq.matches ? "40px 0 0 0" : "40px 10% 0 10%" } },
+	                            padding: "0", width: mq.matches ? "100%" : "80%", margin: mq.matches ? "20px 0 0 0" : "20px 10% 0 10%" } },
 	                    _react2.default.createElement(
 	                        'li',
 	                        null,
@@ -31360,7 +31382,7 @@
 	                        { htmlFor: "motto" },
 	                        _react2.default.createElement(
 	                            "p",
-	                            { style: { display: "inline" } },
+	                            { style: { display: "inline", fontWeight: "bold" } },
 	                            "Motto: "
 	                        )
 	                    ),

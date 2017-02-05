@@ -55,10 +55,11 @@ app.post("/settings\*",function (req, res) {
     let currentToken = new Date().getTime();
     if (token < currentToken) {
         res.send("fail");
+        return;
     }
     switch (queryClass) {
         case "login":
-           res.send("success");
+            res.send("success");
             break;
         case "personal":
             let personalInfo = req.body;

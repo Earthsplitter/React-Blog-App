@@ -90,7 +90,7 @@ class Profile extends React.Component {
                 <InputBar item="email" value={this.state.contactMethod.email} handleInput={this.handleInput}><span className="fa fa-envelope"/>Email: </InputBar>
                 <InputBar item="phone" value={this.state.contactMethod.phone} handleInput={this.handleInput}><span className="fa fa-phone"/>Phone: </InputBar>
                 <div style={{width: mq.matches ? "100%" : "50%", padding: "20px 10px 0 10px"}}>
-                    <label htmlFor="motto"><p style={{display: "inline"}}>Motto: </p></label>
+                    <label htmlFor="motto"><p style={{display: "inline", fontWeight:"bold"}}>Motto: </p></label>
                     <textarea style={{border: "1px solid #ccc"}} cols="48" rows="4" name="motto"
                               value={this.state.motto} onChange={this.handleInput}/>
                 </div>
