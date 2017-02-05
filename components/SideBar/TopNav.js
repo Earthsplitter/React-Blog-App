@@ -15,7 +15,6 @@ class TopNav extends React.Component {
     }
 
     handleClick() {
-        console.log(this.state.showSideBar);
         this.setState((prevState) => {
             return {showSideBar: !prevState.showSideBar}
         });

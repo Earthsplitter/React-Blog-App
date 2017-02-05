@@ -12,6 +12,7 @@
 
 1. Click the side bar, the whole page will change style(There are 4 styles in default).
 2. Click the cog icon on the left bottom to login(default username is **wmzfsw** and password is **123456**).
+3. Responsive Design
 
 ##Getting Started
 

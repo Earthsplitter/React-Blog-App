@@ -30717,7 +30717,6 @@
 	    _createClass(TopNav, [{
 	        key: 'handleClick',
 	        value: function handleClick() {
-	            console.log(this.state.showSideBar);
 	            this.setState(function (prevState) {
 	                return { showSideBar: !prevState.showSideBar };
 	            });
@@ -31280,6 +31279,9 @@
 	    }, {
 	        key: "handleSubmit",
 	        value: function handleSubmit(e) {
+	            if (this.state.firstName === "") {
+	                return;
+	            }
 	            e.preventDefault();
 	            var xhr = new XMLHttpRequest();
 	            var self = this;
@@ -31306,9 +31308,50 @@
 	            return _react2.default.createElement(
 	                "form",
 	                { style: { display: "flex", flexWrap: "wrap" }, onSubmit: this.handleSubmit },
-	                _react2.default.createElement(InputBar, { item: "firstName", value: this.state.firstName, handleInput: this.handleInput }),
-	                _react2.default.createElement(InputBar, { item: "lastName", value: this.state.lastName, handleInput: this.handleInput }),
-	                _react2.default.createElement(InputBar, { item: "title", value: this.state.title, handleInput: this.handleInput }),
+	                _react2.default.createElement(
+	                    InputBar,
+	                    { item: "firstName", value: this.state.firstName, handleInput: this.handleInput },
+	                    "First Name: "
+	                ),
+	                _react2.default.createElement(
+	                    InputBar,
+	                    { item: "lastName", value: this.state.lastName, handleInput: this.handleInput },
+	                    "Last Name: "
+	                ),
+	                _react2.default.createElement(
+	                    InputBar,
+	                    { item: "title", value: this.state.title, handleInput: this.handleInput },
+	                    "Title: "
+	                ),
+	                _react2.default.createElement(
+	                    "p",
+	                    { style: { width: "100%", margin: "20px 0 0 0" } },
+	                    "Contact Method:"
+	                ),
+	                _react2.default.createElement(
+	                    InputBar,
+	                    { item: "github", value: this.state.contactMethod.github, handleInput: this.handleInput },
+	                    _react2.default.createElement("span", { className: "fa fa-github" }),
+	                    "GitHub: "
+	                ),
+	                _react2.default.createElement(
+	                    InputBar,
+	                    { item: "linkedin", value: this.state.contactMethod.linkedin, handleInput: this.handleInput },
+	                    _react2.default.createElement("span", { className: "fa fa-linkedin" }),
+	                    "LinkedIn: "
+	                ),
+	                _react2.default.createElement(
+	                    InputBar,
+	                    { item: "email", value: this.state.contactMethod.email, handleInput: this.handleInput },
+	                    _react2.default.createElement("span", { className: "fa fa-envelope" }),
+	                    "Email: "
+	                ),
+	                _react2.default.createElement(
+	                    InputBar,
+	                    { item: "phone", value: this.state.contactMethod.phone, handleInput: this.handleInput },
+	                    _react2.default.createElement("span", { className: "fa fa-phone" }),
+	                    "Phone: "
+	                ),
 	                _react2.default.createElement(
 	                    "div",
 	                    { style: { width: mq.matches ? "100%" : "50%", padding: "20px 10px 0 10px" } },
@@ -31321,21 +31364,17 @@
 	                            "Motto: "
 	                        )
 	                    ),
-	                    _react2.default.createElement("textarea", { style: { border: "1px solid black" }, cols: "48", rows: "4", name: "motto", value: this.state.motto, onChange: this.handleInput })
+	                    _react2.default.createElement("textarea", { style: { border: "1px solid #ccc" }, cols: "48", rows: "4", name: "motto",
+	                        value: this.state.motto, onChange: this.handleInput })
 	                ),
 	                _react2.default.createElement(
-	                    "p",
-	                    { style: { width: "100%" } },
-	                    "Contact Method:"
-	                ),
-	                _react2.default.createElement(InputBar, { item: "github", value: this.state.contactMethod.github, handleInput: this.handleInput }),
-	                _react2.default.createElement(InputBar, { item: "linkedin", value: this.state.contactMethod.linkedin, handleInput: this.handleInput }),
-	                _react2.default.createElement(InputBar, { item: "email", value: this.state.contactMethod.email, handleInput: this.handleInput }),
-	                _react2.default.createElement(InputBar, { item: "phone", value: this.state.contactMethod.phone, handleInput: this.handleInput }),
-	                _react2.default.createElement(
-	                    "button",
-	                    { style: { margin: "20px auto" }, type: "submit" },
-	                    "Save"
+	                    "div",
+	                    { style: { width: "100%", display: "flex", justifyContent: "center" } },
+	                    _react2.default.createElement(
+	                        "button",
+	                        { type: "submit" },
+	                        "Save"
+	                    )
 	                )
 	            );
 	        }
@@ -31364,12 +31403,12 @@
 	                    { htmlFor: this.props.item },
 	                    _react2.default.createElement(
 	                        "p",
-	                        { style: { display: "inline" } },
-	                        this.props.item,
-	                        ": "
+	                        { style: { display: "inline", fontWeight: "bold" } },
+	                        this.props.children
 	                    )
 	                ),
-	                _react2.default.createElement("input", { size: 26, style: { lineHeight: "2em", border: "1px solid black" }, type: "text", id: this.props.item, name: this.props.item,
+	                _react2.default.createElement("input", { size: 28, style: { lineHeight: "2em", border: "1px solid #ccc", boxShadow: "1px 1px 1px grey" }, type: "text", id: this.props.item,
+	                    name: this.props.item,
 	                    value: this.props.value, onChange: this.props.handleInput }),
 	                _react2.default.createElement("br", null)
 	            );
