@@ -22,13 +22,7 @@ class Information extends React.Component {
         ajax.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 let info = JSON.parse(this.responseText);
-                self.setState({
-                    firstName: info.firstName,
-                    lastName: info.lastName,
-                    title: info.title,
-                    motto: info.motto,
-                    contactMethod: info.contactMethod
-                })
+                self.setState(info);
             }
         };
         ajax.open("GET", "/data/personalInfo", true);
@@ -78,6 +72,11 @@ class ContactButton extends React.Component {
             phone: "phone-square"
         };
         let address = this.props.addr;
+        if (this.props.name === "email") {
+            address = "mailto: "+address;
+        } else if (this.props.name === "phone") {
+            address = "tel: " + address;
+        }
         return (
             <a onClick={this.stopPropagation} href={address}>
                 <FontAwesome name={fontAwesome[this.props.name]} size="2x" className="contact-button"/>

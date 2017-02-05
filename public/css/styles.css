@@ -206,3 +206,18 @@ body {
 .close-btn:hover {
     color: black;
 }
+
+.tablinks {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+.tablinks:hover {
+    background-color: #ddd;
+    cursor: pointer;
+}

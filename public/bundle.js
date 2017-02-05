@@ -28237,13 +28237,7 @@
 	            ajax.onreadystatechange = function () {
 	                if (this.readyState == 4 && this.status == 200) {
 	                    var info = JSON.parse(this.responseText);
-	                    self.setState({
-	                        firstName: info.firstName,
-	                        lastName: info.lastName,
-	                        title: info.title,
-	                        motto: info.motto,
-	                        contactMethod: info.contactMethod
-	                    });
+	                    self.setState(info);
 	                }
 	            };
 	            ajax.open("GET", "/data/personalInfo", true);
@@ -28335,6 +28329,11 @@
 	                phone: "phone-square"
 	            };
 	            var address = this.props.addr;
+	            if (this.props.name === "email") {
+	                address = "mailto: " + address;
+	            } else if (this.props.name === "phone") {
+	                address = "tel: " + address;
+	            }
 	            return _react2.default.createElement(
 	                'a',
 	                { onClick: this.stopPropagation, href: address },
@@ -31096,9 +31095,11 @@
 
 	var _reactRouter = __webpack_require__(178);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _Profile = __webpack_require__(273);
 
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	var _Profile2 = _interopRequireDefault(_Profile);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -31118,11 +31119,8 @@
 	        var _this = _possibleConstructorReturn(this, (Settings.__proto__ || Object.getPrototypeOf(Settings)).call(this, props));
 
 	        _this.state = {
-	            firstName: ""
+	            tabs: 0
 	        };
-
-	        _this.handleInput = _this.handleInput.bind(_this);
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
 	    }
 
@@ -31130,27 +31128,157 @@
 	        key: 'componentWillMount',
 	        value: function componentWillMount() {
 	            _reactRouter.browserHistory.push(this.props.location.pathname + "#" + this.props.currentColor);
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var mq = window.matchMedia("(max-width: 800px)");
+	            return _react2.default.createElement(
+	                'div',
+	                { style: { display: "flex", flexWrap: "wrap" } },
+	                _react2.default.createElement(
+	                    'ul',
+	                    { style: { listStyleType: "none", display: "flex", border: "1px solid #ccc", backgroundColor: "#f1f1f1",
+	                            padding: "0", width: mq.matches ? "100%" : "80%", margin: mq.matches ? "40px 0 0 0" : "40px 10% 0 10%" } },
+	                    _react2.default.createElement(
+	                        'li',
+	                        null,
+	                        _react2.default.createElement(
+	                            'a',
+	                            { style: { backgroundColor: this.state.tabs === 0 ? "#ccc" : "" }, className: 'tablinks' },
+	                            'Profile'
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'li',
+	                        null,
+	                        _react2.default.createElement(
+	                            'a',
+	                            { style: { backgroundColor: this.state.tabs === 1 ? "#ccc" : "" }, className: 'tablinks' },
+	                            'Experience'
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'li',
+	                        null,
+	                        _react2.default.createElement(
+	                            'a',
+	                            { style: { backgroundColor: this.state.tabs === 2 ? "#ccc" : "" }, className: 'tablinks' },
+	                            'Articles'
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'li',
+	                        null,
+	                        _react2.default.createElement(
+	                            'a',
+	                            { style: { backgroundColor: this.state.tabs === 3 ? "#ccc" : "" }, className: 'tablinks' },
+	                            'Projects'
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'article',
+	                    { style: { border: "1px solid #ccc", width: mq.matches ? "100%" : "80%",
+	                            margin: mq.matches ? "0" : "0 10%" } },
+	                    _react2.default.createElement(_Profile2.default, null)
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Settings;
+	}(_react2.default.Component);
+
+	exports.default = Settings;
+
+/***/ },
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by wenming on 05/02/2017.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+	var Profile = function (_React$Component) {
+	    _inherits(Profile, _React$Component);
+
+	    function Profile(props) {
+	        _classCallCheck(this, Profile);
+
+	        var _this = _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).call(this, props));
+
+	        _this.state = {
+	            firstName: "",
+	            lastName: "",
+	            title: "",
+	            motto: "",
+	            contactMethod: {
+	                github: "",
+	                linkedin: "",
+	                email: "",
+	                phone: ""
+	            }
+	        };
+	        _this.handleInput = _this.handleInput.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Profile, [{
+	        key: "componentWillMount",
+	        value: function componentWillMount() {
 	            var xhr = new XMLHttpRequest();
 	            var self = this;
 	            xhr.onreadystatechange = function () {
 	                if (this.readyState == 4 && this.status == 200) {
 	                    var info = JSON.parse(this.responseText);
-	                    self.setState({
-	                        firstName: info.firstName
-	                    });
+	                    self.setState(info);
 	                }
 	            };
 	            xhr.open("GET", "/data/personalInfo", true);
 	            xhr.send();
 	        }
 	    }, {
-	        key: 'handleInput',
+	        key: "handleInput",
 	        value: function handleInput(e) {
 	            var name = e.target.name;
-	            this.setState(_defineProperty({}, name, e.target.value));
+	            var value = e.target.value;
+	            if (name === "github" || name === "linkedin" || name === "email" || name === "phone") {
+	                this.setState(function (prevState) {
+	                    var newContactMethod = Object.assign({}, prevState.contactMethod);
+	                    newContactMethod[name] = value;
+	                    return {
+	                        contactMethod: newContactMethod
+	                    };
+	                });
+	            } else {
+	                this.setState(_defineProperty({}, name, e.target.value));
+	            }
 	        }
 	    }, {
-	        key: 'handleSubmit',
+	        key: "handleSubmit",
 	        value: function handleSubmit(e) {
 	            e.preventDefault();
 	            var xhr = new XMLHttpRequest();
@@ -31167,46 +31295,91 @@
 	            };
 	            xhr.open("POST", "/settings/personal", true);
 	            xhr.setRequestHeader("Content-type", "application/json");
-	            xhr.send(JSON.stringify({
-	                "token": localStorage.getItem("token"),
-	                "firstName": self.state.firstName
-	            }));
+	            var sendInfo = Object.assign({}, this.state);
+	            sendInfo.token = localStorage.getItem("LoginToken");
+	            xhr.send(JSON.stringify(sendInfo));
 	        }
 	    }, {
-	        key: 'render',
+	        key: "render",
 	        value: function render() {
+	            var mq = window.matchMedia("(max-width: 1080px)");
 	            return _react2.default.createElement(
-	                'div',
-	                null,
+	                "form",
+	                { style: { display: "flex", flexWrap: "wrap" }, onSubmit: this.handleSubmit },
+	                _react2.default.createElement(InputBar, { item: "firstName", value: this.state.firstName, handleInput: this.handleInput }),
+	                _react2.default.createElement(InputBar, { item: "lastName", value: this.state.lastName, handleInput: this.handleInput }),
+	                _react2.default.createElement(InputBar, { item: "title", value: this.state.title, handleInput: this.handleInput }),
 	                _react2.default.createElement(
-	                    'form',
-	                    { onSubmit: this.handleSubmit },
+	                    "div",
+	                    { style: { width: mq.matches ? "100%" : "50%", padding: "20px 10px 0 10px" } },
 	                    _react2.default.createElement(
-	                        'label',
-	                        { htmlFor: 'firstName' },
+	                        "label",
+	                        { htmlFor: "motto" },
 	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            'first name: '
+	                            "p",
+	                            { style: { display: "inline" } },
+	                            "Motto: "
 	                        )
 	                    ),
-	                    _react2.default.createElement('input', { size: 20, style: { lineHeight: "1.5em" }, type: 'text', id: 'firstName', name: 'firstName',
-	                        value: this.state.firstName, onChange: this.handleInput }),
-	                    _react2.default.createElement('br', null),
-	                    _react2.default.createElement(
-	                        'button',
-	                        { style: { margin: "20px 0" }, type: 'submit' },
-	                        'Login'
-	                    )
+	                    _react2.default.createElement("textarea", { style: { border: "1px solid black" }, cols: "48", rows: "4", name: "motto", value: this.state.motto, onChange: this.handleInput })
+	                ),
+	                _react2.default.createElement(
+	                    "p",
+	                    { style: { width: "100%" } },
+	                    "Contact Method:"
+	                ),
+	                _react2.default.createElement(InputBar, { item: "github", value: this.state.contactMethod.github, handleInput: this.handleInput }),
+	                _react2.default.createElement(InputBar, { item: "linkedin", value: this.state.contactMethod.linkedin, handleInput: this.handleInput }),
+	                _react2.default.createElement(InputBar, { item: "email", value: this.state.contactMethod.email, handleInput: this.handleInput }),
+	                _react2.default.createElement(InputBar, { item: "phone", value: this.state.contactMethod.phone, handleInput: this.handleInput }),
+	                _react2.default.createElement(
+	                    "button",
+	                    { style: { margin: "20px auto" }, type: "submit" },
+	                    "Save"
 	                )
 	            );
 	        }
 	    }]);
 
-	    return Settings;
+	    return Profile;
 	}(_react2.default.Component);
 
-	exports.default = Settings;
+	var InputBar = function (_React$Component2) {
+	    _inherits(InputBar, _React$Component2);
+
+	    function InputBar() {
+	        _classCallCheck(this, InputBar);
+
+	        return _possibleConstructorReturn(this, (InputBar.__proto__ || Object.getPrototypeOf(InputBar)).apply(this, arguments));
+	    }
+
+	    _createClass(InputBar, [{
+	        key: "render",
+	        value: function render() {
+	            return _react2.default.createElement(
+	                "div",
+	                { style: { width: "50%", padding: "20px 10px 0 10px" } },
+	                _react2.default.createElement(
+	                    "label",
+	                    { htmlFor: this.props.item },
+	                    _react2.default.createElement(
+	                        "p",
+	                        { style: { display: "inline" } },
+	                        this.props.item,
+	                        ": "
+	                    )
+	                ),
+	                _react2.default.createElement("input", { size: 26, style: { lineHeight: "2em", border: "1px solid black" }, type: "text", id: this.props.item, name: this.props.item,
+	                    value: this.props.value, onChange: this.props.handleInput }),
+	                _react2.default.createElement("br", null)
+	            );
+	        }
+	    }]);
+
+	    return InputBar;
+	}(_react2.default.Component);
+
+	exports.default = Profile;
 
 /***/ }
 /******/ ]);

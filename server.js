@@ -51,31 +51,23 @@ app.post("/login", function (req, res) {
 
 app.post("/settings\*",function (req, res) {
     const queryClass = req.path.slice(10);
+    let token = req.body.token;
+    let currentToken = new Date().getTime();
+    if (token < currentToken) {
+        res.send("fail");
+    }
     switch (queryClass) {
         case "login":
-            let token = req.body.token;
-            let currentToken = new Date().getTime();
-            if (token > currentToken) {
-                res.send("success");
-            } else {
-                res.send("fail");
-            }
+           res.send("success");
             break;
         case "personal":
+            let personalInfo = req.body;
+            delete personalInfo.token;
+            fs.writeFile("assets/data/personalInfo.json", JSON.stringify(personalInfo), function () {
+                res.send("success");
+            });
             break;
     }
-    // let personalInfo = req.body;
-    // fs.readFile("assets/data/personalInfo.json", "utf-8", function (err, data) {
-    //     if (err) {
-    //         console.log(err);
-    //     } else {
-    //         let writeData = JSON.parse(data);
-    //         writeData.firstName = personalInfo.firstName;
-    //         fs.writeFile("assets/data/personalInfo.json", JSON.stringify(writeData), function () {
-    //             res.send("success");
-    //         });
-    //     }
-    // })
 });
 
 app.get("/data\*", function (req, res) {
