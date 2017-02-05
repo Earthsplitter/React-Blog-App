@@ -22,27 +22,60 @@ app.get(['/', '/settings\*', '/experience\*', '/articles\*', '/projects\*'], fun
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.post("/login", function (req, res) {
-    let user = req.body;
-    if (user.username == "a" && user.password == "b") {
-        res.send(new Date());
-    } else {
-        res.send("");
-    }
+    fs.readFile("assets/data/account.json", "utf-8", function (err, data) {
+        let account = JSON.parse(data);
+        let user = req.body;
+        let keepTime = new Date().getDate();
+        if (user.username === account.username && user.password === account.password) {
+            switch (user.staySignIn) {
+                case "no":
+                    break;
+                case "one day":
+                    keepTime += 1;
+                    break;
+                case "one week":
+                    keepTime += 7;
+                    break;
+                case "one month":
+                    keepTime += 31;
+                    break;
+            }
+            let token = new Date();
+            token.setDate(keepTime);
+            res.send(token.getTime().toString());
+        } else {
+            res.send("");
+        }
+    });
 });
 
-app.post("/settings",function (req, res) {
-    let personalInfo = req.body;
-    fs.readFile("assets/data/personalInfo.json", "utf-8", function (err, data) {
-        if (err) {
-            console.log(err);
-        } else {
-            let writeData = JSON.parse(data);
-            writeData.firstName = personalInfo.firstName;
-            fs.writeFile("assets/data/personalInfo.json", JSON.stringify(writeData), function () {
+app.post("/settings\*",function (req, res) {
+    const queryClass = req.path.slice(10);
+    switch (queryClass) {
+        case "login":
+            let token = req.body.token;
+            let currentToken = new Date().getTime();
+            if (token > currentToken) {
                 res.send("success");
-            });
-        }
-    })
+            } else {
+                res.send("fail");
+            }
+            break;
+        case "personal":
+            break;
+    }
+    // let personalInfo = req.body;
+    // fs.readFile("assets/data/personalInfo.json", "utf-8", function (err, data) {
+    //     if (err) {
+    //         console.log(err);
+    //     } else {
+    //         let writeData = JSON.parse(data);
+    //         writeData.firstName = personalInfo.firstName;
+    //         fs.writeFile("assets/data/personalInfo.json", JSON.stringify(writeData), function () {
+    //             res.send("success");
+    //         });
+    //     }
+    // })
 });
 
 app.get("/data\*", function (req, res) {

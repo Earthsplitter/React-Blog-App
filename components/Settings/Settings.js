@@ -53,7 +53,7 @@ class Settings extends React.Component {
                 }
             }
         };
-        xhr.open("POST", "/settings", true);
+        xhr.open("POST", "/settings/personal", true);
         xhr.setRequestHeader("Content-type","application/json");
         xhr.send(JSON.stringify({
             "token":    localStorage.getItem("token"),

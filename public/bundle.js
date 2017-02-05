@@ -30812,6 +30812,7 @@
 	            showModal: false
 	        };
 	        _this.handleLoginModal = _this.handleLoginModal.bind(_this);
+	        _this.closeModal = _this.closeModal.bind(_this);
 	        return _this;
 	    }
 
@@ -30823,18 +30824,47 @@
 	    _createClass(Login, [{
 	        key: 'handleLoginModal',
 	        value: function handleLoginModal(e) {
+	            var _this2 = this;
+
 	            if (e) {
 	                e.stopPropagation();
 	            }
 	            if (this.props.login && !this.state.showModal) {
+	                // have login this time
 	                _reactRouter.browserHistory.push("Settings");
 	            } else {
-	                this.setState(function (prevState) {
-	                    return {
-	                        showModal: !prevState.showModal
+	                (function () {
+	                    // check if save login state
+	                    var xhr = new XMLHttpRequest();
+	                    var self = _this2;
+	                    xhr.onreadystatechange = function () {
+	                        if (this.readyState == 4 && this.status == 200) {
+	                            var state = this.responseText;
+	                            if (state === "fail") {
+	                                self.setState(function (prevState) {
+	                                    return {
+	                                        showModal: !prevState.showModal
+	                                    };
+	                                });
+	                            } else {
+	                                _reactRouter.browserHistory.push("Settings");
+	                            }
+	                        }
 	                    };
-	                });
+	                    xhr.open("POST", "/settings/login", true);
+	                    xhr.setRequestHeader("Content-type", "application/json");
+	                    xhr.send(JSON.stringify({
+	                        "token": localStorage.getItem("LoginToken")
+	                    }));
+	                })();
 	            }
+	        }
+	    }, {
+	        key: 'closeModal',
+	        value: function closeModal() {
+	            this.setState({
+	                showModal: false
+	            });
 	        }
 	    }, {
 	        key: 'render',
@@ -30848,7 +30878,7 @@
 	                modal = _react2.default.createElement(
 	                    _Modal2.default,
 	                    { title: 'Login', onClick: this.handleLoginModal },
-	                    _react2.default.createElement(_LoginForm2.default, { closeModal: this.handleLoginModal, setLogin: this.props.setLogin,
+	                    _react2.default.createElement(_LoginForm2.default, { closeModal: this.closeModal, setLogin: this.props.setLogin,
 	                        submit: this.handleSubmit })
 	                );
 	            } else {
@@ -30909,10 +30939,13 @@
 
 	        _this.state = {
 	            username: "",
-	            password: ""
+	            password: "",
+	            staySignIn: "one day",
+	            showAlert: "none"
 	        };
 	        _this.handleInput = _this.handleInput.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.closeAlert = _this.closeAlert.bind(_this);
 	        return _this;
 	    }
 
@@ -30926,7 +30959,9 @@
 	                if (this.readyState == 4 && this.status == 200) {
 	                    var token = this.responseText;
 	                    if (token === "") {
-	                        //    Todo: send error message
+	                        self.setState({
+	                            showAlert: "initial"
+	                        });
 	                    } else {
 	                        window.localStorage.setItem("LoginToken", token);
 	                        self.props.setLogin();
@@ -30938,8 +30973,9 @@
 	            xhr.open("POST", "/login", true);
 	            xhr.setRequestHeader("Content-type", "application/json");
 	            xhr.send(JSON.stringify({
-	                "username": self.state.username,
-	                "password": self.state.password
+	                "username": this.state.username,
+	                "password": this.state.password,
+	                "staySignIn": this.state.staySignIn
 	            }));
 	        }
 	    }, {
@@ -30949,11 +30985,34 @@
 	            this.setState(_defineProperty({}, name, e.target.value));
 	        }
 	    }, {
+	        key: 'closeAlert',
+	        value: function closeAlert() {
+	            this.setState({
+	                showAlert: "none"
+	            });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'div',
 	                { style: { width: "80%", display: "flex", flexDirection: "column", alignItems: "center" } },
+	                _react2.default.createElement(
+	                    'div',
+	                    { style: {
+	                            display: this.state.showAlert,
+	                            padding: "20px",
+	                            backgroundColor: "red",
+	                            color: "white",
+	                            marginBottom: "15px"
+	                        } },
+	                    _react2.default.createElement(
+	                        'span',
+	                        { className: 'close-btn', onClick: this.closeAlert },
+	                        '\xD7'
+	                    ),
+	                    'Wrong username or password, please check it and login again.'
+	                ),
 	                _react2.default.createElement(
 	                    'form',
 	                    { onSubmit: this.handleSubmit },
@@ -30980,6 +31039,29 @@
 	                    ),
 	                    _react2.default.createElement('input', { size: 20, style: { lineHeight: "1.5em" }, type: 'password', id: 'password', name: 'password',
 	                        value: this.state.password, onChange: this.handleInput }),
+	                    _react2.default.createElement('br', null),
+	                    _react2.default.createElement(
+	                        'label',
+	                        { htmlFor: 'staySignIn' },
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'Stay sign in: '
+	                        )
+	                    ),
+	                    _react2.default.createElement('input', { size: 20, style: { lineHeight: "1.5em" }, type: 'radio', id: 'staySignIn', name: 'staySignIn',
+	                        value: 'no', checked: this.state.staySignIn === "no", onChange: this.handleInput }),
+	                    'No',
+	                    _react2.default.createElement('input', { size: 20, style: { lineHeight: "1.5em" }, type: 'radio', id: 'staySignIn', name: 'staySignIn',
+	                        value: 'one day', checked: this.state.staySignIn === "one day", onChange: this.handleInput }),
+	                    '1 day',
+	                    _react2.default.createElement('input', { size: 20, style: { lineHeight: "1.5em" }, type: 'radio', name: 'staySignIn',
+	                        value: 'one week', checked: this.state.staySignIn === "one week", onChange: this.handleInput }),
+	                    '1 week',
+	                    _react2.default.createElement('input', { size: 20, style: { lineHeight: "1.5em" }, type: 'radio', name: 'staySignIn',
+	                        value: 'one month', checked: this.state.staySignIn === "one month",
+	                        onChange: this.handleInput }),
+	                    '1 month',
 	                    _react2.default.createElement('br', null),
 	                    _react2.default.createElement(
 	                        'button',
@@ -31083,7 +31165,7 @@
 	                    }
 	                }
 	            };
-	            xhr.open("POST", "/settings", true);
+	            xhr.open("POST", "/settings/personal", true);
 	            xhr.setRequestHeader("Content-type", "application/json");
 	            xhr.send(JSON.stringify({
 	                "token": localStorage.getItem("token"),

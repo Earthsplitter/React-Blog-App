@@ -14,6 +14,7 @@ class Login extends React.Component {
             showModal: false
         };
         this.handleLoginModal = this.handleLoginModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
     }
 
     /**
@@ -24,14 +25,38 @@ class Login extends React.Component {
             e.stopPropagation();
         }
         if (this.props.login && !this.state.showModal) {
+            // have login this time
             browserHistory.push("Settings");
         } else {
-            this.setState((prevState) => {
-                return {
-                    showModal: !prevState.showModal
+            // check if save login state
+            let xhr = new XMLHttpRequest();
+            let self = this;
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    let state = this.responseText;
+                    if (state === "fail") {
+                        self.setState((prevState) => {
+                            return {
+                                showModal: !prevState.showModal
+                            }
+                        })
+                    } else {
+                        browserHistory.push("Settings");
+                    }
                 }
-            })
+            };
+            xhr.open("POST", "/settings/login", true);
+            xhr.setRequestHeader("Content-type","application/json");
+            xhr.send(JSON.stringify({
+                "token":    localStorage.getItem("LoginToken")
+            }));
         }
+    }
+
+    closeModal() {
+        this.setState({
+            showModal: false
+        })
     }
 
     render() {
@@ -43,7 +68,7 @@ class Login extends React.Component {
         if (this.state.showModal) {
             modal = (
                 <Modal title="Login" onClick={this.handleLoginModal}>
-                    <LoginForm closeModal={this.handleLoginModal} setLogin={this.props.setLogin}
+                    <LoginForm closeModal={this.closeModal} setLogin={this.props.setLogin}
                                submit={this.handleSubmit}/>
                 </Modal>
             );
