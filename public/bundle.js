@@ -31542,7 +31542,8 @@
 	                var ifDisplay = project.title.toLowerCase().includes(_this3.state.search.toLowerCase());
 	                projects.push(_react2.default.createElement(
 	                    "tr",
-	                    { key: project.title, style: { border: "1px solid #ddd", display: ifDisplay ? "table-row" : "none" } },
+	                    { key: project.title,
+	                        style: { border: "1px solid #ddd", display: ifDisplay ? "table-row" : "none" } },
 	                    _react2.default.createElement(
 	                        "td",
 	                        { style: { padding: "12px" } },
@@ -31556,9 +31557,10 @@
 	                    _react2.default.createElement(
 	                        "td",
 	                        { style: { padding: "12px" } },
-	                        _react2.default.createElement("span", { className: "fa fa-pencil" }),
-	                        " ",
-	                        _react2.default.createElement("span", { className: "fa fa-trash" })
+	                        _react2.default.createElement("span", { style: { marginRight: "10px", fontSize: "30px", color: "#ebca26" },
+	                            className: "cursorHoverPointer fa fa-pencil" }),
+	                        _react2.default.createElement("span", {
+	                            style: { fontSize: "30px", color: "red" }, className: "cursorHoverPointer fa fa-trash" })
 	                    )
 	                ));
 	            });

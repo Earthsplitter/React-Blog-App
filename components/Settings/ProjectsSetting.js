@@ -44,10 +44,13 @@ class ProjectsSetting extends React.Component {
         let projects = [];
         this.state.projects.forEach((project) => {
             let ifDisplay = project.title.toLowerCase().includes(this.state.search.toLowerCase());
-            projects.push(<tr key={project.title} style={{border: "1px solid #ddd",display:ifDisplay?"table-row":"none"}}>
-                <td style={{padding:"12px"}}>{project.title}</td>
-                <td style={{padding:"12px"}}>{project.date}</td>
-                <td style={{padding:"12px"}}><span className="fa fa-pencil"/> <span className="fa fa-trash"/></td>
+            projects.push(<tr key={project.title}
+                              style={{border: "1px solid #ddd", display: ifDisplay ? "table-row" : "none"}}>
+                <td style={{padding: "12px"}}>{project.title}</td>
+                <td style={{padding: "12px"}}>{project.date}</td>
+                <td style={{padding: "12px"}}><span style={{marginRight: "10px", fontSize: "30px", color:"#ebca26"}}
+                                                    className="cursorHoverPointer fa fa-pencil"/><span
+                    style={{fontSize: "30px", color:"red"}} className="cursorHoverPointer fa fa-trash"/></td>
             </tr>)
         });
 
@@ -66,11 +69,11 @@ class ProjectsSetting extends React.Component {
                     fontFamily: "'roboto',sans-serif",
                     fontSize: "18px"
                 }}>
-                    <thead style={{fontWeight:"bold",backgroundColor:"#f1f1f1"}}>
+                    <thead style={{fontWeight: "bold", backgroundColor: "#f1f1f1"}}>
                     <tr>
-                        <th style={{width: "60%", padding:"12px"}}>Name</th>
-                        <th style={{width: "25%", padding:"12px"}}>Date</th>
-                        <th style={{width: "15%", padding:"12px"}}>Action</th>
+                        <th style={{width: "60%", padding: "12px"}}>Name</th>
+                        <th style={{width: "25%", padding: "12px"}}>Date</th>
+                        <th style={{width: "15%", padding: "12px"}}>Action</th>
                     </tr>
                     </thead>
                     <tbody>
