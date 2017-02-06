@@ -77,7 +77,7 @@ class Login extends React.Component {
         }
         return (
             <div>
-                <span onClick={this.handleLoginModal} className="login fa fa-cog"/>
+                <span onClick={this.handleLoginModal} className="login cursorHoverPointer fa fa-cog"/>
                 {modal}
             </div>
         )

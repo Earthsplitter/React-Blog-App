@@ -94,8 +94,8 @@ class Profile extends React.Component {
                     <textarea style={{border: "1px solid #ccc"}} cols="48" rows="4" name="motto"
                               value={this.state.motto} onChange={this.handleInput}/>
                 </div>
-                <div style={{width: "100%", display:"flex", justifyContent:"center"}}>
-                    <button type="submit">Save</button>
+                <div style={{width: "100%", display:"flex", justifyContent:"center",margin:"20px 0"}}>
+                    <button className="cursorHoverPointer" style={{borderRadius:"100%", backgroundColor:"red",height:"36px",width:"36px",color:"white",border:"1px solid #ccc"}} type="submit">Save</button>
                 </div>
             </form>
         )

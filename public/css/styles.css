@@ -162,10 +162,6 @@ body {
     transition: opacity 1000ms;
 }
 
-.projectModal:hover {
-    cursor: pointer;
-}
-
 .close-tag {
     display: block;
     align-self: flex-end;
@@ -184,10 +180,6 @@ body {
     position: fixed;
     left: 5px;
     bottom: 5px;
-}
-
-.login:hover {
-    cursor: pointer;
 }
 
 /* The close button */
@@ -222,6 +214,6 @@ body {
     cursor: pointer;
 }
 
-.quitLogo:hover {
+.cursorHoverPointer:hover {
     cursor: pointer;
 }

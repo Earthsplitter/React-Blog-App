@@ -10,9 +10,10 @@ class Settings extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tabs: 0,
+            currenttabs: 0,
         };
         this.handleQuit = this.handleQuit.bind(this);
+        this.changeTabs = this.changeTabs.bind(this);
     }
 
     componentWillMount() {
@@ -24,25 +25,31 @@ class Settings extends React.Component {
         browserHistory.push("/");
     }
 
+    changeTabs(e) {
+        let number = ["Profile","Experience","Articles","Projects"];
+        this.setState({
+            currenttabs: number.indexOf(e.target.innerHTML)
+    });
+    }
+
     render() {
         let mq = window.matchMedia("(max-width: 800px)");
         return (
             <div style={{display: "flex", flexWrap:"wrap"}}>
-                <h1 style={{marginTop:"25px", marginLeft:"auto", marginRight:"auto", fontSize:"24px"}}>Management System</h1>
-                {/*Todo: quit the system*/}
+                <h1 style={{marginTop:"15px", marginLeft:"auto", marginRight:"auto", fontSize:"24px"}}>Management System</h1>
                 <div style={{width: "100%"}}>
-                    <p className="quitLogo" onClick={this.handleQuit} style={{margin:"0 auto 0 80%", fontSize:"25px"}}><span className="fa fa-arrow-left"/>quit</p>
+                    <p className="cursorHoverPointer" onClick={this.handleQuit} style={{margin:"0 auto 0 80%", fontSize:"25px"}}><span className="fa fa-arrow-left"/>quit</p>
                 </div>
                 <ul style={{listStyleType: "none", display:"flex", border: "1px solid #ccc", backgroundColor: "#f1f1f1",
                     padding:"0", width: mq.matches?"100%":"80%", margin: mq.matches?"20px 0 0 0":"20px 10% 0 10%"}}>
-                    <li><a style={{backgroundColor: this.state.tabs===0?"#ccc":""}} className="tablinks">Profile</a></li>
-                    <li><a style={{backgroundColor: this.state.tabs===1?"#ccc":""}} className="tablinks">Experience</a></li>
-                    <li><a style={{backgroundColor: this.state.tabs===2?"#ccc":""}} className="tablinks">Articles</a></li>
-                    <li><a style={{backgroundColor: this.state.tabs===3?"#ccc":""}} className="tablinks">Projects</a></li>
+                    <li><a onClick={this.changeTabs} style={{backgroundColor: this.state.currenttabs===0?"#ccc":""}} className="tablinks">Profile</a></li>
+                    <li><a onClick={this.changeTabs} style={{backgroundColor: this.state.currenttabs===1?"#ccc":""}} className="tablinks">Experience</a></li>
+                    <li><a onClick={this.changeTabs} style={{backgroundColor: this.state.currenttabs===2?"#ccc":""}} className="tablinks">Articles</a></li>
+                    <li><a onClick={this.changeTabs} style={{backgroundColor: this.state.currenttabs===3?"#ccc":""}} className="tablinks">Projects</a></li>
                 </ul>
                 <article style={{border: "1px solid #ccc", width: mq.matches?"100%":"80%",
                     margin: mq.matches?"0":"0 10%"}}>
-                    <Profile/>
+                    {this.state.currenttabs === 0?<Profile/>:""}
                 </article>
             </div>
         )

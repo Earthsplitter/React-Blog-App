@@ -27571,7 +27571,7 @@
 	                    { style: { font: "normal 16px 'Roboto', sans-serif" } },
 	                    project.intro
 	                ),
-	                _react2.default.createElement('img', { onClick: this.handler, className: 'projectModal', style: {
+	                _react2.default.createElement('img', { onClick: this.handler, className: 'cursorHoverPointer', style: {
 	                        maxWidth: "310px", maxHeight: "210px", clear: "both", display: "block", margin: "auto",
 	                        border: "5px solid", WebkitBorderImage: borderImage, OBorderImage: borderImage, MozBorderImage: borderImage
 	                    }, src: imageSource }),
@@ -30885,7 +30885,7 @@
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement('span', { onClick: this.handleLoginModal, className: 'login fa fa-cog' }),
+	                _react2.default.createElement('span', { onClick: this.handleLoginModal, className: 'login cursorHoverPointer fa fa-cog' }),
 	                modal
 	            );
 	        }
@@ -31118,9 +31118,10 @@
 	        var _this = _possibleConstructorReturn(this, (Settings.__proto__ || Object.getPrototypeOf(Settings)).call(this, props));
 
 	        _this.state = {
-	            tabs: 0
+	            currenttabs: 0
 	        };
 	        _this.handleQuit = _this.handleQuit.bind(_this);
+	        _this.changeTabs = _this.changeTabs.bind(_this);
 	        return _this;
 	    }
 
@@ -31136,6 +31137,14 @@
 	            _reactRouter.browserHistory.push("/");
 	        }
 	    }, {
+	        key: 'changeTabs',
+	        value: function changeTabs(e) {
+	            var number = ["Profile", "Experience", "Articles", "Projects"];
+	            this.setState({
+	                currenttabs: number.indexOf(e.target.innerHTML)
+	            });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var mq = window.matchMedia("(max-width: 800px)");
@@ -31144,7 +31153,7 @@
 	                { style: { display: "flex", flexWrap: "wrap" } },
 	                _react2.default.createElement(
 	                    'h1',
-	                    { style: { marginTop: "25px", marginLeft: "auto", marginRight: "auto", fontSize: "24px" } },
+	                    { style: { marginTop: "15px", marginLeft: "auto", marginRight: "auto", fontSize: "24px" } },
 	                    'Management System'
 	                ),
 	                _react2.default.createElement(
@@ -31152,7 +31161,7 @@
 	                    { style: { width: "100%" } },
 	                    _react2.default.createElement(
 	                        'p',
-	                        { className: 'quitLogo', onClick: this.handleQuit, style: { margin: "0 auto 0 80%", fontSize: "25px" } },
+	                        { className: 'cursorHoverPointer', onClick: this.handleQuit, style: { margin: "0 auto 0 80%", fontSize: "25px" } },
 	                        _react2.default.createElement('span', { className: 'fa fa-arrow-left' }),
 	                        'quit'
 	                    )
@@ -31166,7 +31175,7 @@
 	                        null,
 	                        _react2.default.createElement(
 	                            'a',
-	                            { style: { backgroundColor: this.state.tabs === 0 ? "#ccc" : "" }, className: 'tablinks' },
+	                            { onClick: this.changeTabs, style: { backgroundColor: this.state.currenttabs === 0 ? "#ccc" : "" }, className: 'tablinks' },
 	                            'Profile'
 	                        )
 	                    ),
@@ -31175,7 +31184,7 @@
 	                        null,
 	                        _react2.default.createElement(
 	                            'a',
-	                            { style: { backgroundColor: this.state.tabs === 1 ? "#ccc" : "" }, className: 'tablinks' },
+	                            { onClick: this.changeTabs, style: { backgroundColor: this.state.currenttabs === 1 ? "#ccc" : "" }, className: 'tablinks' },
 	                            'Experience'
 	                        )
 	                    ),
@@ -31184,7 +31193,7 @@
 	                        null,
 	                        _react2.default.createElement(
 	                            'a',
-	                            { style: { backgroundColor: this.state.tabs === 2 ? "#ccc" : "" }, className: 'tablinks' },
+	                            { onClick: this.changeTabs, style: { backgroundColor: this.state.currenttabs === 2 ? "#ccc" : "" }, className: 'tablinks' },
 	                            'Articles'
 	                        )
 	                    ),
@@ -31193,7 +31202,7 @@
 	                        null,
 	                        _react2.default.createElement(
 	                            'a',
-	                            { style: { backgroundColor: this.state.tabs === 3 ? "#ccc" : "" }, className: 'tablinks' },
+	                            { onClick: this.changeTabs, style: { backgroundColor: this.state.currenttabs === 3 ? "#ccc" : "" }, className: 'tablinks' },
 	                            'Projects'
 	                        )
 	                    )
@@ -31202,7 +31211,7 @@
 	                    'article',
 	                    { style: { border: "1px solid #ccc", width: mq.matches ? "100%" : "80%",
 	                            margin: mq.matches ? "0" : "0 10%" } },
-	                    _react2.default.createElement(_Profile2.default, null)
+	                    this.state.currenttabs === 0 ? _react2.default.createElement(_Profile2.default, null) : ""
 	                )
 	            );
 	        }
@@ -31391,10 +31400,10 @@
 	                ),
 	                _react2.default.createElement(
 	                    "div",
-	                    { style: { width: "100%", display: "flex", justifyContent: "center" } },
+	                    { style: { width: "100%", display: "flex", justifyContent: "center", margin: "20px 0" } },
 	                    _react2.default.createElement(
 	                        "button",
-	                        { type: "submit" },
+	                        { className: "cursorHoverPointer", style: { borderRadius: "100%", backgroundColor: "red", height: "36px", width: "36px", color: "white", border: "1px solid #ccc" }, type: "submit" },
 	                        "Save"
 	                    )
 	                )

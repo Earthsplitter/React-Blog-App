@@ -56,7 +56,7 @@ class ListItem extends React.Component {
                 <span style={{margin: "0 20px", font: "italic 14px 'Open Sans', sans-serif"}}>{project.date}</span>
                 <hr style={{borderColor: this.props.colorStyle[0]}}/>
                 <p style={{font: "normal 16px 'Roboto', sans-serif"}}>{project.intro}</p>
-                <img onClick={this.handler} className="projectModal" style={{
+                <img onClick={this.handler} className="cursorHoverPointer" style={{
                     maxWidth: "310px", maxHeight: "210px", clear: "both", display: "block", margin: "auto",
                     border: "5px solid", WebkitBorderImage: borderImage, OBorderImage: borderImage, MozBorderImage: borderImage
                 }} src={imageSource}/>
