@@ -31098,6 +31098,10 @@
 
 	var _Profile2 = _interopRequireDefault(_Profile);
 
+	var _ProjectsSetting = __webpack_require__(274);
+
+	var _ProjectsSetting2 = _interopRequireDefault(_ProjectsSetting);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -31211,7 +31215,8 @@
 	                    'article',
 	                    { style: { border: "1px solid #ccc", width: mq.matches ? "100%" : "80%",
 	                            margin: mq.matches ? "0" : "0 10%" } },
-	                    this.state.currenttabs === 0 ? _react2.default.createElement(_Profile2.default, null) : ""
+	                    this.state.currenttabs === 0 ? _react2.default.createElement(_Profile2.default, null) : "",
+	                    this.state.currenttabs === 1 ? _react2.default.createElement(_ProjectsSetting2.default, null) : ""
 	                )
 	            );
 	        }
@@ -31450,6 +31455,169 @@
 	}(_react2.default.Component);
 
 	exports.default = Profile;
+
+/***/ },
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by wenming on 06/02/2017.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+	var ProjectsSetting = function (_React$Component) {
+	    _inherits(ProjectsSetting, _React$Component);
+
+	    function ProjectsSetting(props) {
+	        _classCallCheck(this, ProjectsSetting);
+
+	        var _this = _possibleConstructorReturn(this, (ProjectsSetting.__proto__ || Object.getPrototypeOf(ProjectsSetting)).call(this, props));
+
+	        _this.state = {
+	            search: "",
+	            projects: []
+	        };
+	        _this.handleSearch = _this.handleSearch.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(ProjectsSetting, [{
+	        key: "componentWillMount",
+	        value: function componentWillMount() {
+	            var ajax = new XMLHttpRequest();
+	            var self = this;
+	            ajax.onreadystatechange = function () {
+	                var _this2 = this;
+
+	                if (this.readyState == 4 && this.status == 200) {
+	                    (function () {
+	                        var projects = JSON.parse(_this2.responseText);
+	                        self.setState(function (prevState) {
+	                            var proGroup = prevState.projects;
+	                            projects.projects.forEach(function (project) {
+	                                proGroup.push(project);
+	                            });
+	                            return {
+	                                projects: proGroup
+	                            };
+	                        });
+	                    })();
+	                }
+	            };
+	            ajax.open("GET", "/data/projects?items=5", true);
+	            ajax.send();
+	        }
+	    }, {
+	        key: "handleSearch",
+	        value: function handleSearch(e) {
+	            this.setState({
+	                search: e.target.value
+	            });
+	        }
+	    }, {
+	        key: "render",
+	        value: function render() {
+	            var _this3 = this;
+
+	            var projects = [];
+	            this.state.projects.forEach(function (project) {
+	                var ifDisplay = project.title.toLowerCase().includes(_this3.state.search.toLowerCase());
+	                projects.push(_react2.default.createElement(
+	                    "tr",
+	                    { key: project.title, style: { border: "1px solid #ddd", display: ifDisplay ? "table-row" : "none" } },
+	                    _react2.default.createElement(
+	                        "td",
+	                        { style: { padding: "12px" } },
+	                        project.title
+	                    ),
+	                    _react2.default.createElement(
+	                        "td",
+	                        { style: { padding: "12px" } },
+	                        project.date
+	                    ),
+	                    _react2.default.createElement(
+	                        "td",
+	                        { style: { padding: "12px" } },
+	                        _react2.default.createElement("span", { className: "fa fa-pencil" }),
+	                        " ",
+	                        _react2.default.createElement("span", { className: "fa fa-trash" })
+	                    )
+	                ));
+	            });
+
+	            return _react2.default.createElement(
+	                "div",
+	                { style: { display: "flex", flexDirection: "column" } },
+	                _react2.default.createElement("input", { style: {
+	                        backgroundImage: "url('assets/image/searchIcon.png')",
+	                        backgroundRepeat: "no-repeat", fontSize: "16px",
+	                        backgroundPosition: "10px 8px", padding: "8px 20px 8px 40px", border: "1px solid #ddd"
+	                    }, type: "text", id: "myInput", onChange: this.handleSearch, value: this.state.search }),
+	                _react2.default.createElement(
+	                    "table",
+	                    { style: {
+	                            width: "100%",
+	                            textAlign: "left",
+	                            borderCollapse: "collapse",
+	                            border: "1px solid #ddd",
+	                            fontFamily: "'roboto',sans-serif",
+	                            fontSize: "18px"
+	                        } },
+	                    _react2.default.createElement(
+	                        "thead",
+	                        { style: { fontWeight: "bold", backgroundColor: "#f1f1f1" } },
+	                        _react2.default.createElement(
+	                            "tr",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                { style: { width: "60%", padding: "12px" } },
+	                                "Name"
+	                            ),
+	                            _react2.default.createElement(
+	                                "th",
+	                                { style: { width: "25%", padding: "12px" } },
+	                                "Date"
+	                            ),
+	                            _react2.default.createElement(
+	                                "th",
+	                                { style: { width: "15%", padding: "12px" } },
+	                                "Action"
+	                            )
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        "tbody",
+	                        null,
+	                        projects
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return ProjectsSetting;
+	}(_react2.default.Component);
+
+	exports.default = ProjectsSetting;
 
 /***/ }
 /******/ ]);

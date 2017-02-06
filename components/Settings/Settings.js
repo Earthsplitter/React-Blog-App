@@ -4,6 +4,7 @@
 import React from 'react'
 import {browserHistory} from 'react-router'
 import Profile from './Profile'
+import ProjectsSetting from './ProjectsSetting'
 
 class Settings extends React.Component {
 
@@ -50,6 +51,7 @@ class Settings extends React.Component {
                 <article style={{border: "1px solid #ccc", width: mq.matches?"100%":"80%",
                     margin: mq.matches?"0":"0 10%"}}>
                     {this.state.currenttabs === 0?<Profile/>:""}
+                    {this.state.currenttabs === 1?<ProjectsSetting/>:""}
                 </article>
             </div>
         )
