@@ -42,9 +42,9 @@ app.post("/login", function (req, res) {
             }
             let token = new Date();
             token.setDate(keepTime);
-            res.send(token.getTime().toString());
+            res.end(token.getTime().toString());
         } else {
-            res.send("");
+            res.end("");
         }
     });
 });

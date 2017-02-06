@@ -2,6 +2,7 @@
  * Created by wenming on 05/02/2017.
  */
 import React from 'react';
+import InputBar from '../Common/InputBar'
 
 class Profile extends React.Component {
     constructor(props) {
@@ -98,19 +99,6 @@ class Profile extends React.Component {
                     <button className="cursorHoverPointer" style={{borderRadius:"100%", backgroundColor:"red",height:"36px",width:"36px",color:"white",border:"1px solid #ccc"}} type="submit">Save</button>
                 </div>
             </form>
-        )
-    }
-}
-
-class InputBar extends React.Component {
-    render() {
-        return (
-            <div style={{width: "50%", padding: "20px 10px 0 10px"}}>
-                <label htmlFor={this.props.item}><p style={{display: "inline", fontWeight: "bold"}}>{this.props.children}</p></label>
-                <input size={28} style={{lineHeight: "2em", border: "1px solid #ccc", boxShadow:"1px 1px 1px grey"}} type="text" id={this.props.item}
-                       name={this.props.item}
-                       value={this.props.value} onChange={this.props.handleInput}/><br/>
-            </div>
         )
     }
 }

@@ -15,7 +15,7 @@ module.exports = {
     module: {
         loaders: [
             {test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader?presets[]=es2015&presets[]=react'},
-            {test: /\.json$/, exclude: /node_modules/, loader: 'json'}
+            {test: /\.json$/, loader: 'json'}
         ],
         plugins: process.env.NODE_ENV === 'production' ? [
             new webpack.optimize.DedupePlugin(),

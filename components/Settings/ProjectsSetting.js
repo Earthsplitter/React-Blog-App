@@ -2,15 +2,18 @@
  * Created by wenming on 06/02/2017.
  */
 import React from 'react'
+import ProjectEditor from './ProjectEditor'
 
 class ProjectsSetting extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             search: "",
+            currentEditor: -1,
             projects: []
         };
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
     }
 
     componentWillMount() {
@@ -40,18 +43,27 @@ class ProjectsSetting extends React.Component {
         })
     }
 
+    handleEdit(e) {
+        this.setState({
+            currentEditor: e.target.id
+        })
+    }
+
     render() {
         let projects = [];
-        this.state.projects.forEach((project) => {
+        this.state.projects.forEach((project,key) => {
             let ifDisplay = project.title.toLowerCase().includes(this.state.search.toLowerCase());
-            projects.push(<tr key={project.title}
-                              style={{border: "1px solid #ddd", display: ifDisplay ? "table-row" : "none"}}>
-                <td style={{padding: "12px"}}>{project.title}</td>
-                <td style={{padding: "12px"}}>{project.date}</td>
-                <td style={{padding: "12px"}}><span style={{marginRight: "10px", fontSize: "30px", color:"#ebca26"}}
-                                                    className="cursorHoverPointer fa fa-pencil"/><span
-                    style={{fontSize: "30px", color:"red"}} className="cursorHoverPointer fa fa-trash"/></td>
-            </tr>)
+            projects.push(
+                <tr key={key}
+                    style={{border: "1px solid #ddd", display: ifDisplay ? "table-row" : "none"}}>
+                    <td style={{padding: "12px"}}>{project.title}</td>
+                    <td style={{padding: "12px"}}>{project.date}</td>
+                    <td style={{padding: "12px"}}>
+                        <span style={{marginRight: "10px", fontSize: "30px", color: "#ebca26"}} onClick={this.handleEdit} id={key} className="cursorHoverPointer fa fa-pencil"/>
+                        <span style={{fontSize: "30px", color: "red"}} className="cursorHoverPointer fa fa-trash"/>
+                    </td>
+                </tr>
+            )
         });
 
         return (
@@ -80,6 +92,7 @@ class ProjectsSetting extends React.Component {
                     {projects}
                     </tbody>
                 </table>
+                {this.state.currentEditor === -1?"":<ProjectEditor project={this.state.projects[this.state.currentEditor]}/>}
             </div>
         )
     }

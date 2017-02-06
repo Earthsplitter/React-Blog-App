@@ -17,6 +17,8 @@ body {
     align-items: center;
     width: 100%;
     height: 50px;
+    /*override codeMirror*/
+    z-index: 100;
 
     top: 0;
 }
