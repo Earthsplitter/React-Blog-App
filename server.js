@@ -20,7 +20,7 @@ app.get(['/', '/settings\*', '/experience\*', '/articles\*', '/projects\*'], fun
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: "5mb"}));
 app.post("/login", function (req, res) {
     fs.readFile("assets/data/account.json", "utf-8", function (err, data) {
         let account = JSON.parse(data);
@@ -63,6 +63,12 @@ app.post("/settings\*",function (req, res) {
             break;
         case "personal":
             let personalInfo = req.body;
+
+            let pic = personalInfo.img;
+            let data = pic.slice(22);
+            let buffer = new Buffer(data, 'base64');
+            fs.writeFile('public/assets/image/favicon.png', buffer);
+            delete personalInfo.img;
             delete personalInfo.token;
             fs.writeFile("assets/data/personalInfo.json", JSON.stringify(personalInfo), function () {
                 res.send("success");

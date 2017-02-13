@@ -30743,7 +30743,7 @@
 	                { className: 'topNav', style: { background: backColor, left: this.state.showSideBar ? "250px" : "0" } },
 	                _react2.default.createElement(
 	                    'div',
-	                    { onClick: this.handleClick, style: { width: "50%", textAlign: "center" } },
+	                    { className: 'cursorHoverPointer', onClick: this.handleClick, style: { width: "50%", textAlign: "center" } },
 	                    _react2.default.createElement('span', { className: 'fa fa-bars' })
 	                ),
 	                navButtons,
@@ -31273,6 +31273,7 @@
 	            lastName: "",
 	            title: "",
 	            motto: "",
+	            img: "",
 	            contactMethod: {
 	                github: "",
 	                linkedin: "",
@@ -31282,6 +31283,7 @@
 	        };
 	        _this.handleInput = _this.handleInput.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.handleImg = _this.handleImg.bind(_this);
 	        return _this;
 	    }
 
@@ -31342,6 +31344,18 @@
 	            xhr.send(JSON.stringify(sendInfo));
 	        }
 	    }, {
+	        key: 'handleImg',
+	        value: function handleImg(e) {
+	            var reader = new FileReader();
+	            reader.readAsDataURL(e.target.files[0]);
+	            var self = this;
+	            reader.onload = function (e) {
+	                self.setState({
+	                    img: e.target.result
+	                });
+	            };
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var mq = window.matchMedia("(max-width: 1080px)");
@@ -31362,6 +31376,16 @@
 	                    _InputBar2.default,
 	                    { item: 'title', value: this.state.title, handleInput: this.handleInput },
 	                    'Title: '
+	                ),
+	                _react2.default.createElement(
+	                    'p',
+	                    { style: { width: "100%", margin: "20px 0 0 0" } },
+	                    'Personal Image:'
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { style: { width: "100%", padding: "10px 10px" } },
+	                    _react2.default.createElement('input', { id: 'image', name: 'img', onChange: this.handleImg, type: 'file' })
 	                ),
 	                _react2.default.createElement(
 	                    'p',
@@ -31563,6 +31587,7 @@
 	            };
 	            ajax.open("GET", "/data/projects?items=5", true);
 	            ajax.send();
+	            JSON.stringify();
 	        }
 	    }, {
 	        key: 'handleSearch',
@@ -31808,7 +31833,7 @@
 	                    ),
 	                    _react2.default.createElement('input', { id: 'image', name: 'img', onChange: this.handleImg, type: 'file' })
 	                ),
-	                _react2.default.createElement(_reactCodemirror2.default, { value: this.state.code, onChange: this.updateCode, options: { lineNumbers: true, mode: "markdown" } })
+	                _react2.default.createElement(_reactCodemirror2.default, { value: this.state.code, onChange: this.updateCode, options: { lineNumbers: true } })
 	            );
 	        }
 	    }]);

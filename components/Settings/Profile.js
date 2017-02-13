@@ -12,6 +12,7 @@ class Profile extends React.Component {
             lastName: "",
             title: "",
             motto: "",
+            img: "",
             contactMethod: {
                 github: "",
                 linkedin: "",
@@ -21,6 +22,7 @@ class Profile extends React.Component {
         };
         this.handleInput = this.handleInput.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleImg = this.handleImg.bind(this);
     }
 
     componentWillMount() {
@@ -78,6 +80,17 @@ class Profile extends React.Component {
         xhr.send(JSON.stringify(sendInfo));
     }
 
+    handleImg(e) {
+        let reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]);
+        let self = this;
+        reader.onload = function (e) {
+            self.setState({
+                img: e.target.result
+            });
+        };
+    }
+
     render() {
         let mq = window.matchMedia("(max-width: 1080px)");
         return (
@@ -85,6 +98,10 @@ class Profile extends React.Component {
                 <InputBar item="firstName" value={this.state.firstName} handleInput={this.handleInput}>First Name: </InputBar>
                 <InputBar item="lastName" value={this.state.lastName} handleInput={this.handleInput}>Last Name: </InputBar>
                 <InputBar item="title" value={this.state.title} handleInput={this.handleInput}>Title: </InputBar>
+                <p style={{width: "100%", margin:"20px 0 0 0"}}>Personal Image:</p>
+                <div style={{width: "100%", padding: "10px 10px"}}>
+                    <input id="image" name="img" onChange={this.handleImg} type="file"/>
+                </div>
                 <p style={{width: "100%", margin:"20px 0 0 0"}}>Contact Method:</p>
                 <InputBar item="github" value={this.state.contactMethod.github} handleInput={this.handleInput}><span className="fa fa-github"/>GitHub: </InputBar>
                 <InputBar item="linkedin" value={this.state.contactMethod.linkedin} handleInput={this.handleInput}><span className="fa fa-linkedin"/>LinkedIn: </InputBar>

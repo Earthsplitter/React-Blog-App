@@ -35,7 +35,7 @@ class TopNav extends React.Component {
 
         return (
             <nav className="topNav" style={{background: backColor, left: this.state.showSideBar ? "250px" : "0"}}>
-                <div onClick={this.handleClick} style={{width: "50%", textAlign: "center"}}>
+                <div className="cursorHoverPointer" onClick={this.handleClick} style={{width: "50%", textAlign: "center"}}>
                     <span className="fa fa-bars"/>
                 </div>
                 {navButtons}

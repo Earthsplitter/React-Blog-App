@@ -35,6 +35,7 @@ class ProjectsSetting extends React.Component {
         };
         ajax.open("GET", "/data/projects?items=5", true);
         ajax.send();
+        JSON.stringify()
     }
 
     handleSearch(e) {
