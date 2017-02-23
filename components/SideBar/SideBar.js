@@ -50,4 +50,11 @@ class SideBar extends React.Component {
         )
     }
 }
+
+SideBar.propTypes = {
+    style: React.PropTypes.object.isRequired,
+    handleClick: React.PropTypes.func.isRequired,
+    gradient: React.PropTypes.object.isRequired
+};
+
 export default SideBar

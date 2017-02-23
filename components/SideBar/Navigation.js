@@ -39,4 +39,10 @@ class Navigation extends React.Component {
     }
 }
 
+Navigation.propTypes = {
+    handleClick: React.PropTypes.func.isRequired,
+    width: React.PropTypes.string.isRequired,
+    gradient: React.PropTypes.object.isRequired
+};
+
 export default Navigation

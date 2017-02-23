@@ -36022,6 +36022,12 @@
 	    return Navigation;
 	}(_react2.default.Component);
 
+	Navigation.propTypes = {
+	    handleClick: _react2.default.PropTypes.func.isRequired,
+	    width: _react2.default.PropTypes.string.isRequired,
+	    gradient: _react2.default.PropTypes.object.isRequired
+	};
+
 	exports.default = Navigation;
 
 /***/ },
@@ -36124,6 +36130,12 @@
 
 	    return SideBar;
 	}(_react2.default.Component);
+
+	SideBar.propTypes = {
+	    style: _react2.default.PropTypes.object.isRequired,
+	    handleClick: _react2.default.PropTypes.func.isRequired,
+	    gradient: _react2.default.PropTypes.object.isRequired
+	};
 
 	exports.default = SideBar;
 
