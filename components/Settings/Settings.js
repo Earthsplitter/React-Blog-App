@@ -4,17 +4,15 @@
 import React from 'react'
 import {browserHistory} from 'react-router'
 import Profile from './Profile'
-import ProjectsSetting from './ProjectsSetting'
+import {Link} from 'react-router'
+
 
 class Settings extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            currenttabs: 0,
-        };
+
         this.handleQuit = this.handleQuit.bind(this);
-        this.changeTabs = this.changeTabs.bind(this);
     }
 
     componentWillMount() {
@@ -24,13 +22,6 @@ class Settings extends React.Component {
     handleQuit() {
         localStorage.setItem("LoginToken","0");
         browserHistory.push("/");
-    }
-
-    changeTabs(e) {
-        let number = ["Profile","Experience","Articles","Projects"];
-        this.setState({
-            currenttabs: number.indexOf(e.target.innerHTML)
-    });
     }
 
     render() {
@@ -43,15 +34,14 @@ class Settings extends React.Component {
                 </div>
                 <ul style={{listStyleType: "none", display:"flex", border: "1px solid #ccc", backgroundColor: "#f1f1f1",
                     padding:"0", width: mq.matches?"100%":"80%", margin: mq.matches?"20px 0 0 0":"20px 10% 0 10%"}}>
-                    <li><a onClick={this.changeTabs} style={{backgroundColor: this.state.currenttabs===0?"#ccc":""}} className="tablinks">Profile</a></li>
-                    <li><a onClick={this.changeTabs} style={{backgroundColor: this.state.currenttabs===1?"#ccc":""}} className="tablinks">Experience</a></li>
-                    <li><a onClick={this.changeTabs} style={{backgroundColor: this.state.currenttabs===2?"#ccc":""}} className="tablinks">Articles</a></li>
-                    <li><a onClick={this.changeTabs} style={{backgroundColor: this.state.currenttabs===3?"#ccc":""}} className="tablinks">Projects</a></li>
+                    <Link activeStyle={{backgroundColor: "#ccc"}} to="/settings" className="tablinks" onlyActiveOnIndex={true}>Profile</Link>
+                    <Link activeStyle={{backgroundColor: "#ccc"}} to="/experienceSetting" className="tablinks">Experience</Link>
+                    <Link activeStyle={{backgroundColor: "#ccc"}} to="/articlesSetting" className="tablinks">Article</Link>
+                    <Link activeStyle={{backgroundColor: "#ccc"}} to="/projectsSetting" className="tablinks">Projects</Link>
                 </ul>
                 <article style={{border: "1px solid #ccc", width: mq.matches?"100%":"80%",
                     margin: mq.matches?"0":"0 10%"}}>
-                    {this.state.currenttabs === 0?<Profile/>:""}
-                    {this.state.currenttabs === 1?<ProjectsSetting/>:""}
+                    {this.props.children}
                 </article>
             </div>
         )

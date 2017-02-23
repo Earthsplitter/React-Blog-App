@@ -1,1 +1,25 @@
-{"projects":[{"title":"React Blog Framework","intro":"A powerful dynamic blog frame work, only use React and is still evolving.","date":"02/2017","serial":"0","code":"here"},{"title":"Udacity Nanodegree","intro":"I got the Front-End Developr Nanodegree from Udacity, including a series of projects","date":"01/2017","serial":"1","img":"udacity.png"},{"title":"PL/0 Compiler","intro":"A simple PL/0 Compiler implemented in C, made by my team.","date":"12/2016","serial":"2","img":"compiling.png"}]}
+{
+  "projects": [
+    {
+      "title": "React Blog Framework",
+      "intro": "A powerful dynamic blog frame work, only use React and is still evolving.",
+      "date": "02/2017",
+      "serial": "0",
+      "code": "here"
+    },
+    {
+      "title": "Udacity Nanodegree",
+      "intro": "I got the Front-End Developr Nanodegree from Udacity, including a series of projects",
+      "date": "01/2017",
+      "serial": "1",
+      "img": "udacity.png"
+    },
+    {
+      "title": "PL0 Compiler",
+      "intro": "A simple PL/0 Compiler implemented in C, made by my team.",
+      "date": "12/2016",
+      "serial": "2",
+      "img": "compiling.png"
+    }
+  ]
+}

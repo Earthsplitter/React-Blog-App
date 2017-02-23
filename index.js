@@ -11,6 +11,8 @@ import Articles from './components/Articles'
 import Projects from './components/Projects/Projects'
 import App from './App'
 import Settings from './components/Settings/Settings'
+import Profile from './components/Settings/Profile'
+import ProjectsSetting from './components/Settings/ProjectsSetting'
 
 render((
     <Router history={browserHistory}>
@@ -19,7 +21,12 @@ render((
             <Route path="/experience" component={Experience}/>
             <Route path="/articles" component={Articles}/>
             <Route path="/projects" component={Projects}/>
-            <Route path="/settings" components={Settings}/>
+            <Route path="/settings" component={Settings}>
+                <IndexRoute component={Profile}/>
+                <Route path="/experienceSetting" component={ProjectsSetting}/>
+                <Route path="/articlesSetting" component={ProjectsSetting}/>
+                <Route path="/projectsSetting" component={ProjectsSetting}/>
+            </Route>
         </Route>
         <Route path="/resume.pdf"/>
     </Router>

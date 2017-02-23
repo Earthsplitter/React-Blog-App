@@ -78,6 +78,14 @@
 
 	var _Settings2 = _interopRequireDefault(_Settings);
 
+	var _Profile = __webpack_require__(273);
+
+	var _Profile2 = _interopRequireDefault(_Profile);
+
+	var _ProjectsSetting = __webpack_require__(275);
+
+	var _ProjectsSetting2 = _interopRequireDefault(_ProjectsSetting);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	(0, _reactDom.render)(_react2.default.createElement(
@@ -90,7 +98,14 @@
 	        _react2.default.createElement(_reactRouter.Route, { path: '/experience', component: _Experience2.default }),
 	        _react2.default.createElement(_reactRouter.Route, { path: '/articles', component: _Articles2.default }),
 	        _react2.default.createElement(_reactRouter.Route, { path: '/projects', component: _Projects2.default }),
-	        _react2.default.createElement(_reactRouter.Route, { path: '/settings', components: _Settings2.default })
+	        _react2.default.createElement(
+	            _reactRouter.Route,
+	            { path: '/settings', component: _Settings2.default },
+	            _react2.default.createElement(_reactRouter.IndexRoute, { component: _Profile2.default }),
+	            _react2.default.createElement(_reactRouter.Route, { path: '/experienceSetting', component: _ProjectsSetting2.default }),
+	            _react2.default.createElement(_reactRouter.Route, { path: '/articlesSetting', component: _ProjectsSetting2.default }),
+	            _react2.default.createElement(_reactRouter.Route, { path: '/projectsSetting', component: _ProjectsSetting2.default })
+	        )
 	    ),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/resume.pdf' })
 	), document.getElementById('app')); /**
@@ -31098,10 +31113,6 @@
 
 	var _Profile2 = _interopRequireDefault(_Profile);
 
-	var _ProjectsSetting = __webpack_require__(275);
-
-	var _ProjectsSetting2 = _interopRequireDefault(_ProjectsSetting);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -31121,11 +31132,7 @@
 
 	        var _this = _possibleConstructorReturn(this, (Settings.__proto__ || Object.getPrototypeOf(Settings)).call(this, props));
 
-	        _this.state = {
-	            currenttabs: 0
-	        };
 	        _this.handleQuit = _this.handleQuit.bind(_this);
-	        _this.changeTabs = _this.changeTabs.bind(_this);
 	        return _this;
 	    }
 
@@ -31139,14 +31146,6 @@
 	        value: function handleQuit() {
 	            localStorage.setItem("LoginToken", "0");
 	            _reactRouter.browserHistory.push("/");
-	        }
-	    }, {
-	        key: 'changeTabs',
-	        value: function changeTabs(e) {
-	            var number = ["Profile", "Experience", "Articles", "Projects"];
-	            this.setState({
-	                currenttabs: number.indexOf(e.target.innerHTML)
-	            });
 	        }
 	    }, {
 	        key: 'render',
@@ -31175,48 +31174,31 @@
 	                    { style: { listStyleType: "none", display: "flex", border: "1px solid #ccc", backgroundColor: "#f1f1f1",
 	                            padding: "0", width: mq.matches ? "100%" : "80%", margin: mq.matches ? "20px 0 0 0" : "20px 10% 0 10%" } },
 	                    _react2.default.createElement(
-	                        'li',
-	                        null,
-	                        _react2.default.createElement(
-	                            'a',
-	                            { onClick: this.changeTabs, style: { backgroundColor: this.state.currenttabs === 0 ? "#ccc" : "" }, className: 'tablinks' },
-	                            'Profile'
-	                        )
+	                        _reactRouter.Link,
+	                        { activeStyle: { backgroundColor: "#ccc" }, to: '/settings', className: 'tablinks', onlyActiveOnIndex: true },
+	                        'Profile'
 	                    ),
 	                    _react2.default.createElement(
-	                        'li',
-	                        null,
-	                        _react2.default.createElement(
-	                            'a',
-	                            { onClick: this.changeTabs, style: { backgroundColor: this.state.currenttabs === 1 ? "#ccc" : "" }, className: 'tablinks' },
-	                            'Experience'
-	                        )
+	                        _reactRouter.Link,
+	                        { activeStyle: { backgroundColor: "#ccc" }, to: '/experienceSetting', className: 'tablinks' },
+	                        'Experience'
 	                    ),
 	                    _react2.default.createElement(
-	                        'li',
-	                        null,
-	                        _react2.default.createElement(
-	                            'a',
-	                            { onClick: this.changeTabs, style: { backgroundColor: this.state.currenttabs === 2 ? "#ccc" : "" }, className: 'tablinks' },
-	                            'Articles'
-	                        )
+	                        _reactRouter.Link,
+	                        { activeStyle: { backgroundColor: "#ccc" }, to: '/articlesSetting', className: 'tablinks' },
+	                        'Article'
 	                    ),
 	                    _react2.default.createElement(
-	                        'li',
-	                        null,
-	                        _react2.default.createElement(
-	                            'a',
-	                            { onClick: this.changeTabs, style: { backgroundColor: this.state.currenttabs === 3 ? "#ccc" : "" }, className: 'tablinks' },
-	                            'Projects'
-	                        )
+	                        _reactRouter.Link,
+	                        { activeStyle: { backgroundColor: "#ccc" }, to: '/projectsSetting', className: 'tablinks' },
+	                        'Projects'
 	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'article',
 	                    { style: { border: "1px solid #ccc", width: mq.matches ? "100%" : "80%",
 	                            margin: mq.matches ? "0" : "0 10%" } },
-	                    this.state.currenttabs === 0 ? _react2.default.createElement(_Profile2.default, null) : "",
-	                    this.state.currenttabs === 1 ? _react2.default.createElement(_ProjectsSetting2.default, null) : ""
+	                    this.props.children
 	                )
 	            );
 	        }
