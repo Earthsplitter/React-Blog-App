@@ -34,20 +34,31 @@ class ProjectEditor extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            title: nextProps.project.title,
-            intro: nextProps.project.intro,
-            date: nextProps.project.date
-        })
+        let self = this;
+        fetch('/assets/projects/'+nextProps.project.title+".md").then(response => response.text()).then(text => {
+            console.log("a");
+            this.setState({
+                title: nextProps.project.title,
+                intro: nextProps.project.intro,
+                serial: nextProps.project.serial,
+                date: nextProps.project.date,
+                code: text
+            })
+        });
     }
 
     componentWillMount() {
-        this.setState({
-            title: this.props.project.title,
-            intro: this.props.project.intro,
-            serial: this.props.project.serial,
-            date: this.props.project.date
-        })
+        let self = this;
+        fetch('/assets/projects/'+this.props.project.title+".md").then(response => response.text()).then(text => {
+            console.log("b");
+            this.setState({
+                title: self.props.project.title,
+                intro: self.props.project.intro,
+                serial: self.props.project.serial,
+                date: self.props.project.date,
+                code: text
+            })
+        });
     }
 
     handleInput(e) {

@@ -3,22 +3,58 @@
  */
 import React from 'react'
 import Modal from '../Common/Modal'
+import ReactMarkdown from 'react-markdown'
 
 class ListItem extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            showModal: false
+            showModal: false,
+            projectContent: ""
         };
 
         this.handler = this.handler.bind(this);
     }
 
     handler() {
-        this.setState((prevState) => {
-            return {showModal: !prevState.showModal}
-        });
+        let content;
+        if (fetch) {
+            fetch('assets/projects/'+this.props.project.title+'.md')
+                .then((response) => {
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        return "There is something Wrong with Network.";
+                    }
+                })
+                .then((text) => {
+                    content = text;
+                    this.setState((prevState) => {
+                        return {
+                            showModal: !prevState.showModal,
+                            projectContent: content
+                        }
+                    });
+                });
+        } else {
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    content = this.responseText;
+                } else {
+                    content = "There is something Wrong with Network.";
+                }
+                this.setState((prevState) => {
+                    return {
+                        showModal: !prevState.showModal,
+                        projectContent: content
+                    }
+                });
+            };
+            xhr.open("GET", 'assets/projects/'+this.props.project.title+'.md', true);
+            xhr.send();
+        }
     }
 
     render() {
@@ -38,7 +74,11 @@ class ListItem extends React.Component {
          */
         let modal = null;
         if (this.state.showModal) {
-            modal = <Modal title={project.title} onClick={this.handler}/>;
+            modal = (
+                <Modal title={project.title} onClick={this.handler}>
+                    <ReactMarkdown source={this.state.projectContent}/>
+                </Modal>
+            );
         } else {
             modal = null;
         }

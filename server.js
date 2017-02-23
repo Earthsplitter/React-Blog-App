@@ -83,14 +83,22 @@ app.post("/settings\*",function (req, res) {
         case "projects":
             let project = req.body;
 
+
             pic = project.img;
             if (pic !== '') {
                 let data = pic.slice(22);
                 let buffer = new Buffer(data, 'base64');
                 fs.writeFile('public/assets/image/'+ project.title +'.png', buffer);
             }
+
+            fs.writeFile('public/assets/projects/'+ project.title +".md", project.code, function () {
+                console.log("Write File: "+project.title+".md");
+            });
+
             delete project.img;
             delete project.token;
+            delete project.code;
+
             fs.readFile('assets/data/projects.json', 'utf-8', function (err, data) {
                 let projectList = JSON.parse(data);
                 for (let i = 0; i < projectList.projects.length; i++) {
