@@ -31247,6 +31247,8 @@
 
 	var _InputBar2 = _interopRequireDefault(_InputBar);
 
+	var _reactRouter = __webpack_require__(178);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -31287,19 +31289,40 @@
 	        return _this;
 	    }
 
+	    /**
+	     * Load information from server before rendering page
+	     */
+
+
 	    _createClass(Profile, [{
 	        key: 'componentWillMount',
 	        value: function componentWillMount() {
-	            var xhr = new XMLHttpRequest();
+	            var _this2 = this;
+
 	            var self = this;
-	            xhr.onreadystatechange = function () {
-	                if (this.readyState == 4 && this.status == 200) {
-	                    var info = JSON.parse(this.responseText);
-	                    self.setState(info);
-	                }
-	            };
-	            xhr.open("GET", "/data/personalInfo", true);
-	            xhr.send();
+	            /**
+	             * If fetch is supported, use fetch. Otherwise use XMLHttpRequest
+	             */
+	            if (fetch) {
+	                fetch('/data/personalInfo').then(function (response) {
+	                    return response.json();
+	                }).then(function (json) {
+	                    _this2.setState(json);
+	                });
+	            } else {
+	                (function () {
+	                    var xhr = new XMLHttpRequest();
+	                    var self = _this2;
+	                    xhr.onreadystatechange = function () {
+	                        if (this.readyState == 4 && this.status == 200) {
+	                            var info = JSON.parse(this.responseText);
+	                            self.setState(info);
+	                        }
+	                    };
+	                    xhr.open("GET", "/data/personalInfo", true);
+	                    xhr.send();
+	                })();
+	            }
 	        }
 	    }, {
 	        key: 'handleInput',
@@ -31321,27 +31344,53 @@
 	    }, {
 	        key: 'handleSubmit',
 	        value: function handleSubmit(e) {
+	            /**
+	             * Prevent submit before source loaded, which will cause upload empty file and override all information
+	             */
 	            if (this.state.firstName === "") {
 	                return;
 	            }
 	            e.preventDefault();
-	            var xhr = new XMLHttpRequest();
-	            var self = this;
-	            xhr.onreadystatechange = function () {
-	                if (this.readyState == 4 && this.status == 200) {
-	                    var state = this.responseText;
-	                    if (state === "fail") {
-	                        //    Todo: send error message
+	            var sendInfo = Object.assign({}, this.state);
+	            sendInfo.token = localStorage.getItem("LoginToken");
+	            var formalSendInfo = JSON.stringify(sendInfo);
+
+	            // use fetch or XMLHttpRequest
+	            if (fetch) {
+	                var JSONHeaders = new Headers({
+	                    "Content-Type": "application/json"
+	                });
+	                fetch('/settings/personal', {
+	                    method: 'POST',
+	                    headers: JSONHeaders,
+	                    body: formalSendInfo
+	                }).then(function (response) {
+	                    return response.text();
+	                }).then(function (text) {
+	                    if (text === 'fail') {
+	                        _reactRouter.browserHistory.push("/");
+	                        alert("Timeout! Please Login Again!");
 	                    } else {
 	                        location.reload();
 	                    }
-	                }
-	            };
-	            xhr.open("POST", "/settings/personal", true);
-	            xhr.setRequestHeader("Content-type", "application/json");
-	            var sendInfo = Object.assign({}, this.state);
-	            sendInfo.token = localStorage.getItem("LoginToken");
-	            xhr.send(JSON.stringify(sendInfo));
+	                });
+	            } else {
+	                var xhr = new XMLHttpRequest();
+	                xhr.onreadystatechange = function () {
+	                    if (this.readyState == 4 && this.status == 200) {
+	                        var state = this.responseText;
+	                        if (state === "fail") {
+	                            _reactRouter.browserHistory.push("/");
+	                            alert("Timeout! Please Login Again!");
+	                        } else {
+	                            location.reload();
+	                        }
+	                    }
+	                };
+	                xhr.open("POST", "/settings/personal", true);
+	                xhr.setRequestHeader("Content-type", "application/json");
+	                xhr.send(formalSendInfo);
+	            }
 	        }
 	    }, {
 	        key: 'handleImg',
@@ -31380,7 +31429,7 @@
 	                _react2.default.createElement(
 	                    'p',
 	                    { style: { width: "100%", margin: "20px 0 0 0" } },
-	                    'Personal Image:'
+	                    'Personal Image(must be a png file):'
 	                ),
 	                _react2.default.createElement(
 	                    'div',

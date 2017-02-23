@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import InputBar from '../Common/InputBar'
+import {browserHistory} from 'react-router'
 
 class Profile extends React.Component {
     constructor(props) {
@@ -25,17 +26,34 @@ class Profile extends React.Component {
         this.handleImg = this.handleImg.bind(this);
     }
 
+    /**
+     * Load information from server before rendering page
+     */
     componentWillMount() {
-        let xhr = new XMLHttpRequest();
         let self = this;
-        xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                let info = JSON.parse(this.responseText);
-                self.setState(info);
-            }
-        };
-        xhr.open("GET", "/data/personalInfo", true);
-        xhr.send();
+        /**
+         * If fetch is supported, use fetch. Otherwise use XMLHttpRequest
+         */
+        if (fetch) {
+            fetch('/data/personalInfo')
+                .then(response => {
+                    return response.json();
+                })
+                .then(json => {
+                    this.setState(json);
+                });
+        } else {
+            let xhr = new XMLHttpRequest();
+            let self = this;
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    let info = JSON.parse(this.responseText);
+                    self.setState(info);
+                }
+            };
+            xhr.open("GET", "/data/personalInfo", true);
+            xhr.send();
+        }
     }
 
     handleInput(e) {
@@ -57,27 +75,55 @@ class Profile extends React.Component {
     }
 
     handleSubmit(e) {
+        /**
+         * Prevent submit before source loaded, which will cause upload empty file and override all information
+         */
         if (this.state.firstName === "") {
             return;
         }
         e.preventDefault();
-        let xhr = new XMLHttpRequest();
-        let self = this;
-        xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                let state = this.responseText;
-                if (state === "fail") {
-                    //    Todo: send error message
-                } else {
-                    location.reload();
-                }
-            }
-        };
-        xhr.open("POST", "/settings/personal", true);
-        xhr.setRequestHeader("Content-type", "application/json");
         let sendInfo = Object.assign({}, this.state);
         sendInfo.token = localStorage.getItem("LoginToken");
-        xhr.send(JSON.stringify(sendInfo));
+        let formalSendInfo = JSON.stringify(sendInfo);
+
+        // use fetch or XMLHttpRequest
+        if (fetch) {
+            let JSONHeaders = new Headers({
+                "Content-Type": "application/json"
+            });
+            fetch('/settings/personal',{
+                method: 'POST',
+                headers: JSONHeaders,
+                body: formalSendInfo
+            })
+                .then(response => {
+                    return response.text();
+                })
+                .then(text => {
+                    if (text === 'fail') {
+                        browserHistory.push("/");
+                        alert("Timeout! Please Login Again!");
+                    } else {
+                        location.reload();
+                    }
+                })
+        } else {
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    let state = this.responseText;
+                    if (state === "fail") {
+                        browserHistory.push("/");
+                        alert("Timeout! Please Login Again!");
+                    } else {
+                        location.reload();
+                    }
+                }
+            };
+            xhr.open("POST", "/settings/personal", true);
+            xhr.setRequestHeader("Content-type", "application/json");
+            xhr.send(formalSendInfo);
+        }
     }
 
     handleImg(e) {
@@ -98,7 +144,7 @@ class Profile extends React.Component {
                 <InputBar item="firstName" value={this.state.firstName} handleInput={this.handleInput}>First Name: </InputBar>
                 <InputBar item="lastName" value={this.state.lastName} handleInput={this.handleInput}>Last Name: </InputBar>
                 <InputBar item="title" value={this.state.title} handleInput={this.handleInput}>Title: </InputBar>
-                <p style={{width: "100%", margin:"20px 0 0 0"}}>Personal Image:</p>
+                <p style={{width: "100%", margin:"20px 0 0 0"}}>Personal Image(must be a png file):</p>
                 <div style={{width: "100%", padding: "10px 10px"}}>
                     <input id="image" name="img" onChange={this.handleImg} type="file"/>
                 </div>

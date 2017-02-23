@@ -26,22 +26,25 @@ app.post("/login", function (req, res) {
         let account = JSON.parse(data);
         let user = req.body;
         let keepTime = new Date().getDate();
+        let token = new Date();
         if (user.username === account.username && user.password === account.password) {
             switch (user.staySignIn) {
                 case "no":
+                    token.setHours(token.getHours()+1);
                     break;
                 case "one day":
                     keepTime += 1;
+                    token.setDate(keepTime);
                     break;
                 case "one week":
                     keepTime += 7;
+                    token.setDate(keepTime);
                     break;
                 case "one month":
                     keepTime += 31;
+                    token.setDate(keepTime);
                     break;
             }
-            let token = new Date();
-            token.setDate(keepTime);
             res.end(token.getTime().toString());
         } else {
             res.end("");
@@ -65,9 +68,11 @@ app.post("/settings\*",function (req, res) {
             let personalInfo = req.body;
 
             let pic = personalInfo.img;
-            let data = pic.slice(22);
-            let buffer = new Buffer(data, 'base64');
-            fs.writeFile('public/assets/image/favicon.png', buffer);
+            if (pic !== "") {
+                let data = pic.slice(22);
+                let buffer = new Buffer(data, 'base64');
+                fs.writeFile('public/assets/image/favicon.png', buffer);
+            }
             delete personalInfo.img;
             delete personalInfo.token;
             fs.writeFile("assets/data/personalInfo.json", JSON.stringify(personalInfo), function () {
