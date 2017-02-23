@@ -4,22 +4,26 @@
 
 #####In Code
 
-1. Only use React.js and React-Router to routing.
+1. Use React.js and React-Router for Front-End and Node.js and Express.js for Back-End Data processing.
 2. With detailed comments, it's a good example to learn React.js and its component.
 3. With a user friendly manage system, users can easily edit everything in **browser** rather than **source code** (*Still in development stage*)
 
 #####UI Interaction
 
+*Recommand Use Google Chrome Browser*
+
 1. Click the side bar, the whole page will change style(There are 4 styles in default).
-2. Click the cog icon on the left bottom to login(default username is **wmzfsw** and password is **123456**).
-3. Responsive Design
+2. Click the cog icon on the left bottom to sign in(default username is **wmzfsw** and password is **123456**).
+3. A Markdown Editor in Management System and Markdown interpreter on front-end.
+4. Responsive Design
 
 ##Getting Started
 
-1. Install `npm` (skip if already have npm).
-2. In the project's root directory, run `npm install`
-3. Run `NODE_ENV=production npm start`(production), this step will need several to tens of seconds.
-4. open [http://localhost:8080/](http://localhost:8080/).
+1. Install `npm` (skip if already have npm on your device).
+2. Clone/Fork this repo.
+3. In the project's root directory, run `npm install`
+4. Run `NODE_ENV=production npm start`(production), this step will need several to tens of seconds.
+5. open [http://localhost:8080/](http://localhost:8080/).
 
 ##Structure
 
@@ -35,9 +39,11 @@
         * Experience
         * Articles
         * Projects
+        * Settings
     * public
-        * assets
+        * assets              -- **Static resources**
             * image
+            * projects
         * css
             * styles.css        -- **In most cases, I use inline css in components. However, for styles like :hover and media query, a stylesheet is necessary**
             * font-awesome.css  -- **font-awesome library**
@@ -53,6 +59,8 @@
 
 #### Components Relation
 
+##### General
+
 * MainFrame (`App.js`)
     * Navigation (`SideBar/Navigation.js`)
         * TopNav (`SideBar/TopNav.js` only on mobile devices)
@@ -61,5 +69,8 @@
             * Information (`SideBar/Information.js`)
             * SideNav (`SideBar/SideNav.js`)
             * Copyright (`SideBar/Copyright.js`)
-    * Login System (`Common/Modal`)
+    * Login System (`Settins/Login and Settings/LoginForm`)
+    * Management System (`Settings/`)
+        * Profile Setting (`Settings/Profile`)
+        * Project Setting (`Settings/ProjectsSetting and ProjectEditor`)
     * Children (`Home/, Experience/, Articles/ and Projects/`)
