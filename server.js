@@ -60,6 +60,7 @@ app.post("/settings\*",function (req, res) {
         res.send("fail");
         return;
     }
+    let pic;
     switch (queryClass) {
         case "login":
             res.send("success");
@@ -67,7 +68,7 @@ app.post("/settings\*",function (req, res) {
         case "personal":
             let personalInfo = req.body;
 
-            let pic = personalInfo.img;
+            pic = personalInfo.img;
             if (pic !== "") {
                 let data = pic.slice(22);
                 let buffer = new Buffer(data, 'base64');
@@ -77,6 +78,30 @@ app.post("/settings\*",function (req, res) {
             delete personalInfo.token;
             fs.writeFile("assets/data/personalInfo.json", JSON.stringify(personalInfo), function () {
                 res.send("success");
+            });
+            break;
+        case "projects":
+            let project = req.body;
+
+            pic = project.img;
+            if (pic !== '') {
+                let data = pic.slice(22);
+                let buffer = new Buffer(data, 'base64');
+                fs.writeFile('public/assets/image/'+ project.title +'.png', buffer);
+            }
+            delete project.img;
+            delete project.token;
+            fs.readFile('assets/data/projects.json', 'utf-8', function (err, data) {
+                let projectList = JSON.parse(data);
+                for (let i = 0; i < projectList.projects.length; i++) {
+                    if (projectList.projects[i].serial === project.serial) {
+                        projectList.projects[i] = project;
+                        break;
+                    }
+                }
+                fs.writeFile('assets/data/projects.json', JSON.stringify(projectList), function () {
+                    res.send('success');
+                });
             });
             break;
     }

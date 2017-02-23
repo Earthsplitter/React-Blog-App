@@ -29,7 +29,7 @@ class ListItem extends React.Component {
         /**
          * Set colorStyle gradient
          */
-        const imageSource = "/assets/image/" + project.img;
+        const imageSource = "/assets/image/" + project.title + '.png';
         const borderImage = "linear-gradient(" + this.props.colorStyle[0] + ", " + this.props.colorStyle[1] + ") 10";
         const colorStyle = "-webkit-gradient(linear, 0 0, 0 bottom, from(" + this.props.colorStyle[0] + "), to(" + this.props.colorStyle[1] + "))";
 

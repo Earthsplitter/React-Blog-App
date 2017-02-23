@@ -27531,7 +27531,7 @@
 	            /**
 	             * Set colorStyle gradient
 	             */
-	            var imageSource = "/assets/image/" + project.img;
+	            var imageSource = "/assets/image/" + project.title + '.png';
 	            var borderImage = "linear-gradient(" + this.props.colorStyle[0] + ", " + this.props.colorStyle[1] + ") 10";
 	            var colorStyle = "-webkit-gradient(linear, 0 0, 0 bottom, from(" + this.props.colorStyle[0] + "), to(" + this.props.colorStyle[1] + "))";
 
@@ -31777,6 +31777,8 @@
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 
 
+	__webpack_require__(281);
+
 	var ProjectEditor = function (_React$Component) {
 	    _inherits(ProjectEditor, _React$Component);
 
@@ -31789,14 +31791,22 @@
 	            title: "",
 	            intro: "",
 	            date: "",
+	            serial: "",
 	            img: "",
 	            code: "here"
 	        };
 	        _this.updateCode = _this.updateCode.bind(_this);
 	        _this.handleImg = _this.handleImg.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        _this.handleInput = _this.handleInput.bind(_this);
 	        return _this;
 	    }
+
+	    /**
+	     * Handle codeMirror Input
+	     * @param newCode
+	     */
+
 
 	    _createClass(ProjectEditor, [{
 	        key: 'updateCode',
@@ -31820,6 +31830,7 @@
 	            this.setState({
 	                title: this.props.project.title,
 	                intro: this.props.project.intro,
+	                serial: this.props.project.serial,
 	                date: this.props.project.date
 	            });
 	        }
@@ -31832,8 +31843,38 @@
 	    }, {
 	        key: 'handleImg',
 	        value: function handleImg(e) {
-	            this.setState({
-	                img: e.target.files[0].name
+	            var reader = new FileReader();
+	            reader.readAsDataURL(e.target.files[0]);
+	            var self = this;
+	            reader.onload = function (e) {
+	                self.setState({
+	                    img: e.target.result
+	                });
+	            };
+	        }
+	    }, {
+	        key: 'handleSubmit',
+	        value: function handleSubmit(e) {
+	            var sendInfo = Object.assign({}, this.state);
+	            sendInfo.token = localStorage.getItem("LoginToken");
+	            var formalSendInfo = JSON.stringify(sendInfo);
+
+	            var JSONHeaders = new Headers({
+	                "Content-Type": "application/json"
+	            });
+	            fetch('/settings/projects', {
+	                method: 'POST',
+	                headers: JSONHeaders,
+	                body: formalSendInfo
+	            }).then(function (response) {
+	                return response.text();
+	            }).then(function (text) {
+	                if (text === 'fail') {
+	                    browserHistory.push("/");
+	                    alert("Timeout! Please Login Again!");
+	                } else {
+	                    location.reload();
+	                }
 	            });
 	        }
 	    }, {
@@ -31841,7 +31882,7 @@
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'form',
-	                { style: { display: "flex", flexWrap: "wrap" } },
+	                { onSubmit: this.handleSubmit, style: { display: "flex", flexWrap: "wrap" } },
 	                _react2.default.createElement(
 	                    _InputBar2.default,
 	                    { item: 'title', value: this.state.title, handleInput: this.handleInput },
@@ -31882,7 +31923,16 @@
 	                    ),
 	                    _react2.default.createElement('input', { id: 'image', name: 'img', onChange: this.handleImg, type: 'file' })
 	                ),
-	                _react2.default.createElement(_reactCodemirror2.default, { value: this.state.code, onChange: this.updateCode, options: { lineNumbers: true } })
+	                _react2.default.createElement(_reactCodemirror2.default, { value: this.state.code, onChange: this.updateCode, options: { lineNumbers: true, mode: 'markdown' } }),
+	                _react2.default.createElement(
+	                    'div',
+	                    { style: { width: "100%", display: "flex", justifyContent: "center", margin: "20px 0 40px 0" } },
+	                    _react2.default.createElement(
+	                        'button',
+	                        { className: 'cursorHoverPointer', style: { borderRadius: "100%", backgroundColor: "red", height: "36px", width: "36px", color: "white", border: "1px solid #ccc" }, type: 'submit' },
+	                        'Save'
+	                    )
+	                )
 	            );
 	        }
 	    }]);
@@ -32473,17 +32523,18 @@
 	var gecko = /gecko\/\d/i.test(userAgent)
 	var ie_upto10 = /MSIE \d/.test(userAgent)
 	var ie_11up = /Trident\/(?:[7-9]|\d{2,})\..*rv:(\d+)/.exec(userAgent)
-	var ie = ie_upto10 || ie_11up
-	var ie_version = ie && (ie_upto10 ? document.documentMode || 6 : ie_11up[1])
-	var webkit = /WebKit\//.test(userAgent)
+	var edge = /Edge\/(\d+)/.exec(userAgent)
+	var ie = ie_upto10 || ie_11up || edge
+	var ie_version = ie && (ie_upto10 ? document.documentMode || 6 : +(edge || ie_11up)[1])
+	var webkit = !edge && /WebKit\//.test(userAgent)
 	var qtwebkit = webkit && /Qt\/\d+\.\d+/.test(userAgent)
-	var chrome = /Chrome\//.test(userAgent)
+	var chrome = !edge && /Chrome\//.test(userAgent)
 	var presto = /Opera\//.test(userAgent)
 	var safari = /Apple Computer/.test(navigator.vendor)
 	var mac_geMountainLion = /Mac OS X 1\d\D([8-9]|\d\d)\D/.test(userAgent)
 	var phantom = /PhantomJS/.test(userAgent)
 
-	var ios = /AppleWebKit/.test(userAgent) && /Mobile\/\w+/.test(userAgent)
+	var ios = !edge && /AppleWebKit/.test(userAgent) && /Mobile\/\w+/.test(userAgent)
 	// This is woefully incomplete. Suggestions for alternative methods welcome.
 	var mobile = ios || /Android|webOS|BlackBerry|Opera Mini|Opera Mobi|IEMobile/i.test(userAgent)
 	var mac = ios || /Mac/.test(platform)
@@ -32617,11 +32668,11 @@
 	  }
 	}
 
-	function Delayed() {this.id = null}
-	Delayed.prototype.set = function(ms, f) {
+	var Delayed = function() {this.id = null};
+	Delayed.prototype.set = function (ms, f) {
 	  clearTimeout(this.id)
 	  this.id = setTimeout(f, ms)
-	}
+	};
 
 	function indexOf(array, elt) {
 	  for (var i = 0; i < array.length; ++i)
@@ -32714,6 +32765,23 @@
 	// of code points as a group.
 	var extendingChars = /[\u0300-\u036f\u0483-\u0489\u0591-\u05bd\u05bf\u05c1\u05c2\u05c4\u05c5\u05c7\u0610-\u061a\u064b-\u065e\u0670\u06d6-\u06dc\u06de-\u06e4\u06e7\u06e8\u06ea-\u06ed\u0711\u0730-\u074a\u07a6-\u07b0\u07eb-\u07f3\u0816-\u0819\u081b-\u0823\u0825-\u0827\u0829-\u082d\u0900-\u0902\u093c\u0941-\u0948\u094d\u0951-\u0955\u0962\u0963\u0981\u09bc\u09be\u09c1-\u09c4\u09cd\u09d7\u09e2\u09e3\u0a01\u0a02\u0a3c\u0a41\u0a42\u0a47\u0a48\u0a4b-\u0a4d\u0a51\u0a70\u0a71\u0a75\u0a81\u0a82\u0abc\u0ac1-\u0ac5\u0ac7\u0ac8\u0acd\u0ae2\u0ae3\u0b01\u0b3c\u0b3e\u0b3f\u0b41-\u0b44\u0b4d\u0b56\u0b57\u0b62\u0b63\u0b82\u0bbe\u0bc0\u0bcd\u0bd7\u0c3e-\u0c40\u0c46-\u0c48\u0c4a-\u0c4d\u0c55\u0c56\u0c62\u0c63\u0cbc\u0cbf\u0cc2\u0cc6\u0ccc\u0ccd\u0cd5\u0cd6\u0ce2\u0ce3\u0d3e\u0d41-\u0d44\u0d4d\u0d57\u0d62\u0d63\u0dca\u0dcf\u0dd2-\u0dd4\u0dd6\u0ddf\u0e31\u0e34-\u0e3a\u0e47-\u0e4e\u0eb1\u0eb4-\u0eb9\u0ebb\u0ebc\u0ec8-\u0ecd\u0f18\u0f19\u0f35\u0f37\u0f39\u0f71-\u0f7e\u0f80-\u0f84\u0f86\u0f87\u0f90-\u0f97\u0f99-\u0fbc\u0fc6\u102d-\u1030\u1032-\u1037\u1039\u103a\u103d\u103e\u1058\u1059\u105e-\u1060\u1071-\u1074\u1082\u1085\u1086\u108d\u109d\u135f\u1712-\u1714\u1732-\u1734\u1752\u1753\u1772\u1773\u17b7-\u17bd\u17c6\u17c9-\u17d3\u17dd\u180b-\u180d\u18a9\u1920-\u1922\u1927\u1928\u1932\u1939-\u193b\u1a17\u1a18\u1a56\u1a58-\u1a5e\u1a60\u1a62\u1a65-\u1a6c\u1a73-\u1a7c\u1a7f\u1b00-\u1b03\u1b34\u1b36-\u1b3a\u1b3c\u1b42\u1b6b-\u1b73\u1b80\u1b81\u1ba2-\u1ba5\u1ba8\u1ba9\u1c2c-\u1c33\u1c36\u1c37\u1cd0-\u1cd2\u1cd4-\u1ce0\u1ce2-\u1ce8\u1ced\u1dc0-\u1de6\u1dfd-\u1dff\u200c\u200d\u20d0-\u20f0\u2cef-\u2cf1\u2de0-\u2dff\u302a-\u302f\u3099\u309a\ua66f-\ua672\ua67c\ua67d\ua6f0\ua6f1\ua802\ua806\ua80b\ua825\ua826\ua8c4\ua8e0-\ua8f1\ua926-\ua92d\ua947-\ua951\ua980-\ua982\ua9b3\ua9b6-\ua9b9\ua9bc\uaa29-\uaa2e\uaa31\uaa32\uaa35\uaa36\uaa43\uaa4c\uaab0\uaab2-\uaab4\uaab7\uaab8\uaabe\uaabf\uaac1\uabe5\uabe8\uabed\udc00-\udfff\ufb1e\ufe00-\ufe0f\ufe20-\ufe26\uff9e\uff9f]/
 	function isExtendingChar(ch) { return ch.charCodeAt(0) >= 768 && extendingChars.test(ch) }
+
+	// Returns a number from the range [`0`; `str.length`] unless `pos` is outside that range.
+	function skipExtendingChars(str, pos, dir) {
+	  while ((dir < 0 ? pos > 0 : pos < str.length) && isExtendingChar(str.charAt(pos))) { pos += dir }
+	  return pos
+	}
+
+	// Returns the value from the range [`from`; `to`] that satisfies
+	// `pred` and is closest to `from`. Assumes that at least `to` satisfies `pred`.
+	function findFirst(pred, from, to) {
+	  for (;;) {
+	    if (Math.abs(from - to) <= 1) { return pred(from) ? from : to }
+	    var mid = Math.floor((from + to) / 2)
+	    if (pred(mid)) { to = mid }
+	    else { from = mid }
+	  }
+	}
 
 	// The display handles the DOM integration, both for input reading
 	// and content drawing. It holds references to DOM nodes and
@@ -32902,14 +32970,20 @@
 	}
 
 	// A Pos instance represents a position within the text.
-	function Pos (line, ch) {
-	  if (!(this instanceof Pos)) { return new Pos(line, ch) }
-	  this.line = line; this.ch = ch
+	function Pos(line, ch, sticky) {
+	  if ( sticky === void 0 ) sticky = null;
+
+	  if (!(this instanceof Pos)) { return new Pos(line, ch, sticky) }
+	  this.line = line
+	  this.ch = ch
+	  this.sticky = sticky
 	}
 
 	// Compare two positions, return 0 if they are the same, a negative
 	// number when a is less, and a positive number otherwise.
 	function cmp(a, b) { return a.line - b.line || a.ch - b.ch }
+
+	function equalCursorPos(a, b) { return a.sticky == b.sticky && cmp(a, b) == 0 }
 
 	function copyPos(x) {return Pos(x.line, x.ch)}
 	function maxPos(a, b) { return cmp(a, b) < 0 ? b : a }
@@ -33106,7 +33180,7 @@
 	      if (dto > 0 || !mk.inclusiveRight && !dto)
 	        { newParts.push({from: m.to, to: p.to}) }
 	      parts.splice.apply(parts, newParts)
-	      j += newParts.length - 1
+	      j += newParts.length - 3
 	    }
 	  }
 	  return parts
@@ -33188,6 +33262,13 @@
 	  var merged
 	  while (merged = collapsedSpanAtStart(line))
 	    { line = merged.find(-1, true).line }
+	  return line
+	}
+
+	function visualLineEnd(line) {
+	  var merged
+	  while (merged = collapsedSpanAtEnd(line))
+	    { line = merged.find(1, true).line }
 	  return line
 	}
 
@@ -33322,84 +33403,23 @@
 	  if (!found) { f(from, to, "ltr") }
 	}
 
-	function bidiLeft(part) { return part.level % 2 ? part.to : part.from }
-	function bidiRight(part) { return part.level % 2 ? part.from : part.to }
-
-	function lineLeft(line) { var order = getOrder(line); return order ? bidiLeft(order[0]) : 0 }
-	function lineRight(line) {
-	  var order = getOrder(line)
-	  if (!order) { return line.text.length }
-	  return bidiRight(lst(order))
-	}
-
-	function compareBidiLevel(order, a, b) {
-	  var linedir = order[0].level
-	  if (a == linedir) { return true }
-	  if (b == linedir) { return false }
-	  return a < b
-	}
-
 	var bidiOther = null
-	function getBidiPartAt(order, pos) {
+	function getBidiPartAt(order, ch, sticky) {
 	  var found
 	  bidiOther = null
 	  for (var i = 0; i < order.length; ++i) {
 	    var cur = order[i]
-	    if (cur.from < pos && cur.to > pos) { return i }
-	    if ((cur.from == pos || cur.to == pos)) {
-	      if (found == null) {
-	        found = i
-	      } else if (compareBidiLevel(order, cur.level, order[found].level)) {
-	        if (cur.from != cur.to) { bidiOther = found }
-	        return i
-	      } else {
-	        if (cur.from != cur.to) { bidiOther = i }
-	        return found
-	      }
+	    if (cur.from < ch && cur.to > ch) { return i }
+	    if (cur.to == ch) {
+	      if (cur.from != cur.to && sticky == "before") { found = i }
+	      else { bidiOther = i }
+	    }
+	    if (cur.from == ch) {
+	      if (cur.from != cur.to && sticky != "before") { found = i }
+	      else { bidiOther = i }
 	    }
 	  }
-	  return found
-	}
-
-	function moveInLine(line, pos, dir, byUnit) {
-	  if (!byUnit) { return pos + dir }
-	  do { pos += dir }
-	  while (pos > 0 && isExtendingChar(line.text.charAt(pos)))
-	  return pos
-	}
-
-	// This is needed in order to move 'visually' through bi-directional
-	// text -- i.e., pressing left should make the cursor go left, even
-	// when in RTL text. The tricky part is the 'jumps', where RTL and
-	// LTR text touch each other. This often requires the cursor offset
-	// to move more than one unit, in order to visually move one unit.
-	function moveVisually(line, start, dir, byUnit) {
-	  var bidi = getOrder(line)
-	  if (!bidi) { return moveLogically(line, start, dir, byUnit) }
-	  var pos = getBidiPartAt(bidi, start), part = bidi[pos]
-	  var target = moveInLine(line, start, part.level % 2 ? -dir : dir, byUnit)
-
-	  for (;;) {
-	    if (target > part.from && target < part.to) { return target }
-	    if (target == part.from || target == part.to) {
-	      if (getBidiPartAt(bidi, target) == pos) { return target }
-	      part = bidi[pos += dir]
-	      return (dir > 0) == part.level % 2 ? part.to : part.from
-	    } else {
-	      part = bidi[pos += dir]
-	      if (!part) { return null }
-	      if ((dir > 0) == part.level % 2)
-	        { target = moveInLine(line, part.to, -1, byUnit) }
-	      else
-	        { target = moveInLine(line, part.from, 1, byUnit) }
-	    }
-	  }
-	}
-
-	function moveLogically(line, start, dir, byUnit) {
-	  var target = start + dir
-	  if (byUnit) { while (target > 0 && isExtendingChar(line.text.charAt(target))) { target += dir } }
-	  return target < 0 || target > line.text.length ? null : target
+	  return found != null ? found : bidiOther
 	}
 
 	// Bidirectional ordering algorithm
@@ -33565,10 +33585,6 @@
 	      lst(order).to -= m[0].length
 	      order.push(new BidiSpan(0, len - m[0].length, len))
 	    }
-	    if (order[0].level == 2)
-	      { order.unshift(new BidiSpan(1, order[0].to, order[0].to)) }
-	    if (order[0].level != lst(order).level)
-	      { order.push(new BidiSpan(order[0].level, len, len)) }
 
 	    return order
 	  }
@@ -33581,6 +33597,111 @@
 	  var order = line.order
 	  if (order == null) { order = line.order = bidiOrdering(line.text) }
 	  return order
+	}
+
+	function moveCharLogically(line, ch, dir) {
+	  var target = skipExtendingChars(line.text, ch + dir, dir)
+	  return target < 0 || target > line.text.length ? null : target
+	}
+
+	function moveLogically(line, start, dir) {
+	  var ch = moveCharLogically(line, start.ch, dir)
+	  return ch == null ? null : new Pos(start.line, ch, dir < 0 ? "after" : "before")
+	}
+
+	function endOfLine(visually, cm, lineObj, lineNo, dir) {
+	  if (visually) {
+	    var order = getOrder(lineObj)
+	    if (order) {
+	      var part = dir < 0 ? lst(order) : order[0]
+	      var moveInStorageOrder = (dir < 0) == (part.level == 1)
+	      var sticky = moveInStorageOrder ? "after" : "before"
+	      var ch
+	      // With a wrapped rtl chunk (possibly spanning multiple bidi parts),
+	      // it could be that the last bidi part is not on the last visual line,
+	      // since visual lines contain content order-consecutive chunks.
+	      // Thus, in rtl, we are looking for the first (content-order) character
+	      // in the rtl chunk that is on the last line (that is, the same line
+	      // as the last (content-order) character).
+	      if (part.level > 0) {
+	        var prep = prepareMeasureForLine(cm, lineObj)
+	        ch = dir < 0 ? lineObj.text.length - 1 : 0
+	        var targetTop = measureCharPrepared(cm, prep, ch).top
+	        ch = findFirst(function (ch) { return measureCharPrepared(cm, prep, ch).top == targetTop; }, (dir < 0) == (part.level == 1) ? part.from : part.to - 1, ch)
+	        if (sticky == "before") { ch = moveCharLogically(lineObj, ch, 1, true) }
+	      } else { ch = dir < 0 ? part.to : part.from }
+	      return new Pos(lineNo, ch, sticky)
+	    }
+	  }
+	  return new Pos(lineNo, dir < 0 ? lineObj.text.length : 0, dir < 0 ? "before" : "after")
+	}
+
+	function moveVisually(cm, line, start, dir) {
+	  var bidi = getOrder(line)
+	  if (!bidi) { return moveLogically(line, start, dir) }
+	  if (start.ch >= line.text.length) {
+	    start.ch = line.text.length
+	    start.sticky = "before"
+	  } else if (start.ch <= 0) {
+	    start.ch = 0
+	    start.sticky = "after"
+	  }
+	  var partPos = getBidiPartAt(bidi, start.ch, start.sticky), part = bidi[partPos]
+	  if (part.level % 2 == 0 && (dir > 0 ? part.to > start.ch : part.from < start.ch)) {
+	    // Case 1: We move within an ltr part. Even with wrapped lines,
+	    // nothing interesting happens.
+	    return moveLogically(line, start, dir)
+	  }
+
+	  var mv = function (pos, dir) { return moveCharLogically(line, pos instanceof Pos ? pos.ch : pos, dir); }
+	  var prep
+	  var getWrappedLineExtent = function (ch) {
+	    if (!cm.options.lineWrapping) { return {begin: 0, end: line.text.length} }
+	    prep = prep || prepareMeasureForLine(cm, line)
+	    return wrappedLineExtentChar(cm, line, prep, ch)
+	  }
+	  var wrappedLineExtent = getWrappedLineExtent(start.sticky == "before" ? mv(start, -1) : start.ch)
+
+	  if (part.level % 2 == 1) {
+	    var ch = mv(start, -dir)
+	    if (ch != null && (dir > 0 ? ch >= part.from && ch >= wrappedLineExtent.begin : ch <= part.to && ch <= wrappedLineExtent.end)) {
+	      // Case 2: We move within an rtl part on the same visual line
+	      var sticky = dir < 0 ? "before" : "after"
+	      return new Pos(start.line, ch, sticky)
+	    }
+	  }
+
+	  // Case 3: Could not move within this bidi part in this visual line, so leave
+	  // the current bidi part
+
+	  var searchInVisualLine = function (partPos, dir, wrappedLineExtent) {
+	    var getRes = function (ch, moveInStorageOrder) { return moveInStorageOrder
+	      ? new Pos(start.line, mv(ch, 1), "before")
+	      : new Pos(start.line, ch, "after"); }
+
+	    for (; partPos >= 0 && partPos < bidi.length; partPos += dir) {
+	      var part = bidi[partPos]
+	      var moveInStorageOrder = (dir > 0) == (part.level != 1)
+	      var ch = moveInStorageOrder ? wrappedLineExtent.begin : mv(wrappedLineExtent.end, -1)
+	      if (part.from <= ch && ch < part.to) { return getRes(ch, moveInStorageOrder) }
+	      ch = moveInStorageOrder ? part.from : mv(part.to, -1)
+	      if (wrappedLineExtent.begin <= ch && ch < wrappedLineExtent.end) { return getRes(ch, moveInStorageOrder) }
+	    }
+	  }
+
+	  // Case 3a: Look for other bidi parts on the same visual line
+	  var res = searchInVisualLine(partPos + dir, dir, wrappedLineExtent)
+	  if (res) { return res }
+
+	  // Case 3b: Look for other bidi parts on the next visual line
+	  var nextCh = dir > 0 ? wrappedLineExtent.end : mv(wrappedLineExtent.begin, -1)
+	  if (nextCh != null && !(dir > 0 && nextCh == line.text.length)) {
+	    res = searchInVisualLine(dir > 0 ? 0 : bidi.length - 1, dir, getWrappedLineExtent(nextCh))
+	    if (res) { return res }
+	  }
+
+	  // Case 4: Nowhere to move
+	  return null
 	}
 
 	// EVENT HANDLING
@@ -33871,74 +33992,72 @@
 	  this.tabSize = tabSize || 8
 	  this.lastColumnPos = this.lastColumnValue = 0
 	  this.lineStart = 0
-	}
+	};
 
-	StringStream.prototype = {
-	  eol: function() {return this.pos >= this.string.length},
-	  sol: function() {return this.pos == this.lineStart},
-	  peek: function() {return this.string.charAt(this.pos) || undefined},
-	  next: function() {
-	    if (this.pos < this.string.length)
-	      { return this.string.charAt(this.pos++) }
-	  },
-	  eat: function(match) {
-	    var ch = this.string.charAt(this.pos)
-	    var ok
-	    if (typeof match == "string") { ok = ch == match }
-	    else { ok = ch && (match.test ? match.test(ch) : match(ch)) }
-	    if (ok) {++this.pos; return ch}
-	  },
-	  eatWhile: function(match) {
-	    var start = this.pos
-	    while (this.eat(match)){}
-	    return this.pos > start
-	  },
-	  eatSpace: function() {
+	StringStream.prototype.eol = function () {return this.pos >= this.string.length};
+	StringStream.prototype.sol = function () {return this.pos == this.lineStart};
+	StringStream.prototype.peek = function () {return this.string.charAt(this.pos) || undefined};
+	StringStream.prototype.next = function () {
+	  if (this.pos < this.string.length)
+	    { return this.string.charAt(this.pos++) }
+	};
+	StringStream.prototype.eat = function (match) {
+	  var ch = this.string.charAt(this.pos)
+	  var ok
+	  if (typeof match == "string") { ok = ch == match }
+	  else { ok = ch && (match.test ? match.test(ch) : match(ch)) }
+	  if (ok) {++this.pos; return ch}
+	};
+	StringStream.prototype.eatWhile = function (match) {
+	  var start = this.pos
+	  while (this.eat(match)){}
+	  return this.pos > start
+	};
+	StringStream.prototype.eatSpace = function () {
 	    var this$1 = this;
 
-	    var start = this.pos
-	    while (/[\s\u00a0]/.test(this.string.charAt(this.pos))) { ++this$1.pos }
-	    return this.pos > start
-	  },
-	  skipToEnd: function() {this.pos = this.string.length},
-	  skipTo: function(ch) {
-	    var found = this.string.indexOf(ch, this.pos)
-	    if (found > -1) {this.pos = found; return true}
-	  },
-	  backUp: function(n) {this.pos -= n},
-	  column: function() {
-	    if (this.lastColumnPos < this.start) {
-	      this.lastColumnValue = countColumn(this.string, this.start, this.tabSize, this.lastColumnPos, this.lastColumnValue)
-	      this.lastColumnPos = this.start
-	    }
-	    return this.lastColumnValue - (this.lineStart ? countColumn(this.string, this.lineStart, this.tabSize) : 0)
-	  },
-	  indentation: function() {
-	    return countColumn(this.string, null, this.tabSize) -
-	      (this.lineStart ? countColumn(this.string, this.lineStart, this.tabSize) : 0)
-	  },
-	  match: function(pattern, consume, caseInsensitive) {
-	    if (typeof pattern == "string") {
-	      var cased = function (str) { return caseInsensitive ? str.toLowerCase() : str; }
-	      var substr = this.string.substr(this.pos, pattern.length)
-	      if (cased(substr) == cased(pattern)) {
-	        if (consume !== false) { this.pos += pattern.length }
-	        return true
-	      }
-	    } else {
-	      var match = this.string.slice(this.pos).match(pattern)
-	      if (match && match.index > 0) { return null }
-	      if (match && consume !== false) { this.pos += match[0].length }
-	      return match
-	    }
-	  },
-	  current: function(){return this.string.slice(this.start, this.pos)},
-	  hideFirstChars: function(n, inner) {
-	    this.lineStart += n
-	    try { return inner() }
-	    finally { this.lineStart -= n }
+	  var start = this.pos
+	  while (/[\s\u00a0]/.test(this.string.charAt(this.pos))) { ++this$1.pos }
+	  return this.pos > start
+	};
+	StringStream.prototype.skipToEnd = function () {this.pos = this.string.length};
+	StringStream.prototype.skipTo = function (ch) {
+	  var found = this.string.indexOf(ch, this.pos)
+	  if (found > -1) {this.pos = found; return true}
+	};
+	StringStream.prototype.backUp = function (n) {this.pos -= n};
+	StringStream.prototype.column = function () {
+	  if (this.lastColumnPos < this.start) {
+	    this.lastColumnValue = countColumn(this.string, this.start, this.tabSize, this.lastColumnPos, this.lastColumnValue)
+	    this.lastColumnPos = this.start
 	  }
-	}
+	  return this.lastColumnValue - (this.lineStart ? countColumn(this.string, this.lineStart, this.tabSize) : 0)
+	};
+	StringStream.prototype.indentation = function () {
+	  return countColumn(this.string, null, this.tabSize) -
+	    (this.lineStart ? countColumn(this.string, this.lineStart, this.tabSize) : 0)
+	};
+	StringStream.prototype.match = function (pattern, consume, caseInsensitive) {
+	  if (typeof pattern == "string") {
+	    var cased = function (str) { return caseInsensitive ? str.toLowerCase() : str; }
+	    var substr = this.string.substr(this.pos, pattern.length)
+	    if (cased(substr) == cased(pattern)) {
+	      if (consume !== false) { this.pos += pattern.length }
+	      return true
+	    }
+	  } else {
+	    var match = this.string.slice(this.pos).match(pattern)
+	    if (match && match.index > 0) { return null }
+	    if (match && consume !== false) { this.pos += match[0].length }
+	    return match
+	  }
+	};
+	StringStream.prototype.current = function (){return this.string.slice(this.start, this.pos)};
+	StringStream.prototype.hideFirstChars = function (n, inner) {
+	  this.lineStart += n
+	  try { return inner() }
+	  finally { this.lineStart -= n }
+	};
 
 	// Compute a style array (an array starting with a mode generation
 	// -- for invalidation -- followed by pairs of end positions and
@@ -34143,13 +34262,14 @@
 
 	// Line objects. These hold state related to a line, including
 	// highlighting info (the styles array).
-	function Line(text, markedSpans, estimateHeight) {
+	var Line = function(text, markedSpans, estimateHeight) {
 	  this.text = text
 	  attachMarkedSpans(this, markedSpans)
 	  this.height = estimateHeight ? estimateHeight(this) : 1
-	}
+	};
+
+	Line.prototype.lineNo = function () { return lineNo(this) };
 	eventMixin(Line)
-	Line.prototype.lineNo = function() { return lineNo(this) }
 
 	// Change the content (text, markers) of a line. Automatically
 	// invalidates cached information and tries to re-estimate the
@@ -35069,6 +35189,19 @@
 	// Returns a box for a given cursor position, which may have an
 	// 'other' property containing the position of the secondary cursor
 	// on a bidi boundary.
+	// A cursor Pos(line, char, "before") is on the same visual line as `char - 1`
+	// and after `char - 1` in writing order of `char - 1`
+	// A cursor Pos(line, char, "after") is on the same visual line as `char`
+	// and before `char` in writing order of `char`
+	// Examples (upper-case letters are RTL, lower-case are LTR):
+	//     Pos(0, 1, ...)
+	//     before   after
+	// ab     a|b     a|b
+	// aB     a|B     aB|
+	// Ab     |Ab     A|b
+	// AB     B|A     B|A
+	// Every position after the last character on a line is considered to stick
+	// to the last character on the line.
 	function cursorCoords(cm, pos, context, lineObj, preparedMeasure, varHeight) {
 	  lineObj = lineObj || getLine(cm.doc, pos.line)
 	  if (!preparedMeasure) { preparedMeasure = prepareMeasureForLine(cm, lineObj) }
@@ -35077,25 +35210,24 @@
 	    if (right) { m.left = m.right; } else { m.right = m.left }
 	    return intoCoordSystem(cm, lineObj, m, context)
 	  }
-	  function getBidi(ch, partPos) {
-	    var part = order[partPos], right = part.level % 2
-	    if (ch == bidiLeft(part) && partPos && part.level < order[partPos - 1].level) {
-	      part = order[--partPos]
-	      ch = bidiRight(part) - (part.level % 2 ? 0 : 1)
-	      right = true
-	    } else if (ch == bidiRight(part) && partPos < order.length - 1 && part.level < order[partPos + 1].level) {
-	      part = order[++partPos]
-	      ch = bidiLeft(part) - part.level % 2
-	      right = false
-	    }
-	    if (right && ch == part.to && ch > part.from) { return get(ch - 1) }
-	    return get(ch, right)
+	  var order = getOrder(lineObj), ch = pos.ch, sticky = pos.sticky
+	  if (ch >= lineObj.text.length) {
+	    ch = lineObj.text.length
+	    sticky = "before"
+	  } else if (ch <= 0) {
+	    ch = 0
+	    sticky = "after"
 	  }
-	  var order = getOrder(lineObj), ch = pos.ch
-	  if (!order) { return get(ch) }
-	  var partPos = getBidiPartAt(order, ch)
-	  var val = getBidi(ch, partPos)
-	  if (bidiOther != null) { val.other = getBidi(ch, bidiOther) }
+	  if (!order) { return get(sticky == "before" ? ch - 1 : ch, sticky == "before") }
+
+	  function getBidi(ch, partPos, invert) {
+	    var part = order[partPos], right = (part.level % 2) != 0
+	    return get(invert ? ch - 1 : ch, right != invert)
+	  }
+	  var partPos = getBidiPartAt(order, ch, sticky)
+	  var other = bidiOther
+	  var val = getBidi(ch, partPos, sticky == "before")
+	  if (other != null) { val.other = getBidi(ch, other, sticky != "before") }
 	  return val
 	}
 
@@ -35116,8 +35248,8 @@
 	// the right of the character position, for example). When outside
 	// is true, that means the coordinates lie outside the line's
 	// vertical range.
-	function PosWithInfo(line, ch, outside, xRel) {
-	  var pos = Pos(line, ch)
+	function PosWithInfo(line, ch, sticky, outside, xRel) {
+	  var pos = Pos(line, ch, sticky)
 	  pos.xRel = xRel
 	  if (outside) { pos.outside = true }
 	  return pos
@@ -35128,10 +35260,10 @@
 	function coordsChar(cm, x, y) {
 	  var doc = cm.doc
 	  y += cm.display.viewOffset
-	  if (y < 0) { return PosWithInfo(doc.first, 0, true, -1) }
+	  if (y < 0) { return PosWithInfo(doc.first, 0, null, true, -1) }
 	  var lineN = lineAtHeight(doc, y), last = doc.first + doc.size - 1
 	  if (lineN > last)
-	    { return PosWithInfo(doc.first + doc.size - 1, getLine(doc, last).text.length, true, 1) }
+	    { return PosWithInfo(doc.first + doc.size - 1, getLine(doc, last).text.length, null, true, 1) }
 	  if (x < 0) { x = 0 }
 
 	  var lineObj = getLine(doc, lineN)
@@ -35146,57 +35278,68 @@
 	  }
 	}
 
+	function wrappedLineExtent(cm, lineObj, preparedMeasure, y) {
+	  var measure = function (ch) { return intoCoordSystem(cm, lineObj, measureCharPrepared(cm, preparedMeasure, ch), "line"); }
+	  var end = lineObj.text.length
+	  var begin = findFirst(function (ch) { return measure(ch - 1).bottom <= y; }, end, 0)
+	  end = findFirst(function (ch) { return measure(ch).top > y; }, begin, end)
+	  return {begin: begin, end: end}
+	}
+
+	function wrappedLineExtentChar(cm, lineObj, preparedMeasure, target) {
+	  var targetTop = intoCoordSystem(cm, lineObj, measureCharPrepared(cm, preparedMeasure, target), "line").top
+	  return wrappedLineExtent(cm, lineObj, preparedMeasure, targetTop)
+	}
+
 	function coordsCharInner(cm, lineObj, lineNo, x, y) {
-	  var innerOff = y - heightAtLine(lineObj)
-	  var wrongLine = false, adjust = 2 * cm.display.wrapper.clientWidth
+	  y -= heightAtLine(lineObj)
+	  var begin = 0, end = lineObj.text.length
 	  var preparedMeasure = prepareMeasureForLine(cm, lineObj)
-
-	  function getX(ch) {
-	    var sp = cursorCoords(cm, Pos(lineNo, ch), "line", lineObj, preparedMeasure)
-	    wrongLine = true
-	    if (innerOff > sp.bottom) { return sp.left - adjust }
-	    else if (innerOff < sp.top) { return sp.left + adjust }
-	    else { wrongLine = false }
-	    return sp.left
-	  }
-
-	  var bidi = getOrder(lineObj), dist = lineObj.text.length
-	  var from = lineLeft(lineObj), to = lineRight(lineObj)
-	  var fromX = getX(from), fromOutside = wrongLine, toX = getX(to), toOutside = wrongLine
-
-	  if (x > toX) { return PosWithInfo(lineNo, to, toOutside, 1) }
-	  // Do a binary search between these bounds.
-	  for (;;) {
-	    if (bidi ? to == from || to == moveVisually(lineObj, from, 1) : to - from <= 1) {
-	      var ch = x < fromX || x - fromX <= toX - x ? from : to
-	      var outside = ch == from ? fromOutside : toOutside
-	      var xDiff = x - (ch == from ? fromX : toX)
-	      // This is a kludge to handle the case where the coordinates
-	      // are after a line-wrapped line. We should replace it with a
-	      // more general handling of cursor positions around line
-	      // breaks. (Issue #4078)
-	      if (toOutside && !bidi && !/\s/.test(lineObj.text.charAt(ch)) && xDiff > 0 &&
-	          ch < lineObj.text.length && preparedMeasure.view.measure.heights.length > 1) {
-	        var charSize = measureCharPrepared(cm, preparedMeasure, ch, "right")
-	        if (innerOff <= charSize.bottom && innerOff >= charSize.top && Math.abs(x - charSize.right) < xDiff) {
-	          outside = false
-	          ch++
-	          xDiff = x - charSize.right
-	        }
+	  var pos
+	  var order = getOrder(lineObj)
+	  if (order) {
+	    if (cm.options.lineWrapping) {
+	      ;var assign;
+	      ((assign = wrappedLineExtent(cm, lineObj, preparedMeasure, y), begin = assign.begin, end = assign.end, assign))
+	    }
+	    pos = new Pos(lineNo, begin)
+	    var beginLeft = cursorCoords(cm, pos, "line", lineObj, preparedMeasure).left
+	    var dir = beginLeft < x ? 1 : -1
+	    var prevDiff, diff = beginLeft - x, prevPos
+	    do {
+	      prevDiff = diff
+	      prevPos = pos
+	      pos = moveVisually(cm, lineObj, pos, dir)
+	      if (pos == null || pos.ch < begin || end <= (pos.sticky == "before" ? pos.ch - 1 : pos.ch)) {
+	        pos = prevPos
+	        break
 	      }
-	      while (isExtendingChar(lineObj.text.charAt(ch))) { ++ch }
-	      var pos = PosWithInfo(lineNo, ch, outside, xDiff < -1 ? -1 : xDiff > 1 ? 1 : 0)
-	      return pos
+	      diff = cursorCoords(cm, pos, "line", lineObj, preparedMeasure).left - x
+	    } while ((dir < 0) != (diff < 0) && (Math.abs(diff) <= Math.abs(prevDiff)))
+	    if (Math.abs(diff) > Math.abs(prevDiff)) {
+	      if ((diff < 0) == (prevDiff < 0)) { throw new Error("Broke out of infinite loop in coordsCharInner") }
+	      pos = prevPos
 	    }
-	    var step = Math.ceil(dist / 2), middle = from + step
-	    if (bidi) {
-	      middle = from
-	      for (var i = 0; i < step; ++i) { middle = moveVisually(lineObj, middle, 1) }
-	    }
-	    var middleX = getX(middle)
-	    if (middleX > x) {to = middle; toX = middleX; if (toOutside = wrongLine) { toX += 1000; } dist = step}
-	    else {from = middle; fromX = middleX; fromOutside = wrongLine; dist -= step}
+	  } else {
+	    var ch = findFirst(function (ch) {
+	      var box = intoCoordSystem(cm, lineObj, measureCharPrepared(cm, preparedMeasure, ch), "line")
+	      if (box.top > y) {
+	        // For the cursor stickiness
+	        end = Math.min(ch, end)
+	        return true
+	      }
+	      else if (box.bottom <= y) { return false }
+	      else if (box.left > x) { return true }
+	      else if (box.right < x) { return false }
+	      else { return (x - box.left < box.right - x) }
+	    }, begin, end)
+	    ch = skipExtendingChars(lineObj.text, ch, 1)
+	    pos = new Pos(lineNo, ch, ch == end ? "before" : "after")
 	  }
+	  var coords = cursorCoords(cm, pos, "line", lineObj, preparedMeasure)
+	  if (y < coords.top || coords.bottom < y) { pos.outside = true }
+	  pos.xRel = x < coords.left ? -1 : (x > coords.right ? 1 : 0)
+	  return pos
 	}
 
 	var measureText
@@ -35783,7 +35926,7 @@
 	    this.horiz.style.left = measure.barLeft + "px"
 	    var totalWidth = measure.viewWidth - measure.barLeft - (needsV ? sWidth : 0)
 	    this.horiz.firstChild.style.width =
-	      (measure.scrollWidth - measure.clientWidth + totalWidth) + "px"
+	      Math.max(0, measure.scrollWidth - measure.clientWidth + totalWidth) + "px"
 	  } else {
 	    this.horiz.style.display = ""
 	    this.horiz.firstChild.style.width = "0"
@@ -36668,63 +36811,61 @@
 	// (and non-touching) ranges, sorted, and an integer that indicates
 	// which one is the primary selection (the one that's scrolled into
 	// view, that getCursor returns, etc).
-	function Selection(ranges, primIndex) {
+	var Selection = function(ranges, primIndex) {
 	  this.ranges = ranges
 	  this.primIndex = primIndex
-	}
+	};
 
-	Selection.prototype = {
-	  primary: function() { return this.ranges[this.primIndex] },
-	  equals: function(other) {
+	Selection.prototype.primary = function () { return this.ranges[this.primIndex] };
+
+	Selection.prototype.equals = function (other) {
 	    var this$1 = this;
 
-	    if (other == this) { return true }
-	    if (other.primIndex != this.primIndex || other.ranges.length != this.ranges.length) { return false }
-	    for (var i = 0; i < this.ranges.length; i++) {
-	      var here = this$1.ranges[i], there = other.ranges[i]
-	      if (cmp(here.anchor, there.anchor) != 0 || cmp(here.head, there.head) != 0) { return false }
-	    }
-	    return true
-	  },
-	  deepCopy: function() {
-	    var this$1 = this;
-
-	    var out = []
-	    for (var i = 0; i < this.ranges.length; i++)
-	      { out[i] = new Range(copyPos(this$1.ranges[i].anchor), copyPos(this$1.ranges[i].head)) }
-	    return new Selection(out, this.primIndex)
-	  },
-	  somethingSelected: function() {
-	    var this$1 = this;
-
-	    for (var i = 0; i < this.ranges.length; i++)
-	      { if (!this$1.ranges[i].empty()) { return true } }
-	    return false
-	  },
-	  contains: function(pos, end) {
-	    var this$1 = this;
-
-	    if (!end) { end = pos }
-	    for (var i = 0; i < this.ranges.length; i++) {
-	      var range = this$1.ranges[i]
-	      if (cmp(end, range.from()) >= 0 && cmp(pos, range.to()) <= 0)
-	        { return i }
-	    }
-	    return -1
+	  if (other == this) { return true }
+	  if (other.primIndex != this.primIndex || other.ranges.length != this.ranges.length) { return false }
+	  for (var i = 0; i < this.ranges.length; i++) {
+	    var here = this$1.ranges[i], there = other.ranges[i]
+	    if (!equalCursorPos(here.anchor, there.anchor) || !equalCursorPos(here.head, there.head)) { return false }
 	  }
-	}
+	  return true
+	};
 
-	function Range(anchor, head) {
+	Selection.prototype.deepCopy = function () {
+	    var this$1 = this;
+
+	  var out = []
+	  for (var i = 0; i < this.ranges.length; i++)
+	    { out[i] = new Range(copyPos(this$1.ranges[i].anchor), copyPos(this$1.ranges[i].head)) }
+	  return new Selection(out, this.primIndex)
+	};
+
+	Selection.prototype.somethingSelected = function () {
+	    var this$1 = this;
+
+	  for (var i = 0; i < this.ranges.length; i++)
+	    { if (!this$1.ranges[i].empty()) { return true } }
+	  return false
+	};
+
+	Selection.prototype.contains = function (pos, end) {
+	    var this$1 = this;
+
+	  if (!end) { end = pos }
+	  for (var i = 0; i < this.ranges.length; i++) {
+	    var range = this$1.ranges[i]
+	    if (cmp(end, range.from()) >= 0 && cmp(pos, range.to()) <= 0)
+	      { return i }
+	  }
+	  return -1
+	};
+
+	var Range = function(anchor, head) {
 	  this.anchor = anchor; this.head = head
-	}
+	};
 
-	Range.prototype = {
-	  from: function() { return minPos(this.anchor, this.head) },
-	  to: function() { return maxPos(this.anchor, this.head) },
-	  empty: function() {
-	    return this.head.line == this.anchor.line && this.head.ch == this.anchor.ch
-	  }
-	}
+	Range.prototype.from = function () { return minPos(this.anchor, this.head) };
+	Range.prototype.to = function () { return maxPos(this.anchor, this.head) };
+	Range.prototype.empty = function () { return this.head.line == this.anchor.line && this.head.ch == this.anchor.ch };
 
 	// Take an unsorted, potentially overlapping set of ranges, and
 	// build a selection out of it. 'Consumes' ranges array (modifying
@@ -37663,7 +37804,7 @@
 	//
 	// See also http://marijnhaverbeke.nl/blog/codemirror-line-tree.html
 
-	function LeafChunk(lines) {
+	var LeafChunk = function(lines) {
 	  var this$1 = this;
 
 	  this.lines = lines
@@ -37674,45 +37815,47 @@
 	    height += lines[i].height
 	  }
 	  this.height = height
-	}
+	};
 
-	LeafChunk.prototype = {
-	  chunkSize: function() { return this.lines.length },
-	  // Remove the n lines at offset 'at'.
-	  removeInner: function(at, n) {
+	LeafChunk.prototype.chunkSize = function () { return this.lines.length };
+
+	// Remove the n lines at offset 'at'.
+	LeafChunk.prototype.removeInner = function (at, n) {
 	    var this$1 = this;
 
-	    for (var i = at, e = at + n; i < e; ++i) {
-	      var line = this$1.lines[i]
-	      this$1.height -= line.height
-	      cleanUpLine(line)
-	      signalLater(line, "delete")
-	    }
-	    this.lines.splice(at, n)
-	  },
-	  // Helper used to collapse a small branch into a single leaf.
-	  collapse: function(lines) {
-	    lines.push.apply(lines, this.lines)
-	  },
-	  // Insert the given array of lines at offset 'at', count them as
-	  // having the given height.
-	  insertInner: function(at, lines, height) {
-	    var this$1 = this;
-
-	    this.height += height
-	    this.lines = this.lines.slice(0, at).concat(lines).concat(this.lines.slice(at))
-	    for (var i = 0; i < lines.length; ++i) { lines[i].parent = this$1 }
-	  },
-	  // Used to iterate over a part of the tree.
-	  iterN: function(at, n, op) {
-	    var this$1 = this;
-
-	    for (var e = at + n; at < e; ++at)
-	      { if (op(this$1.lines[at])) { return true } }
+	  for (var i = at, e = at + n; i < e; ++i) {
+	    var line = this$1.lines[i]
+	    this$1.height -= line.height
+	    cleanUpLine(line)
+	    signalLater(line, "delete")
 	  }
-	}
+	  this.lines.splice(at, n)
+	};
 
-	function BranchChunk(children) {
+	// Helper used to collapse a small branch into a single leaf.
+	LeafChunk.prototype.collapse = function (lines) {
+	  lines.push.apply(lines, this.lines)
+	};
+
+	// Insert the given array of lines at offset 'at', count them as
+	// having the given height.
+	LeafChunk.prototype.insertInner = function (at, lines, height) {
+	    var this$1 = this;
+
+	  this.height += height
+	  this.lines = this.lines.slice(0, at).concat(lines).concat(this.lines.slice(at))
+	  for (var i = 0; i < lines.length; ++i) { lines[i].parent = this$1 }
+	};
+
+	// Used to iterate over a part of the tree.
+	LeafChunk.prototype.iterN = function (at, n, op) {
+	    var this$1 = this;
+
+	  for (var e = at + n; at < e; ++at)
+	    { if (op(this$1.lines[at])) { return true } }
+	};
+
+	var BranchChunk = function(children) {
 	  var this$1 = this;
 
 	  this.children = children
@@ -37725,123 +37868,120 @@
 	  this.size = size
 	  this.height = height
 	  this.parent = null
-	}
+	};
 
-	BranchChunk.prototype = {
-	  chunkSize: function() { return this.size },
-	  removeInner: function(at, n) {
+	BranchChunk.prototype.chunkSize = function () { return this.size };
+
+	BranchChunk.prototype.removeInner = function (at, n) {
 	    var this$1 = this;
 
-	    this.size -= n
-	    for (var i = 0; i < this.children.length; ++i) {
-	      var child = this$1.children[i], sz = child.chunkSize()
-	      if (at < sz) {
-	        var rm = Math.min(n, sz - at), oldHeight = child.height
-	        child.removeInner(at, rm)
-	        this$1.height -= oldHeight - child.height
-	        if (sz == rm) { this$1.children.splice(i--, 1); child.parent = null }
-	        if ((n -= rm) == 0) { break }
-	        at = 0
-	      } else { at -= sz }
-	    }
-	    // If the result is smaller than 25 lines, ensure that it is a
-	    // single leaf node.
-	    if (this.size - n < 25 &&
-	        (this.children.length > 1 || !(this.children[0] instanceof LeafChunk))) {
-	      var lines = []
-	      this.collapse(lines)
-	      this.children = [new LeafChunk(lines)]
-	      this.children[0].parent = this
-	    }
-	  },
-	  collapse: function(lines) {
-	    var this$1 = this;
-
-	    for (var i = 0; i < this.children.length; ++i) { this$1.children[i].collapse(lines) }
-	  },
-	  insertInner: function(at, lines, height) {
-	    var this$1 = this;
-
-	    this.size += lines.length
-	    this.height += height
-	    for (var i = 0; i < this.children.length; ++i) {
-	      var child = this$1.children[i], sz = child.chunkSize()
-	      if (at <= sz) {
-	        child.insertInner(at, lines, height)
-	        if (child.lines && child.lines.length > 50) {
-	          // To avoid memory thrashing when child.lines is huge (e.g. first view of a large file), it's never spliced.
-	          // Instead, small slices are taken. They're taken in order because sequential memory accesses are fastest.
-	          var remaining = child.lines.length % 25 + 25
-	          for (var pos = remaining; pos < child.lines.length;) {
-	            var leaf = new LeafChunk(child.lines.slice(pos, pos += 25))
-	            child.height -= leaf.height
-	            this$1.children.splice(++i, 0, leaf)
-	            leaf.parent = this$1
-	          }
-	          child.lines = child.lines.slice(0, remaining)
-	          this$1.maybeSpill()
-	        }
-	        break
-	      }
-	      at -= sz
-	    }
-	  },
-	  // When a node has grown, check whether it should be split.
-	  maybeSpill: function() {
-	    if (this.children.length <= 10) { return }
-	    var me = this
-	    do {
-	      var spilled = me.children.splice(me.children.length - 5, 5)
-	      var sibling = new BranchChunk(spilled)
-	      if (!me.parent) { // Become the parent node
-	        var copy = new BranchChunk(me.children)
-	        copy.parent = me
-	        me.children = [copy, sibling]
-	        me = copy
-	     } else {
-	        me.size -= sibling.size
-	        me.height -= sibling.height
-	        var myIndex = indexOf(me.parent.children, me)
-	        me.parent.children.splice(myIndex + 1, 0, sibling)
-	      }
-	      sibling.parent = me.parent
-	    } while (me.children.length > 10)
-	    me.parent.maybeSpill()
-	  },
-	  iterN: function(at, n, op) {
-	    var this$1 = this;
-
-	    for (var i = 0; i < this.children.length; ++i) {
-	      var child = this$1.children[i], sz = child.chunkSize()
-	      if (at < sz) {
-	        var used = Math.min(n, sz - at)
-	        if (child.iterN(at, used, op)) { return true }
-	        if ((n -= used) == 0) { break }
-	        at = 0
-	      } else { at -= sz }
-	    }
+	  this.size -= n
+	  for (var i = 0; i < this.children.length; ++i) {
+	    var child = this$1.children[i], sz = child.chunkSize()
+	    if (at < sz) {
+	      var rm = Math.min(n, sz - at), oldHeight = child.height
+	      child.removeInner(at, rm)
+	      this$1.height -= oldHeight - child.height
+	      if (sz == rm) { this$1.children.splice(i--, 1); child.parent = null }
+	      if ((n -= rm) == 0) { break }
+	      at = 0
+	    } else { at -= sz }
 	  }
-	}
+	  // If the result is smaller than 25 lines, ensure that it is a
+	  // single leaf node.
+	  if (this.size - n < 25 &&
+	      (this.children.length > 1 || !(this.children[0] instanceof LeafChunk))) {
+	    var lines = []
+	    this.collapse(lines)
+	    this.children = [new LeafChunk(lines)]
+	    this.children[0].parent = this
+	  }
+	};
+
+	BranchChunk.prototype.collapse = function (lines) {
+	    var this$1 = this;
+
+	  for (var i = 0; i < this.children.length; ++i) { this$1.children[i].collapse(lines) }
+	};
+
+	BranchChunk.prototype.insertInner = function (at, lines, height) {
+	    var this$1 = this;
+
+	  this.size += lines.length
+	  this.height += height
+	  for (var i = 0; i < this.children.length; ++i) {
+	    var child = this$1.children[i], sz = child.chunkSize()
+	    if (at <= sz) {
+	      child.insertInner(at, lines, height)
+	      if (child.lines && child.lines.length > 50) {
+	        // To avoid memory thrashing when child.lines is huge (e.g. first view of a large file), it's never spliced.
+	        // Instead, small slices are taken. They're taken in order because sequential memory accesses are fastest.
+	        var remaining = child.lines.length % 25 + 25
+	        for (var pos = remaining; pos < child.lines.length;) {
+	          var leaf = new LeafChunk(child.lines.slice(pos, pos += 25))
+	          child.height -= leaf.height
+	          this$1.children.splice(++i, 0, leaf)
+	          leaf.parent = this$1
+	        }
+	        child.lines = child.lines.slice(0, remaining)
+	        this$1.maybeSpill()
+	      }
+	      break
+	    }
+	    at -= sz
+	  }
+	};
+
+	// When a node has grown, check whether it should be split.
+	BranchChunk.prototype.maybeSpill = function () {
+	  if (this.children.length <= 10) { return }
+	  var me = this
+	  do {
+	    var spilled = me.children.splice(me.children.length - 5, 5)
+	    var sibling = new BranchChunk(spilled)
+	    if (!me.parent) { // Become the parent node
+	      var copy = new BranchChunk(me.children)
+	      copy.parent = me
+	      me.children = [copy, sibling]
+	      me = copy
+	   } else {
+	      me.size -= sibling.size
+	      me.height -= sibling.height
+	      var myIndex = indexOf(me.parent.children, me)
+	      me.parent.children.splice(myIndex + 1, 0, sibling)
+	    }
+	    sibling.parent = me.parent
+	  } while (me.children.length > 10)
+	  me.parent.maybeSpill()
+	};
+
+	BranchChunk.prototype.iterN = function (at, n, op) {
+	    var this$1 = this;
+
+	  for (var i = 0; i < this.children.length; ++i) {
+	    var child = this$1.children[i], sz = child.chunkSize()
+	    if (at < sz) {
+	      var used = Math.min(n, sz - at)
+	      if (child.iterN(at, used, op)) { return true }
+	      if ((n -= used) == 0) { break }
+	      at = 0
+	    } else { at -= sz }
+	  }
+	};
 
 	// Line widgets are block elements displayed above or below a line.
 
-	function LineWidget(doc, node, options) {
+	var LineWidget = function(doc, node, options) {
 	  var this$1 = this;
 
 	  if (options) { for (var opt in options) { if (options.hasOwnProperty(opt))
 	    { this$1[opt] = options[opt] } } }
 	  this.doc = doc
 	  this.node = node
-	}
-	eventMixin(LineWidget)
+	};
 
-	function adjustScrollWhenAboveVisible(cm, line, diff) {
-	  if (heightAtLine(line) < ((cm.curOp && cm.curOp.scrollTop) || cm.doc.scrollTop))
-	    { addToScrollPos(cm, null, diff) }
-	}
-
-	LineWidget.prototype.clear = function() {
-	  var this$1 = this;
+	LineWidget.prototype.clear = function () {
+	    var this$1 = this;
 
 	  var cm = this.doc.cm, ws = this.line.widgets, line = this.line, no = lineNo(line)
 	  if (no == null || !ws) { return }
@@ -37849,21 +37989,36 @@
 	  if (!ws.length) { line.widgets = null }
 	  var height = widgetHeight(this)
 	  updateLineHeight(line, Math.max(0, line.height - height))
-	  if (cm) { runInOp(cm, function () {
-	    adjustScrollWhenAboveVisible(cm, line, -height)
-	    regLineChange(cm, no, "widget")
-	  }) }
-	}
-	LineWidget.prototype.changed = function() {
+	  if (cm) {
+	    runInOp(cm, function () {
+	      adjustScrollWhenAboveVisible(cm, line, -height)
+	      regLineChange(cm, no, "widget")
+	    })
+	    signalLater(cm, "lineWidgetCleared", cm, this, no)
+	  }
+	};
+
+	LineWidget.prototype.changed = function () {
+	    var this$1 = this;
+
 	  var oldH = this.height, cm = this.doc.cm, line = this.line
 	  this.height = null
 	  var diff = widgetHeight(this) - oldH
 	  if (!diff) { return }
 	  updateLineHeight(line, line.height + diff)
-	  if (cm) { runInOp(cm, function () {
-	    cm.curOp.forceUpdate = true
-	    adjustScrollWhenAboveVisible(cm, line, diff)
-	  }) }
+	  if (cm) {
+	    runInOp(cm, function () {
+	      cm.curOp.forceUpdate = true
+	      adjustScrollWhenAboveVisible(cm, line, diff)
+	      signalLater(cm, "lineWidgetChanged", cm, this$1, lineNo(line))
+	    })
+	  }
+	};
+	eventMixin(LineWidget)
+
+	function adjustScrollWhenAboveVisible(cm, line, diff) {
+	  if (heightAtLine(line) < ((cm.curOp && cm.curOp.scrollTop) || cm.doc.scrollTop))
+	    { addToScrollPos(cm, null, diff) }
 	}
 
 	function addLineWidget(doc, handle, node, options) {
@@ -37883,6 +38038,7 @@
 	    }
 	    return true
 	  })
+	  signalLater(cm, "lineWidgetAdded", cm, widget, typeof handle == "number" ? handle : lineNo(handle))
 	  return widget
 	}
 
@@ -37903,17 +38059,16 @@
 	// when they overlap (they may nest, but not partially overlap).
 	var nextMarkerId = 0
 
-	function TextMarker(doc, type) {
+	var TextMarker = function(doc, type) {
 	  this.lines = []
 	  this.type = type
 	  this.doc = doc
 	  this.id = ++nextMarkerId
-	}
-	eventMixin(TextMarker)
+	};
 
 	// Clear the marker.
-	TextMarker.prototype.clear = function() {
-	  var this$1 = this;
+	TextMarker.prototype.clear = function () {
+	    var this$1 = this;
 
 	  if (this.explicitlyCleared) { return }
 	  var cm = this.doc.cm, withOp = cm && !cm.curOp
@@ -37951,18 +38106,18 @@
 	    this.doc.cantEdit = false
 	    if (cm) { reCheckSelection(cm.doc) }
 	  }
-	  if (cm) { signalLater(cm, "markerCleared", cm, this) }
+	  if (cm) { signalLater(cm, "markerCleared", cm, this, min, max) }
 	  if (withOp) { endOperation(cm) }
 	  if (this.parent) { this.parent.clear() }
-	}
+	};
 
 	// Find the position of the marker in the document. Returns a {from,
 	// to} object by default. Side can be passed to get a specific side
 	// -- 0 (both), -1 (left), or 1 (right). When lineObj is true, the
 	// Pos objects returned contain a line object, rather than a line
 	// number (used to prevent looking up the same line twice).
-	TextMarker.prototype.find = function(side, lineObj) {
-	  var this$1 = this;
+	TextMarker.prototype.find = function (side, lineObj) {
+	    var this$1 = this;
 
 	  if (side == null && this.type == "bookmark") { side = 1 }
 	  var from, to
@@ -37979,11 +38134,13 @@
 	    }
 	  }
 	  return from && {from: from, to: to}
-	}
+	};
 
 	// Signals that the marker's widget changed, and surrounding layout
 	// should be recomputed.
-	TextMarker.prototype.changed = function() {
+	TextMarker.prototype.changed = function () {
+	    var this$1 = this;
+
 	  var pos = this.find(-1, true), widget = this, cm = this.doc.cm
 	  if (!pos || !cm) { return }
 	  runInOp(cm, function () {
@@ -38001,24 +38158,27 @@
 	      if (dHeight)
 	        { updateLineHeight(line, line.height + dHeight) }
 	    }
+	    signalLater(cm, "markerChanged", cm, this$1)
 	  })
-	}
+	};
 
-	TextMarker.prototype.attachLine = function(line) {
+	TextMarker.prototype.attachLine = function (line) {
 	  if (!this.lines.length && this.doc.cm) {
 	    var op = this.doc.cm.curOp
 	    if (!op.maybeHiddenMarkers || indexOf(op.maybeHiddenMarkers, this) == -1)
 	      { (op.maybeUnhiddenMarkers || (op.maybeUnhiddenMarkers = [])).push(this) }
 	  }
 	  this.lines.push(line)
-	}
-	TextMarker.prototype.detachLine = function(line) {
+	};
+
+	TextMarker.prototype.detachLine = function (line) {
 	  this.lines.splice(indexOf(this.lines, line), 1)
 	  if (!this.lines.length && this.doc.cm) {
 	    var op = this.doc.cm.curOp
 	    ;(op.maybeHiddenMarkers || (op.maybeHiddenMarkers = [])).push(this)
 	  }
-	}
+	};
+	eventMixin(TextMarker)
 
 	// Create a marker, wire it up to the right lines, and
 	function markText(doc, from, to, options, type) {
@@ -38096,28 +38256,29 @@
 	// A shared marker spans multiple linked documents. It is
 	// implemented as a meta-marker-object controlling multiple normal
 	// markers.
-	function SharedTextMarker(markers, primary) {
+	var SharedTextMarker = function(markers, primary) {
 	  var this$1 = this;
 
 	  this.markers = markers
 	  this.primary = primary
 	  for (var i = 0; i < markers.length; ++i)
 	    { markers[i].parent = this$1 }
-	}
-	eventMixin(SharedTextMarker)
+	};
 
-	SharedTextMarker.prototype.clear = function() {
-	  var this$1 = this;
+	SharedTextMarker.prototype.clear = function () {
+	    var this$1 = this;
 
 	  if (this.explicitlyCleared) { return }
 	  this.explicitlyCleared = true
 	  for (var i = 0; i < this.markers.length; ++i)
 	    { this$1.markers[i].clear() }
 	  signalLater(this, "clear")
-	}
-	SharedTextMarker.prototype.find = function(side, lineObj) {
+	};
+
+	SharedTextMarker.prototype.find = function (side, lineObj) {
 	  return this.primary.find(side, lineObj)
-	}
+	};
+	eventMixin(SharedTextMarker)
 
 	function markTextShared(doc, from, to, options, type) {
 	  options = copyObj(options)
@@ -39052,19 +39213,13 @@
 	  var line = getLine(cm.doc, lineN)
 	  var visual = visualLine(line)
 	  if (visual != line) { lineN = lineNo(visual) }
-	  var order = getOrder(visual)
-	  var ch = !order ? 0 : order[0].level % 2 ? lineRight(visual) : lineLeft(visual)
-	  return Pos(lineN, ch)
+	  return endOfLine(true, cm, visual, lineN, 1)
 	}
 	function lineEnd(cm, lineN) {
-	  var merged, line = getLine(cm.doc, lineN)
-	  while (merged = collapsedSpanAtEnd(line)) {
-	    line = merged.find(1, true).line
-	    lineN = null
-	  }
-	  var order = getOrder(line)
-	  var ch = !order ? line.text.length : order[0].level % 2 ? lineLeft(line) : lineRight(line)
-	  return Pos(lineN == null ? lineNo(line) : lineN, ch)
+	  var line = getLine(cm.doc, lineN)
+	  var visual = visualLineEnd(line)
+	  if (visual != line) { lineN = lineNo(visual) }
+	  return endOfLine(true, cm, line, lineN, -1)
 	}
 	function lineStartSmart(cm, pos) {
 	  var start = lineStart(cm, pos.line)
@@ -39073,7 +39228,7 @@
 	  if (!order || order[0].level == 0) {
 	    var firstNonWS = Math.max(0, line.text.search(/\S/))
 	    var inWS = pos.line == start.line && pos.ch <= firstNonWS && pos.ch
-	    return Pos(start.line, inWS ? 0 : firstNonWS)
+	    return Pos(start.line, inWS ? 0 : firstNonWS, start.sticky)
 	  }
 	  return start
 	}
@@ -40265,7 +40420,7 @@
 	      } else {
 	        lineObj = line
 	      }
-	      return intoCoordSystem(this, lineObj, {top: 0, left: 0}, mode || "page", includeWidgets).top +
+	      return intoCoordSystem(this, lineObj, {top: 0, left: 0}, mode || "page", includeWidgets || end).top +
 	        (end ? this.doc.height - heightAtLine(lineObj) : 0)
 	    },
 
@@ -40397,7 +40552,7 @@
 	      var start = pos.ch, end = pos.ch
 	      if (line) {
 	        var helper = this.getHelper(pos, "wordChars")
-	        if ((pos.xRel < 0 || end == line.length) && start) { --start; } else { ++end }
+	        if ((pos.sticky == "before" || end == line.length) && start) { --start; } else { ++end }
 	        var startChar = line.charAt(start)
 	        var check = isWordChar(startChar, helper)
 	          ? function (ch) { return isWordChar(ch, helper); }
@@ -40528,22 +40683,30 @@
 	// position. The resulting position will have a hitSide=true
 	// property if it reached the end of the document.
 	function findPosH(doc, pos, dir, unit, visually) {
-	  var line = pos.line, ch = pos.ch, origDir = dir
-	  var lineObj = getLine(doc, line)
+	  var oldPos = pos
+	  var origDir = dir
+	  var lineObj = getLine(doc, pos.line)
 	  function findNextLine() {
-	    var l = line + dir
+	    var l = pos.line + dir
 	    if (l < doc.first || l >= doc.first + doc.size) { return false }
-	    line = l
+	    pos = new Pos(l, pos.ch, pos.sticky)
 	    return lineObj = getLine(doc, l)
 	  }
 	  function moveOnce(boundToLine) {
-	    var next = (visually ? moveVisually : moveLogically)(lineObj, ch, dir, true)
+	    var next
+	    if (visually) {
+	      next = moveVisually(doc.cm, lineObj, pos, dir)
+	    } else {
+	      next = moveLogically(lineObj, pos, dir)
+	    }
 	    if (next == null) {
-	      if (!boundToLine && findNextLine()) {
-	        if (visually) { ch = (dir < 0 ? lineRight : lineLeft)(lineObj) }
-	        else { ch = dir < 0 ? lineObj.text.length : 0 }
-	      } else { return false }
-	    } else { ch = next }
+	      if (!boundToLine && findNextLine())
+	        { pos = endOfLine(visually, doc.cm, lineObj, pos.line, dir) }
+	      else
+	        { return false }
+	    } else {
+	      pos = next
+	    }
 	    return true
 	  }
 
@@ -40556,14 +40719,14 @@
 	    var helper = doc.cm && doc.cm.getHelper(pos, "wordChars")
 	    for (var first = true;; first = false) {
 	      if (dir < 0 && !moveOnce(!first)) { break }
-	      var cur = lineObj.text.charAt(ch) || "\n"
+	      var cur = lineObj.text.charAt(pos.ch) || "\n"
 	      var type = isWordChar(cur, helper) ? "w"
 	        : group && cur == "\n" ? "n"
 	        : !group || /\s/.test(cur) ? null
 	        : "p"
 	      if (group && !first && !type) { type = "s" }
 	      if (sawType && sawType != type) {
-	        if (dir < 0) {dir = 1; moveOnce()}
+	        if (dir < 0) {dir = 1; moveOnce(); pos.sticky = "after"}
 	        break
 	      }
 
@@ -40571,8 +40734,8 @@
 	      if (dir > 0 && !moveOnce(!first)) { break }
 	    }
 	  }
-	  var result = skipAtomic(doc, Pos(line, ch), pos, origDir, true)
-	  if (!cmp(pos, result)) { result.hitSide = true }
+	  var result = skipAtomic(doc, pos, oldPos, origDir, true)
+	  if (equalCursorPos(oldPos, result)) { result.hitSide = true }
 	  return result
 	}
 
@@ -40915,6 +41078,7 @@
 	};
 
 	ContentEditableInput.prototype.onKeyPress = function (e) {
+	  if (e.charCode == 0) { return }
 	  e.preventDefault()
 	  if (!this.cm.isReadOnly())
 	    { operation(this.cm, applyTextInput)(this.cm, String.fromCharCode(e.charCode == null ? e.keyCode : e.charCode), 0) }
@@ -41379,10 +41543,14 @@
 	      if (!ie || (ie && ie_version < 9)) { prepareSelectAllHack() }
 	      var i = 0, poll = function () {
 	        if (display.selForContextMenu == cm.doc.sel && te.selectionStart == 0 &&
-	            te.selectionEnd > 0 && input.prevInput == "\u200b")
-	          { operation(cm, selectAll)(cm) }
-	        else if (i++ < 10) { display.detectingSelectAll = setTimeout(poll, 500) }
-	        else { display.input.reset() }
+	            te.selectionEnd > 0 && input.prevInput == "\u200b") {
+	          operation(cm, selectAll)(cm)
+	        } else if (i++ < 10) {
+	          display.detectingSelectAll = setTimeout(poll, 500)
+	        } else {
+	          display.selForContextMenu = null
+	          display.input.reset()
+	        }
 	      }
 	      display.detectingSelectAll = setTimeout(poll, 200)
 	    }
@@ -41558,11 +41726,1451 @@
 
 	addLegacyProps(CodeMirror)
 
-	CodeMirror.version = "5.23.0"
+	CodeMirror.version = "5.24.2"
 
 	return CodeMirror;
 
 	})));
+
+/***/ },
+/* 281 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// CodeMirror, copyright (c) by Marijn Haverbeke and others
+	// Distributed under an MIT license: http://codemirror.net/LICENSE
+
+	(function(mod) {
+	  if (true) // CommonJS
+	    mod(__webpack_require__(280), __webpack_require__(282), __webpack_require__(283));
+	  else if (typeof define == "function" && define.amd) // AMD
+	    define(["../../lib/codemirror", "../xml/xml", "../meta"], mod);
+	  else // Plain browser env
+	    mod(CodeMirror);
+	})(function(CodeMirror) {
+	"use strict";
+
+	CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
+
+	  var htmlMode = CodeMirror.getMode(cmCfg, "text/html");
+	  var htmlModeMissing = htmlMode.name == "null"
+
+	  function getMode(name) {
+	    if (CodeMirror.findModeByName) {
+	      var found = CodeMirror.findModeByName(name);
+	      if (found) name = found.mime || found.mimes[0];
+	    }
+	    var mode = CodeMirror.getMode(cmCfg, name);
+	    return mode.name == "null" ? null : mode;
+	  }
+
+	  // Should characters that affect highlighting be highlighted separate?
+	  // Does not include characters that will be output (such as `1.` and `-` for lists)
+	  if (modeCfg.highlightFormatting === undefined)
+	    modeCfg.highlightFormatting = false;
+
+	  // Maximum number of nested blockquotes. Set to 0 for infinite nesting.
+	  // Excess `>` will emit `error` token.
+	  if (modeCfg.maxBlockquoteDepth === undefined)
+	    modeCfg.maxBlockquoteDepth = 0;
+
+	  // Should underscores in words open/close em/strong?
+	  if (modeCfg.underscoresBreakWords === undefined)
+	    modeCfg.underscoresBreakWords = true;
+
+	  // Use `fencedCodeBlocks` to configure fenced code blocks. false to
+	  // disable, string to specify a precise regexp that the fence should
+	  // match, and true to allow three or more backticks or tildes (as
+	  // per CommonMark).
+
+	  // Turn on task lists? ("- [ ] " and "- [x] ")
+	  if (modeCfg.taskLists === undefined) modeCfg.taskLists = false;
+
+	  // Turn on strikethrough syntax
+	  if (modeCfg.strikethrough === undefined)
+	    modeCfg.strikethrough = false;
+
+	  // Allow token types to be overridden by user-provided token types.
+	  if (modeCfg.tokenTypeOverrides === undefined)
+	    modeCfg.tokenTypeOverrides = {};
+
+	  var tokenTypes = {
+	    header: "header",
+	    code: "comment",
+	    quote: "quote",
+	    list1: "variable-2",
+	    list2: "variable-3",
+	    list3: "keyword",
+	    hr: "hr",
+	    image: "image",
+	    imageAltText: "image-alt-text",
+	    imageMarker: "image-marker",
+	    formatting: "formatting",
+	    linkInline: "link",
+	    linkEmail: "link",
+	    linkText: "link",
+	    linkHref: "string",
+	    em: "em",
+	    strong: "strong",
+	    strikethrough: "strikethrough"
+	  };
+
+	  for (var tokenType in tokenTypes) {
+	    if (tokenTypes.hasOwnProperty(tokenType) && modeCfg.tokenTypeOverrides[tokenType]) {
+	      tokenTypes[tokenType] = modeCfg.tokenTypeOverrides[tokenType];
+	    }
+	  }
+
+	  var hrRE = /^([*\-_])(?:\s*\1){2,}\s*$/
+	  ,   listRE = /^(?:[*\-+]|^[0-9]+([.)]))\s+/
+	  ,   taskListRE = /^\[(x| )\](?=\s)/ // Must follow listRE
+	  ,   atxHeaderRE = modeCfg.allowAtxHeaderWithoutSpace ? /^(#+)/ : /^(#+)(?: |$)/
+	  ,   setextHeaderRE = /^ *(?:\={1,}|-{1,})\s*$/
+	  ,   textRE = /^[^#!\[\]*_\\<>` "'(~]+/
+	  ,   fencedCodeRE = new RegExp("^(" + (modeCfg.fencedCodeBlocks === true ? "~~~+|```+" : modeCfg.fencedCodeBlocks) +
+	                                ")[ \\t]*([\\w+#\-]*)");
+
+	  function switchInline(stream, state, f) {
+	    state.f = state.inline = f;
+	    return f(stream, state);
+	  }
+
+	  function switchBlock(stream, state, f) {
+	    state.f = state.block = f;
+	    return f(stream, state);
+	  }
+
+	  function lineIsEmpty(line) {
+	    return !line || !/\S/.test(line.string)
+	  }
+
+	  // Blocks
+
+	  function blankLine(state) {
+	    // Reset linkTitle state
+	    state.linkTitle = false;
+	    // Reset EM state
+	    state.em = false;
+	    // Reset STRONG state
+	    state.strong = false;
+	    // Reset strikethrough state
+	    state.strikethrough = false;
+	    // Reset state.quote
+	    state.quote = 0;
+	    // Reset state.indentedCode
+	    state.indentedCode = false;
+	    if (htmlModeMissing && state.f == htmlBlock) {
+	      state.f = inlineNormal;
+	      state.block = blockNormal;
+	    }
+	    // Reset state.trailingSpace
+	    state.trailingSpace = 0;
+	    state.trailingSpaceNewLine = false;
+	    // Mark this line as blank
+	    state.prevLine = state.thisLine
+	    state.thisLine = null
+	    return null;
+	  }
+
+	  function blockNormal(stream, state) {
+
+	    var sol = stream.sol();
+
+	    var prevLineIsList = state.list !== false,
+	        prevLineIsIndentedCode = state.indentedCode;
+
+	    state.indentedCode = false;
+
+	    if (prevLineIsList) {
+	      if (state.indentationDiff >= 0) { // Continued list
+	        if (state.indentationDiff < 4) { // Only adjust indentation if *not* a code block
+	          state.indentation -= state.indentationDiff;
+	        }
+	        state.list = null;
+	      } else if (state.indentation > 0) {
+	        state.list = null;
+	      } else { // No longer a list
+	        state.list = false;
+	      }
+	    }
+
+	    var match = null;
+	    if (state.indentationDiff >= 4) {
+	      stream.skipToEnd();
+	      if (prevLineIsIndentedCode || lineIsEmpty(state.prevLine)) {
+	        state.indentation -= 4;
+	        state.indentedCode = true;
+	        return tokenTypes.code;
+	      } else {
+	        return null;
+	      }
+	    } else if (stream.eatSpace()) {
+	      return null;
+	    } else if ((match = stream.match(atxHeaderRE)) && match[1].length <= 6) {
+	      state.header = match[1].length;
+	      if (modeCfg.highlightFormatting) state.formatting = "header";
+	      state.f = state.inline;
+	      return getType(state);
+	    } else if (!lineIsEmpty(state.prevLine) && !state.quote && !prevLineIsList &&
+	               !prevLineIsIndentedCode && (match = stream.match(setextHeaderRE))) {
+	      state.header = match[0].charAt(0) == '=' ? 1 : 2;
+	      if (modeCfg.highlightFormatting) state.formatting = "header";
+	      state.f = state.inline;
+	      return getType(state);
+	    } else if (stream.eat('>')) {
+	      state.quote = sol ? 1 : state.quote + 1;
+	      if (modeCfg.highlightFormatting) state.formatting = "quote";
+	      stream.eatSpace();
+	      return getType(state);
+	    } else if (stream.peek() === '[') {
+	      return switchInline(stream, state, footnoteLink);
+	    } else if (stream.match(hrRE, true)) {
+	      state.hr = true;
+	      return tokenTypes.hr;
+	    } else if (match = stream.match(listRE)) {
+	      var listType = match[1] ? "ol" : "ul";
+	      state.indentation = stream.column() + stream.current().length;
+	      state.list = true;
+
+	      // While this list item's marker's indentation
+	      // is less than the deepest list item's content's indentation,
+	      // pop the deepest list item indentation off the stack.
+	      while (state.listStack && stream.column() < state.listStack[state.listStack.length - 1]) {
+	        state.listStack.pop();
+	      }
+
+	      // Add this list item's content's indentation to the stack
+	      state.listStack.push(state.indentation);
+
+	      if (modeCfg.taskLists && stream.match(taskListRE, false)) {
+	        state.taskList = true;
+	      }
+	      state.f = state.inline;
+	      if (modeCfg.highlightFormatting) state.formatting = ["list", "list-" + listType];
+	      return getType(state);
+	    } else if (modeCfg.fencedCodeBlocks && (match = stream.match(fencedCodeRE, true))) {
+	      state.fencedChars = match[1]
+	      // try switching mode
+	      state.localMode = getMode(match[2]);
+	      if (state.localMode) state.localState = CodeMirror.startState(state.localMode);
+	      state.f = state.block = local;
+	      if (modeCfg.highlightFormatting) state.formatting = "code-block";
+	      state.code = -1
+	      return getType(state);
+	    }
+
+	    return switchInline(stream, state, state.inline);
+	  }
+
+	  function htmlBlock(stream, state) {
+	    var style = htmlMode.token(stream, state.htmlState);
+	    if (!htmlModeMissing) {
+	      var inner = CodeMirror.innerMode(htmlMode, state.htmlState)
+	      if ((inner.mode.name == "xml" && inner.state.tagStart === null &&
+	           (!inner.state.context && inner.state.tokenize.isInText)) ||
+	          (state.md_inside && stream.current().indexOf(">") > -1)) {
+	        state.f = inlineNormal;
+	        state.block = blockNormal;
+	        state.htmlState = null;
+	      }
+	    }
+	    return style;
+	  }
+
+	  function local(stream, state) {
+	    if (state.fencedChars && stream.match(state.fencedChars)) {
+	      if (modeCfg.highlightFormatting) state.formatting = "code-block";
+	      state.localMode = state.localState = null;
+	      state.f = state.block = leavingLocal;
+	      return getType(state)
+	    } else if (state.fencedChars && stream.skipTo(state.fencedChars)) {
+	      return "comment"
+	    } else if (state.localMode) {
+	      return state.localMode.token(stream, state.localState);
+	    } else {
+	      stream.skipToEnd();
+	      return tokenTypes.code;
+	    }
+	  }
+
+	  function leavingLocal(stream, state) {
+	    stream.match(state.fencedChars);
+	    state.block = blockNormal;
+	    state.f = inlineNormal;
+	    state.fencedChars = null;
+	    if (modeCfg.highlightFormatting) state.formatting = "code-block";
+	    state.code = 1
+	    var returnType = getType(state);
+	    state.code = 0
+	    return returnType;
+	  }
+
+	  // Inline
+	  function getType(state) {
+	    var styles = [];
+
+	    if (state.formatting) {
+	      styles.push(tokenTypes.formatting);
+
+	      if (typeof state.formatting === "string") state.formatting = [state.formatting];
+
+	      for (var i = 0; i < state.formatting.length; i++) {
+	        styles.push(tokenTypes.formatting + "-" + state.formatting[i]);
+
+	        if (state.formatting[i] === "header") {
+	          styles.push(tokenTypes.formatting + "-" + state.formatting[i] + "-" + state.header);
+	        }
+
+	        // Add `formatting-quote` and `formatting-quote-#` for blockquotes
+	        // Add `error` instead if the maximum blockquote nesting depth is passed
+	        if (state.formatting[i] === "quote") {
+	          if (!modeCfg.maxBlockquoteDepth || modeCfg.maxBlockquoteDepth >= state.quote) {
+	            styles.push(tokenTypes.formatting + "-" + state.formatting[i] + "-" + state.quote);
+	          } else {
+	            styles.push("error");
+	          }
+	        }
+	      }
+	    }
+
+	    if (state.taskOpen) {
+	      styles.push("meta");
+	      return styles.length ? styles.join(' ') : null;
+	    }
+	    if (state.taskClosed) {
+	      styles.push("property");
+	      return styles.length ? styles.join(' ') : null;
+	    }
+
+	    if (state.linkHref) {
+	      styles.push(tokenTypes.linkHref, "url");
+	    } else { // Only apply inline styles to non-url text
+	      if (state.strong) { styles.push(tokenTypes.strong); }
+	      if (state.em) { styles.push(tokenTypes.em); }
+	      if (state.strikethrough) { styles.push(tokenTypes.strikethrough); }
+	      if (state.linkText) { styles.push(tokenTypes.linkText); }
+	      if (state.code) { styles.push(tokenTypes.code); }
+	      if (state.image) { styles.push(tokenTypes.image); }
+	      if (state.imageAltText) { styles.push(tokenTypes.imageAltText, "link"); }
+	      if (state.imageMarker) { styles.push(tokenTypes.imageMarker); }
+	    }
+
+	    if (state.header) { styles.push(tokenTypes.header, tokenTypes.header + "-" + state.header); }
+
+	    if (state.quote) {
+	      styles.push(tokenTypes.quote);
+
+	      // Add `quote-#` where the maximum for `#` is modeCfg.maxBlockquoteDepth
+	      if (!modeCfg.maxBlockquoteDepth || modeCfg.maxBlockquoteDepth >= state.quote) {
+	        styles.push(tokenTypes.quote + "-" + state.quote);
+	      } else {
+	        styles.push(tokenTypes.quote + "-" + modeCfg.maxBlockquoteDepth);
+	      }
+	    }
+
+	    if (state.list !== false) {
+	      var listMod = (state.listStack.length - 1) % 3;
+	      if (!listMod) {
+	        styles.push(tokenTypes.list1);
+	      } else if (listMod === 1) {
+	        styles.push(tokenTypes.list2);
+	      } else {
+	        styles.push(tokenTypes.list3);
+	      }
+	    }
+
+	    if (state.trailingSpaceNewLine) {
+	      styles.push("trailing-space-new-line");
+	    } else if (state.trailingSpace) {
+	      styles.push("trailing-space-" + (state.trailingSpace % 2 ? "a" : "b"));
+	    }
+
+	    return styles.length ? styles.join(' ') : null;
+	  }
+
+	  function handleText(stream, state) {
+	    if (stream.match(textRE, true)) {
+	      return getType(state);
+	    }
+	    return undefined;
+	  }
+
+	  function inlineNormal(stream, state) {
+	    var style = state.text(stream, state);
+	    if (typeof style !== 'undefined')
+	      return style;
+
+	    if (state.list) { // List marker (*, +, -, 1., etc)
+	      state.list = null;
+	      return getType(state);
+	    }
+
+	    if (state.taskList) {
+	      var taskOpen = stream.match(taskListRE, true)[1] !== "x";
+	      if (taskOpen) state.taskOpen = true;
+	      else state.taskClosed = true;
+	      if (modeCfg.highlightFormatting) state.formatting = "task";
+	      state.taskList = false;
+	      return getType(state);
+	    }
+
+	    state.taskOpen = false;
+	    state.taskClosed = false;
+
+	    if (state.header && stream.match(/^#+$/, true)) {
+	      if (modeCfg.highlightFormatting) state.formatting = "header";
+	      return getType(state);
+	    }
+
+	    // Get sol() value now, before character is consumed
+	    var sol = stream.sol();
+
+	    var ch = stream.next();
+
+	    // Matches link titles present on next line
+	    if (state.linkTitle) {
+	      state.linkTitle = false;
+	      var matchCh = ch;
+	      if (ch === '(') {
+	        matchCh = ')';
+	      }
+	      matchCh = (matchCh+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+	      var regex = '^\\s*(?:[^' + matchCh + '\\\\]+|\\\\\\\\|\\\\.)' + matchCh;
+	      if (stream.match(new RegExp(regex), true)) {
+	        return tokenTypes.linkHref;
+	      }
+	    }
+
+	    // If this block is changed, it may need to be updated in GFM mode
+	    if (ch === '`') {
+	      var previousFormatting = state.formatting;
+	      if (modeCfg.highlightFormatting) state.formatting = "code";
+	      stream.eatWhile('`');
+	      var count = stream.current().length
+	      if (state.code == 0) {
+	        state.code = count
+	        return getType(state)
+	      } else if (count == state.code) { // Must be exact
+	        var t = getType(state)
+	        state.code = 0
+	        return t
+	      } else {
+	        state.formatting = previousFormatting
+	        return getType(state)
+	      }
+	    } else if (state.code) {
+	      return getType(state);
+	    }
+
+	    if (ch === '\\') {
+	      stream.next();
+	      if (modeCfg.highlightFormatting) {
+	        var type = getType(state);
+	        var formattingEscape = tokenTypes.formatting + "-escape";
+	        return type ? type + " " + formattingEscape : formattingEscape;
+	      }
+	    }
+
+	    if (ch === '!' && stream.match(/\[[^\]]*\] ?(?:\(|\[)/, false)) {
+	      state.imageMarker = true;
+	      state.image = true;
+	      if (modeCfg.highlightFormatting) state.formatting = "image";
+	      return getType(state);
+	    }
+
+	    if (ch === '[' && state.imageMarker && stream.match(/[^\]]*\](\(.*?\)| ?\[.*?\])/, false)) {
+	      state.imageMarker = false;
+	      state.imageAltText = true
+	      if (modeCfg.highlightFormatting) state.formatting = "image";
+	      return getType(state);
+	    }
+
+	    if (ch === ']' && state.imageAltText) {
+	      if (modeCfg.highlightFormatting) state.formatting = "image";
+	      var type = getType(state);
+	      state.imageAltText = false;
+	      state.image = false;
+	      state.inline = state.f = linkHref;
+	      return type;
+	    }
+
+	    if (ch === '[' && stream.match(/[^\]]*\](\(.*\)| ?\[.*?\])/, false) && !state.image) {
+	      state.linkText = true;
+	      if (modeCfg.highlightFormatting) state.formatting = "link";
+	      return getType(state);
+	    }
+
+	    if (ch === ']' && state.linkText && stream.match(/\(.*?\)| ?\[.*?\]/, false)) {
+	      if (modeCfg.highlightFormatting) state.formatting = "link";
+	      var type = getType(state);
+	      state.linkText = false;
+	      state.inline = state.f = linkHref;
+	      return type;
+	    }
+
+	    if (ch === '<' && stream.match(/^(https?|ftps?):\/\/(?:[^\\>]|\\.)+>/, false)) {
+	      state.f = state.inline = linkInline;
+	      if (modeCfg.highlightFormatting) state.formatting = "link";
+	      var type = getType(state);
+	      if (type){
+	        type += " ";
+	      } else {
+	        type = "";
+	      }
+	      return type + tokenTypes.linkInline;
+	    }
+
+	    if (ch === '<' && stream.match(/^[^> \\]+@(?:[^\\>]|\\.)+>/, false)) {
+	      state.f = state.inline = linkInline;
+	      if (modeCfg.highlightFormatting) state.formatting = "link";
+	      var type = getType(state);
+	      if (type){
+	        type += " ";
+	      } else {
+	        type = "";
+	      }
+	      return type + tokenTypes.linkEmail;
+	    }
+
+	    if (ch === '<' && stream.match(/^(!--|[a-z]+(?:\s+[a-z_:.\-]+(?:\s*=\s*[^ >]+)?)*\s*>)/i, false)) {
+	      var end = stream.string.indexOf(">", stream.pos);
+	      if (end != -1) {
+	        var atts = stream.string.substring(stream.start, end);
+	        if (/markdown\s*=\s*('|"){0,1}1('|"){0,1}/.test(atts)) state.md_inside = true;
+	      }
+	      stream.backUp(1);
+	      state.htmlState = CodeMirror.startState(htmlMode);
+	      return switchBlock(stream, state, htmlBlock);
+	    }
+
+	    if (ch === '<' && stream.match(/^\/\w*?>/)) {
+	      state.md_inside = false;
+	      return "tag";
+	    }
+
+	    var ignoreUnderscore = false;
+	    if (!modeCfg.underscoresBreakWords) {
+	      if (ch === '_' && stream.peek() !== '_' && stream.match(/(\w)/, false)) {
+	        var prevPos = stream.pos - 2;
+	        if (prevPos >= 0) {
+	          var prevCh = stream.string.charAt(prevPos);
+	          if (prevCh !== '_' && prevCh.match(/(\w)/, false)) {
+	            ignoreUnderscore = true;
+	          }
+	        }
+	      }
+	    }
+	    if (ch === '*' || (ch === '_' && !ignoreUnderscore)) {
+	      if (sol && stream.peek() === ' ') {
+	        // Do nothing, surrounded by newline and space
+	      } else if (state.strong === ch && stream.eat(ch)) { // Remove STRONG
+	        if (modeCfg.highlightFormatting) state.formatting = "strong";
+	        var t = getType(state);
+	        state.strong = false;
+	        return t;
+	      } else if (!state.strong && stream.eat(ch)) { // Add STRONG
+	        state.strong = ch;
+	        if (modeCfg.highlightFormatting) state.formatting = "strong";
+	        return getType(state);
+	      } else if (state.em === ch) { // Remove EM
+	        if (modeCfg.highlightFormatting) state.formatting = "em";
+	        var t = getType(state);
+	        state.em = false;
+	        return t;
+	      } else if (!state.em) { // Add EM
+	        state.em = ch;
+	        if (modeCfg.highlightFormatting) state.formatting = "em";
+	        return getType(state);
+	      }
+	    } else if (ch === ' ') {
+	      if (stream.eat('*') || stream.eat('_')) { // Probably surrounded by spaces
+	        if (stream.peek() === ' ') { // Surrounded by spaces, ignore
+	          return getType(state);
+	        } else { // Not surrounded by spaces, back up pointer
+	          stream.backUp(1);
+	        }
+	      }
+	    }
+
+	    if (modeCfg.strikethrough) {
+	      if (ch === '~' && stream.eatWhile(ch)) {
+	        if (state.strikethrough) {// Remove strikethrough
+	          if (modeCfg.highlightFormatting) state.formatting = "strikethrough";
+	          var t = getType(state);
+	          state.strikethrough = false;
+	          return t;
+	        } else if (stream.match(/^[^\s]/, false)) {// Add strikethrough
+	          state.strikethrough = true;
+	          if (modeCfg.highlightFormatting) state.formatting = "strikethrough";
+	          return getType(state);
+	        }
+	      } else if (ch === ' ') {
+	        if (stream.match(/^~~/, true)) { // Probably surrounded by space
+	          if (stream.peek() === ' ') { // Surrounded by spaces, ignore
+	            return getType(state);
+	          } else { // Not surrounded by spaces, back up pointer
+	            stream.backUp(2);
+	          }
+	        }
+	      }
+	    }
+
+	    if (ch === ' ') {
+	      if (stream.match(/ +$/, false)) {
+	        state.trailingSpace++;
+	      } else if (state.trailingSpace) {
+	        state.trailingSpaceNewLine = true;
+	      }
+	    }
+
+	    return getType(state);
+	  }
+
+	  function linkInline(stream, state) {
+	    var ch = stream.next();
+
+	    if (ch === ">") {
+	      state.f = state.inline = inlineNormal;
+	      if (modeCfg.highlightFormatting) state.formatting = "link";
+	      var type = getType(state);
+	      if (type){
+	        type += " ";
+	      } else {
+	        type = "";
+	      }
+	      return type + tokenTypes.linkInline;
+	    }
+
+	    stream.match(/^[^>]+/, true);
+
+	    return tokenTypes.linkInline;
+	  }
+
+	  function linkHref(stream, state) {
+	    // Check if space, and return NULL if so (to avoid marking the space)
+	    if(stream.eatSpace()){
+	      return null;
+	    }
+	    var ch = stream.next();
+	    if (ch === '(' || ch === '[') {
+	      state.f = state.inline = getLinkHrefInside(ch === "(" ? ")" : "]", 0);
+	      if (modeCfg.highlightFormatting) state.formatting = "link-string";
+	      state.linkHref = true;
+	      return getType(state);
+	    }
+	    return 'error';
+	  }
+
+	  var linkRE = {
+	    ")": /^(?:[^\\\(\)]|\\.|\((?:[^\\\(\)]|\\.)*\))*?(?=\))/,
+	    "]": /^(?:[^\\\[\]]|\\.|\[(?:[^\\\[\\]]|\\.)*\])*?(?=\])/
+	  }
+
+	  function getLinkHrefInside(endChar) {
+	    return function(stream, state) {
+	      var ch = stream.next();
+
+	      if (ch === endChar) {
+	        state.f = state.inline = inlineNormal;
+	        if (modeCfg.highlightFormatting) state.formatting = "link-string";
+	        var returnState = getType(state);
+	        state.linkHref = false;
+	        return returnState;
+	      }
+
+	      stream.match(linkRE[endChar])
+	      state.linkHref = true;
+	      return getType(state);
+	    };
+	  }
+
+	  function footnoteLink(stream, state) {
+	    if (stream.match(/^([^\]\\]|\\.)*\]:/, false)) {
+	      state.f = footnoteLinkInside;
+	      stream.next(); // Consume [
+	      if (modeCfg.highlightFormatting) state.formatting = "link";
+	      state.linkText = true;
+	      return getType(state);
+	    }
+	    return switchInline(stream, state, inlineNormal);
+	  }
+
+	  function footnoteLinkInside(stream, state) {
+	    if (stream.match(/^\]:/, true)) {
+	      state.f = state.inline = footnoteUrl;
+	      if (modeCfg.highlightFormatting) state.formatting = "link";
+	      var returnType = getType(state);
+	      state.linkText = false;
+	      return returnType;
+	    }
+
+	    stream.match(/^([^\]\\]|\\.)+/, true);
+
+	    return tokenTypes.linkText;
+	  }
+
+	  function footnoteUrl(stream, state) {
+	    // Check if space, and return NULL if so (to avoid marking the space)
+	    if(stream.eatSpace()){
+	      return null;
+	    }
+	    // Match URL
+	    stream.match(/^[^\s]+/, true);
+	    // Check for link title
+	    if (stream.peek() === undefined) { // End of line, set flag to check next line
+	      state.linkTitle = true;
+	    } else { // More content on line, check if link title
+	      stream.match(/^(?:\s+(?:"(?:[^"\\]|\\\\|\\.)+"|'(?:[^'\\]|\\\\|\\.)+'|\((?:[^)\\]|\\\\|\\.)+\)))?/, true);
+	    }
+	    state.f = state.inline = inlineNormal;
+	    return tokenTypes.linkHref + " url";
+	  }
+
+	  var mode = {
+	    startState: function() {
+	      return {
+	        f: blockNormal,
+
+	        prevLine: null,
+	        thisLine: null,
+
+	        block: blockNormal,
+	        htmlState: null,
+	        indentation: 0,
+
+	        inline: inlineNormal,
+	        text: handleText,
+
+	        formatting: false,
+	        linkText: false,
+	        linkHref: false,
+	        linkTitle: false,
+	        code: 0,
+	        em: false,
+	        strong: false,
+	        header: 0,
+	        hr: false,
+	        taskList: false,
+	        list: false,
+	        listStack: [],
+	        quote: 0,
+	        trailingSpace: 0,
+	        trailingSpaceNewLine: false,
+	        strikethrough: false,
+	        fencedChars: null
+	      };
+	    },
+
+	    copyState: function(s) {
+	      return {
+	        f: s.f,
+
+	        prevLine: s.prevLine,
+	        thisLine: s.thisLine,
+
+	        block: s.block,
+	        htmlState: s.htmlState && CodeMirror.copyState(htmlMode, s.htmlState),
+	        indentation: s.indentation,
+
+	        localMode: s.localMode,
+	        localState: s.localMode ? CodeMirror.copyState(s.localMode, s.localState) : null,
+
+	        inline: s.inline,
+	        text: s.text,
+	        formatting: false,
+	        linkTitle: s.linkTitle,
+	        code: s.code,
+	        em: s.em,
+	        strong: s.strong,
+	        strikethrough: s.strikethrough,
+	        header: s.header,
+	        hr: s.hr,
+	        taskList: s.taskList,
+	        list: s.list,
+	        listStack: s.listStack.slice(0),
+	        quote: s.quote,
+	        indentedCode: s.indentedCode,
+	        trailingSpace: s.trailingSpace,
+	        trailingSpaceNewLine: s.trailingSpaceNewLine,
+	        md_inside: s.md_inside,
+	        fencedChars: s.fencedChars
+	      };
+	    },
+
+	    token: function(stream, state) {
+
+	      // Reset state.formatting
+	      state.formatting = false;
+
+	      if (stream != state.thisLine) {
+	        var forceBlankLine = state.header || state.hr;
+
+	        // Reset state.header and state.hr
+	        state.header = 0;
+	        state.hr = false;
+
+	        if (stream.match(/^\s*$/, true) || forceBlankLine) {
+	          blankLine(state);
+	          if (!forceBlankLine) return null
+	          state.prevLine = null
+	        }
+
+	        state.prevLine = state.thisLine
+	        state.thisLine = stream
+
+	        // Reset state.taskList
+	        state.taskList = false;
+
+	        // Reset state.trailingSpace
+	        state.trailingSpace = 0;
+	        state.trailingSpaceNewLine = false;
+
+	        state.f = state.block;
+	        var indentation = stream.match(/^\s*/, true)[0].replace(/\t/g, '    ').length;
+	        state.indentationDiff = Math.min(indentation - state.indentation, 4);
+	        state.indentation = state.indentation + state.indentationDiff;
+	        if (indentation > 0) return null;
+	      }
+	      return state.f(stream, state);
+	    },
+
+	    innerMode: function(state) {
+	      if (state.block == htmlBlock) return {state: state.htmlState, mode: htmlMode};
+	      if (state.localState) return {state: state.localState, mode: state.localMode};
+	      return {state: state, mode: mode};
+	    },
+
+	    blankLine: blankLine,
+
+	    getType: getType,
+
+	    closeBrackets: "()[]{}''\"\"``",
+	    fold: "markdown"
+	  };
+	  return mode;
+	}, "xml");
+
+	CodeMirror.defineMIME("text/x-markdown", "markdown");
+
+	});
+
+
+/***/ },
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// CodeMirror, copyright (c) by Marijn Haverbeke and others
+	// Distributed under an MIT license: http://codemirror.net/LICENSE
+
+	(function(mod) {
+	  if (true) // CommonJS
+	    mod(__webpack_require__(280));
+	  else if (typeof define == "function" && define.amd) // AMD
+	    define(["../../lib/codemirror"], mod);
+	  else // Plain browser env
+	    mod(CodeMirror);
+	})(function(CodeMirror) {
+	"use strict";
+
+	var htmlConfig = {
+	  autoSelfClosers: {'area': true, 'base': true, 'br': true, 'col': true, 'command': true,
+	                    'embed': true, 'frame': true, 'hr': true, 'img': true, 'input': true,
+	                    'keygen': true, 'link': true, 'meta': true, 'param': true, 'source': true,
+	                    'track': true, 'wbr': true, 'menuitem': true},
+	  implicitlyClosed: {'dd': true, 'li': true, 'optgroup': true, 'option': true, 'p': true,
+	                     'rp': true, 'rt': true, 'tbody': true, 'td': true, 'tfoot': true,
+	                     'th': true, 'tr': true},
+	  contextGrabbers: {
+	    'dd': {'dd': true, 'dt': true},
+	    'dt': {'dd': true, 'dt': true},
+	    'li': {'li': true},
+	    'option': {'option': true, 'optgroup': true},
+	    'optgroup': {'optgroup': true},
+	    'p': {'address': true, 'article': true, 'aside': true, 'blockquote': true, 'dir': true,
+	          'div': true, 'dl': true, 'fieldset': true, 'footer': true, 'form': true,
+	          'h1': true, 'h2': true, 'h3': true, 'h4': true, 'h5': true, 'h6': true,
+	          'header': true, 'hgroup': true, 'hr': true, 'menu': true, 'nav': true, 'ol': true,
+	          'p': true, 'pre': true, 'section': true, 'table': true, 'ul': true},
+	    'rp': {'rp': true, 'rt': true},
+	    'rt': {'rp': true, 'rt': true},
+	    'tbody': {'tbody': true, 'tfoot': true},
+	    'td': {'td': true, 'th': true},
+	    'tfoot': {'tbody': true},
+	    'th': {'td': true, 'th': true},
+	    'thead': {'tbody': true, 'tfoot': true},
+	    'tr': {'tr': true}
+	  },
+	  doNotIndent: {"pre": true},
+	  allowUnquoted: true,
+	  allowMissing: true,
+	  caseFold: true
+	}
+
+	var xmlConfig = {
+	  autoSelfClosers: {},
+	  implicitlyClosed: {},
+	  contextGrabbers: {},
+	  doNotIndent: {},
+	  allowUnquoted: false,
+	  allowMissing: false,
+	  caseFold: false
+	}
+
+	CodeMirror.defineMode("xml", function(editorConf, config_) {
+	  var indentUnit = editorConf.indentUnit
+	  var config = {}
+	  var defaults = config_.htmlMode ? htmlConfig : xmlConfig
+	  for (var prop in defaults) config[prop] = defaults[prop]
+	  for (var prop in config_) config[prop] = config_[prop]
+
+	  // Return variables for tokenizers
+	  var type, setStyle;
+
+	  function inText(stream, state) {
+	    function chain(parser) {
+	      state.tokenize = parser;
+	      return parser(stream, state);
+	    }
+
+	    var ch = stream.next();
+	    if (ch == "<") {
+	      if (stream.eat("!")) {
+	        if (stream.eat("[")) {
+	          if (stream.match("CDATA[")) return chain(inBlock("atom", "]]>"));
+	          else return null;
+	        } else if (stream.match("--")) {
+	          return chain(inBlock("comment", "-->"));
+	        } else if (stream.match("DOCTYPE", true, true)) {
+	          stream.eatWhile(/[\w\._\-]/);
+	          return chain(doctype(1));
+	        } else {
+	          return null;
+	        }
+	      } else if (stream.eat("?")) {
+	        stream.eatWhile(/[\w\._\-]/);
+	        state.tokenize = inBlock("meta", "?>");
+	        return "meta";
+	      } else {
+	        type = stream.eat("/") ? "closeTag" : "openTag";
+	        state.tokenize = inTag;
+	        return "tag bracket";
+	      }
+	    } else if (ch == "&") {
+	      var ok;
+	      if (stream.eat("#")) {
+	        if (stream.eat("x")) {
+	          ok = stream.eatWhile(/[a-fA-F\d]/) && stream.eat(";");
+	        } else {
+	          ok = stream.eatWhile(/[\d]/) && stream.eat(";");
+	        }
+	      } else {
+	        ok = stream.eatWhile(/[\w\.\-:]/) && stream.eat(";");
+	      }
+	      return ok ? "atom" : "error";
+	    } else {
+	      stream.eatWhile(/[^&<]/);
+	      return null;
+	    }
+	  }
+	  inText.isInText = true;
+
+	  function inTag(stream, state) {
+	    var ch = stream.next();
+	    if (ch == ">" || (ch == "/" && stream.eat(">"))) {
+	      state.tokenize = inText;
+	      type = ch == ">" ? "endTag" : "selfcloseTag";
+	      return "tag bracket";
+	    } else if (ch == "=") {
+	      type = "equals";
+	      return null;
+	    } else if (ch == "<") {
+	      state.tokenize = inText;
+	      state.state = baseState;
+	      state.tagName = state.tagStart = null;
+	      var next = state.tokenize(stream, state);
+	      return next ? next + " tag error" : "tag error";
+	    } else if (/[\'\"]/.test(ch)) {
+	      state.tokenize = inAttribute(ch);
+	      state.stringStartCol = stream.column();
+	      return state.tokenize(stream, state);
+	    } else {
+	      stream.match(/^[^\s\u00a0=<>\"\']*[^\s\u00a0=<>\"\'\/]/);
+	      return "word";
+	    }
+	  }
+
+	  function inAttribute(quote) {
+	    var closure = function(stream, state) {
+	      while (!stream.eol()) {
+	        if (stream.next() == quote) {
+	          state.tokenize = inTag;
+	          break;
+	        }
+	      }
+	      return "string";
+	    };
+	    closure.isInAttribute = true;
+	    return closure;
+	  }
+
+	  function inBlock(style, terminator) {
+	    return function(stream, state) {
+	      while (!stream.eol()) {
+	        if (stream.match(terminator)) {
+	          state.tokenize = inText;
+	          break;
+	        }
+	        stream.next();
+	      }
+	      return style;
+	    };
+	  }
+	  function doctype(depth) {
+	    return function(stream, state) {
+	      var ch;
+	      while ((ch = stream.next()) != null) {
+	        if (ch == "<") {
+	          state.tokenize = doctype(depth + 1);
+	          return state.tokenize(stream, state);
+	        } else if (ch == ">") {
+	          if (depth == 1) {
+	            state.tokenize = inText;
+	            break;
+	          } else {
+	            state.tokenize = doctype(depth - 1);
+	            return state.tokenize(stream, state);
+	          }
+	        }
+	      }
+	      return "meta";
+	    };
+	  }
+
+	  function Context(state, tagName, startOfLine) {
+	    this.prev = state.context;
+	    this.tagName = tagName;
+	    this.indent = state.indented;
+	    this.startOfLine = startOfLine;
+	    if (config.doNotIndent.hasOwnProperty(tagName) || (state.context && state.context.noIndent))
+	      this.noIndent = true;
+	  }
+	  function popContext(state) {
+	    if (state.context) state.context = state.context.prev;
+	  }
+	  function maybePopContext(state, nextTagName) {
+	    var parentTagName;
+	    while (true) {
+	      if (!state.context) {
+	        return;
+	      }
+	      parentTagName = state.context.tagName;
+	      if (!config.contextGrabbers.hasOwnProperty(parentTagName) ||
+	          !config.contextGrabbers[parentTagName].hasOwnProperty(nextTagName)) {
+	        return;
+	      }
+	      popContext(state);
+	    }
+	  }
+
+	  function baseState(type, stream, state) {
+	    if (type == "openTag") {
+	      state.tagStart = stream.column();
+	      return tagNameState;
+	    } else if (type == "closeTag") {
+	      return closeTagNameState;
+	    } else {
+	      return baseState;
+	    }
+	  }
+	  function tagNameState(type, stream, state) {
+	    if (type == "word") {
+	      state.tagName = stream.current();
+	      setStyle = "tag";
+	      return attrState;
+	    } else {
+	      setStyle = "error";
+	      return tagNameState;
+	    }
+	  }
+	  function closeTagNameState(type, stream, state) {
+	    if (type == "word") {
+	      var tagName = stream.current();
+	      if (state.context && state.context.tagName != tagName &&
+	          config.implicitlyClosed.hasOwnProperty(state.context.tagName))
+	        popContext(state);
+	      if ((state.context && state.context.tagName == tagName) || config.matchClosing === false) {
+	        setStyle = "tag";
+	        return closeState;
+	      } else {
+	        setStyle = "tag error";
+	        return closeStateErr;
+	      }
+	    } else {
+	      setStyle = "error";
+	      return closeStateErr;
+	    }
+	  }
+
+	  function closeState(type, _stream, state) {
+	    if (type != "endTag") {
+	      setStyle = "error";
+	      return closeState;
+	    }
+	    popContext(state);
+	    return baseState;
+	  }
+	  function closeStateErr(type, stream, state) {
+	    setStyle = "error";
+	    return closeState(type, stream, state);
+	  }
+
+	  function attrState(type, _stream, state) {
+	    if (type == "word") {
+	      setStyle = "attribute";
+	      return attrEqState;
+	    } else if (type == "endTag" || type == "selfcloseTag") {
+	      var tagName = state.tagName, tagStart = state.tagStart;
+	      state.tagName = state.tagStart = null;
+	      if (type == "selfcloseTag" ||
+	          config.autoSelfClosers.hasOwnProperty(tagName)) {
+	        maybePopContext(state, tagName);
+	      } else {
+	        maybePopContext(state, tagName);
+	        state.context = new Context(state, tagName, tagStart == state.indented);
+	      }
+	      return baseState;
+	    }
+	    setStyle = "error";
+	    return attrState;
+	  }
+	  function attrEqState(type, stream, state) {
+	    if (type == "equals") return attrValueState;
+	    if (!config.allowMissing) setStyle = "error";
+	    return attrState(type, stream, state);
+	  }
+	  function attrValueState(type, stream, state) {
+	    if (type == "string") return attrContinuedState;
+	    if (type == "word" && config.allowUnquoted) {setStyle = "string"; return attrState;}
+	    setStyle = "error";
+	    return attrState(type, stream, state);
+	  }
+	  function attrContinuedState(type, stream, state) {
+	    if (type == "string") return attrContinuedState;
+	    return attrState(type, stream, state);
+	  }
+
+	  return {
+	    startState: function(baseIndent) {
+	      var state = {tokenize: inText,
+	                   state: baseState,
+	                   indented: baseIndent || 0,
+	                   tagName: null, tagStart: null,
+	                   context: null}
+	      if (baseIndent != null) state.baseIndent = baseIndent
+	      return state
+	    },
+
+	    token: function(stream, state) {
+	      if (!state.tagName && stream.sol())
+	        state.indented = stream.indentation();
+
+	      if (stream.eatSpace()) return null;
+	      type = null;
+	      var style = state.tokenize(stream, state);
+	      if ((style || type) && style != "comment") {
+	        setStyle = null;
+	        state.state = state.state(type || style, stream, state);
+	        if (setStyle)
+	          style = setStyle == "error" ? style + " error" : setStyle;
+	      }
+	      return style;
+	    },
+
+	    indent: function(state, textAfter, fullLine) {
+	      var context = state.context;
+	      // Indent multi-line strings (e.g. css).
+	      if (state.tokenize.isInAttribute) {
+	        if (state.tagStart == state.indented)
+	          return state.stringStartCol + 1;
+	        else
+	          return state.indented + indentUnit;
+	      }
+	      if (context && context.noIndent) return CodeMirror.Pass;
+	      if (state.tokenize != inTag && state.tokenize != inText)
+	        return fullLine ? fullLine.match(/^(\s*)/)[0].length : 0;
+	      // Indent the starts of attribute names.
+	      if (state.tagName) {
+	        if (config.multilineTagIndentPastTag !== false)
+	          return state.tagStart + state.tagName.length + 2;
+	        else
+	          return state.tagStart + indentUnit * (config.multilineTagIndentFactor || 1);
+	      }
+	      if (config.alignCDATA && /<!\[CDATA\[/.test(textAfter)) return 0;
+	      var tagAfter = textAfter && /^<(\/)?([\w_:\.-]*)/.exec(textAfter);
+	      if (tagAfter && tagAfter[1]) { // Closing tag spotted
+	        while (context) {
+	          if (context.tagName == tagAfter[2]) {
+	            context = context.prev;
+	            break;
+	          } else if (config.implicitlyClosed.hasOwnProperty(context.tagName)) {
+	            context = context.prev;
+	          } else {
+	            break;
+	          }
+	        }
+	      } else if (tagAfter) { // Opening tag spotted
+	        while (context) {
+	          var grabbers = config.contextGrabbers[context.tagName];
+	          if (grabbers && grabbers.hasOwnProperty(tagAfter[2]))
+	            context = context.prev;
+	          else
+	            break;
+	        }
+	      }
+	      while (context && context.prev && !context.startOfLine)
+	        context = context.prev;
+	      if (context) return context.indent + indentUnit;
+	      else return state.baseIndent || 0;
+	    },
+
+	    electricInput: /<\/[\s\w:]+>$/,
+	    blockCommentStart: "<!--",
+	    blockCommentEnd: "-->",
+
+	    configuration: config.htmlMode ? "html" : "xml",
+	    helperType: config.htmlMode ? "html" : "xml",
+
+	    skipAttribute: function(state) {
+	      if (state.state == attrValueState)
+	        state.state = attrState
+	    }
+	  };
+	});
+
+	CodeMirror.defineMIME("text/xml", "xml");
+	CodeMirror.defineMIME("application/xml", "xml");
+	if (!CodeMirror.mimeModes.hasOwnProperty("text/html"))
+	  CodeMirror.defineMIME("text/html", {name: "xml", htmlMode: true});
+
+	});
+
+
+/***/ },
+/* 283 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// CodeMirror, copyright (c) by Marijn Haverbeke and others
+	// Distributed under an MIT license: http://codemirror.net/LICENSE
+
+	(function(mod) {
+	  if (true) // CommonJS
+	    mod(__webpack_require__(280));
+	  else if (typeof define == "function" && define.amd) // AMD
+	    define(["../lib/codemirror"], mod);
+	  else // Plain browser env
+	    mod(CodeMirror);
+	})(function(CodeMirror) {
+	  "use strict";
+
+	  CodeMirror.modeInfo = [
+	    {name: "APL", mime: "text/apl", mode: "apl", ext: ["dyalog", "apl"]},
+	    {name: "PGP", mimes: ["application/pgp", "application/pgp-keys", "application/pgp-signature"], mode: "asciiarmor", ext: ["pgp"]},
+	    {name: "ASN.1", mime: "text/x-ttcn-asn", mode: "asn.1", ext: ["asn", "asn1"]},
+	    {name: "Asterisk", mime: "text/x-asterisk", mode: "asterisk", file: /^extensions\.conf$/i},
+	    {name: "Brainfuck", mime: "text/x-brainfuck", mode: "brainfuck", ext: ["b", "bf"]},
+	    {name: "C", mime: "text/x-csrc", mode: "clike", ext: ["c", "h"]},
+	    {name: "C++", mime: "text/x-c++src", mode: "clike", ext: ["cpp", "c++", "cc", "cxx", "hpp", "h++", "hh", "hxx"], alias: ["cpp"]},
+	    {name: "Cobol", mime: "text/x-cobol", mode: "cobol", ext: ["cob", "cpy"]},
+	    {name: "C#", mime: "text/x-csharp", mode: "clike", ext: ["cs"], alias: ["csharp"]},
+	    {name: "Clojure", mime: "text/x-clojure", mode: "clojure", ext: ["clj", "cljc", "cljx"]},
+	    {name: "ClojureScript", mime: "text/x-clojurescript", mode: "clojure", ext: ["cljs"]},
+	    {name: "Closure Stylesheets (GSS)", mime: "text/x-gss", mode: "css", ext: ["gss"]},
+	    {name: "CMake", mime: "text/x-cmake", mode: "cmake", ext: ["cmake", "cmake.in"], file: /^CMakeLists.txt$/},
+	    {name: "CoffeeScript", mime: "text/x-coffeescript", mode: "coffeescript", ext: ["coffee"], alias: ["coffee", "coffee-script"]},
+	    {name: "Common Lisp", mime: "text/x-common-lisp", mode: "commonlisp", ext: ["cl", "lisp", "el"], alias: ["lisp"]},
+	    {name: "Cypher", mime: "application/x-cypher-query", mode: "cypher", ext: ["cyp", "cypher"]},
+	    {name: "Cython", mime: "text/x-cython", mode: "python", ext: ["pyx", "pxd", "pxi"]},
+	    {name: "Crystal", mime: "text/x-crystal", mode: "crystal", ext: ["cr"]},
+	    {name: "CSS", mime: "text/css", mode: "css", ext: ["css"]},
+	    {name: "CQL", mime: "text/x-cassandra", mode: "sql", ext: ["cql"]},
+	    {name: "D", mime: "text/x-d", mode: "d", ext: ["d"]},
+	    {name: "Dart", mimes: ["application/dart", "text/x-dart"], mode: "dart", ext: ["dart"]},
+	    {name: "diff", mime: "text/x-diff", mode: "diff", ext: ["diff", "patch"]},
+	    {name: "Django", mime: "text/x-django", mode: "django"},
+	    {name: "Dockerfile", mime: "text/x-dockerfile", mode: "dockerfile", file: /^Dockerfile$/},
+	    {name: "DTD", mime: "application/xml-dtd", mode: "dtd", ext: ["dtd"]},
+	    {name: "Dylan", mime: "text/x-dylan", mode: "dylan", ext: ["dylan", "dyl", "intr"]},
+	    {name: "EBNF", mime: "text/x-ebnf", mode: "ebnf"},
+	    {name: "ECL", mime: "text/x-ecl", mode: "ecl", ext: ["ecl"]},
+	    {name: "edn", mime: "application/edn", mode: "clojure", ext: ["edn"]},
+	    {name: "Eiffel", mime: "text/x-eiffel", mode: "eiffel", ext: ["e"]},
+	    {name: "Elm", mime: "text/x-elm", mode: "elm", ext: ["elm"]},
+	    {name: "Embedded Javascript", mime: "application/x-ejs", mode: "htmlembedded", ext: ["ejs"]},
+	    {name: "Embedded Ruby", mime: "application/x-erb", mode: "htmlembedded", ext: ["erb"]},
+	    {name: "Erlang", mime: "text/x-erlang", mode: "erlang", ext: ["erl"]},
+	    {name: "Factor", mime: "text/x-factor", mode: "factor", ext: ["factor"]},
+	    {name: "FCL", mime: "text/x-fcl", mode: "fcl"},
+	    {name: "Forth", mime: "text/x-forth", mode: "forth", ext: ["forth", "fth", "4th"]},
+	    {name: "Fortran", mime: "text/x-fortran", mode: "fortran", ext: ["f", "for", "f77", "f90"]},
+	    {name: "F#", mime: "text/x-fsharp", mode: "mllike", ext: ["fs"], alias: ["fsharp"]},
+	    {name: "Gas", mime: "text/x-gas", mode: "gas", ext: ["s"]},
+	    {name: "Gherkin", mime: "text/x-feature", mode: "gherkin", ext: ["feature"]},
+	    {name: "GitHub Flavored Markdown", mime: "text/x-gfm", mode: "gfm", file: /^(readme|contributing|history).md$/i},
+	    {name: "Go", mime: "text/x-go", mode: "go", ext: ["go"]},
+	    {name: "Groovy", mime: "text/x-groovy", mode: "groovy", ext: ["groovy", "gradle"], file: /^Jenkinsfile$/},
+	    {name: "HAML", mime: "text/x-haml", mode: "haml", ext: ["haml"]},
+	    {name: "Haskell", mime: "text/x-haskell", mode: "haskell", ext: ["hs"]},
+	    {name: "Haskell (Literate)", mime: "text/x-literate-haskell", mode: "haskell-literate", ext: ["lhs"]},
+	    {name: "Haxe", mime: "text/x-haxe", mode: "haxe", ext: ["hx"]},
+	    {name: "HXML", mime: "text/x-hxml", mode: "haxe", ext: ["hxml"]},
+	    {name: "ASP.NET", mime: "application/x-aspx", mode: "htmlembedded", ext: ["aspx"], alias: ["asp", "aspx"]},
+	    {name: "HTML", mime: "text/html", mode: "htmlmixed", ext: ["html", "htm"], alias: ["xhtml"]},
+	    {name: "HTTP", mime: "message/http", mode: "http"},
+	    {name: "IDL", mime: "text/x-idl", mode: "idl", ext: ["pro"]},
+	    {name: "Pug", mime: "text/x-pug", mode: "pug", ext: ["jade", "pug"], alias: ["jade"]},
+	    {name: "Java", mime: "text/x-java", mode: "clike", ext: ["java"]},
+	    {name: "Java Server Pages", mime: "application/x-jsp", mode: "htmlembedded", ext: ["jsp"], alias: ["jsp"]},
+	    {name: "JavaScript", mimes: ["text/javascript", "text/ecmascript", "application/javascript", "application/x-javascript", "application/ecmascript"],
+	     mode: "javascript", ext: ["js"], alias: ["ecmascript", "js", "node"]},
+	    {name: "JSON", mimes: ["application/json", "application/x-json"], mode: "javascript", ext: ["json", "map"], alias: ["json5"]},
+	    {name: "JSON-LD", mime: "application/ld+json", mode: "javascript", ext: ["jsonld"], alias: ["jsonld"]},
+	    {name: "JSX", mime: "text/jsx", mode: "jsx", ext: ["jsx"]},
+	    {name: "Jinja2", mime: "null", mode: "jinja2"},
+	    {name: "Julia", mime: "text/x-julia", mode: "julia", ext: ["jl"]},
+	    {name: "Kotlin", mime: "text/x-kotlin", mode: "clike", ext: ["kt"]},
+	    {name: "LESS", mime: "text/x-less", mode: "css", ext: ["less"]},
+	    {name: "LiveScript", mime: "text/x-livescript", mode: "livescript", ext: ["ls"], alias: ["ls"]},
+	    {name: "Lua", mime: "text/x-lua", mode: "lua", ext: ["lua"]},
+	    {name: "Markdown", mime: "text/x-markdown", mode: "markdown", ext: ["markdown", "md", "mkd"]},
+	    {name: "mIRC", mime: "text/mirc", mode: "mirc"},
+	    {name: "MariaDB SQL", mime: "text/x-mariadb", mode: "sql"},
+	    {name: "Mathematica", mime: "text/x-mathematica", mode: "mathematica", ext: ["m", "nb"]},
+	    {name: "Modelica", mime: "text/x-modelica", mode: "modelica", ext: ["mo"]},
+	    {name: "MUMPS", mime: "text/x-mumps", mode: "mumps", ext: ["mps"]},
+	    {name: "MS SQL", mime: "text/x-mssql", mode: "sql"},
+	    {name: "mbox", mime: "application/mbox", mode: "mbox", ext: ["mbox"]},
+	    {name: "MySQL", mime: "text/x-mysql", mode: "sql"},
+	    {name: "Nginx", mime: "text/x-nginx-conf", mode: "nginx", file: /nginx.*\.conf$/i},
+	    {name: "NSIS", mime: "text/x-nsis", mode: "nsis", ext: ["nsh", "nsi"]},
+	    {name: "NTriples", mime: "text/n-triples", mode: "ntriples", ext: ["nt"]},
+	    {name: "Objective C", mime: "text/x-objectivec", mode: "clike", ext: ["m", "mm"], alias: ["objective-c", "objc"]},
+	    {name: "OCaml", mime: "text/x-ocaml", mode: "mllike", ext: ["ml", "mli", "mll", "mly"]},
+	    {name: "Octave", mime: "text/x-octave", mode: "octave", ext: ["m"]},
+	    {name: "Oz", mime: "text/x-oz", mode: "oz", ext: ["oz"]},
+	    {name: "Pascal", mime: "text/x-pascal", mode: "pascal", ext: ["p", "pas"]},
+	    {name: "PEG.js", mime: "null", mode: "pegjs", ext: ["jsonld"]},
+	    {name: "Perl", mime: "text/x-perl", mode: "perl", ext: ["pl", "pm"]},
+	    {name: "PHP", mime: "application/x-httpd-php", mode: "php", ext: ["php", "php3", "php4", "php5", "phtml"]},
+	    {name: "Pig", mime: "text/x-pig", mode: "pig", ext: ["pig"]},
+	    {name: "Plain Text", mime: "text/plain", mode: "null", ext: ["txt", "text", "conf", "def", "list", "log"]},
+	    {name: "PLSQL", mime: "text/x-plsql", mode: "sql", ext: ["pls"]},
+	    {name: "PowerShell", mime: "application/x-powershell", mode: "powershell", ext: ["ps1", "psd1", "psm1"]},
+	    {name: "Properties files", mime: "text/x-properties", mode: "properties", ext: ["properties", "ini", "in"], alias: ["ini", "properties"]},
+	    {name: "ProtoBuf", mime: "text/x-protobuf", mode: "protobuf", ext: ["proto"]},
+	    {name: "Python", mime: "text/x-python", mode: "python", ext: ["BUILD", "bzl", "py", "pyw"], file: /^(BUCK|BUILD)$/},
+	    {name: "Puppet", mime: "text/x-puppet", mode: "puppet", ext: ["pp"]},
+	    {name: "Q", mime: "text/x-q", mode: "q", ext: ["q"]},
+	    {name: "R", mime: "text/x-rsrc", mode: "r", ext: ["r", "R"], alias: ["rscript"]},
+	    {name: "reStructuredText", mime: "text/x-rst", mode: "rst", ext: ["rst"], alias: ["rst"]},
+	    {name: "RPM Changes", mime: "text/x-rpm-changes", mode: "rpm"},
+	    {name: "RPM Spec", mime: "text/x-rpm-spec", mode: "rpm", ext: ["spec"]},
+	    {name: "Ruby", mime: "text/x-ruby", mode: "ruby", ext: ["rb"], alias: ["jruby", "macruby", "rake", "rb", "rbx"]},
+	    {name: "Rust", mime: "text/x-rustsrc", mode: "rust", ext: ["rs"]},
+	    {name: "SAS", mime: "text/x-sas", mode: "sas", ext: ["sas"]},
+	    {name: "Sass", mime: "text/x-sass", mode: "sass", ext: ["sass"]},
+	    {name: "Scala", mime: "text/x-scala", mode: "clike", ext: ["scala"]},
+	    {name: "Scheme", mime: "text/x-scheme", mode: "scheme", ext: ["scm", "ss"]},
+	    {name: "SCSS", mime: "text/x-scss", mode: "css", ext: ["scss"]},
+	    {name: "Shell", mime: "text/x-sh", mode: "shell", ext: ["sh", "ksh", "bash"], alias: ["bash", "sh", "zsh"], file: /^PKGBUILD$/},
+	    {name: "Sieve", mime: "application/sieve", mode: "sieve", ext: ["siv", "sieve"]},
+	    {name: "Slim", mimes: ["text/x-slim", "application/x-slim"], mode: "slim", ext: ["slim"]},
+	    {name: "Smalltalk", mime: "text/x-stsrc", mode: "smalltalk", ext: ["st"]},
+	    {name: "Smarty", mime: "text/x-smarty", mode: "smarty", ext: ["tpl"]},
+	    {name: "Solr", mime: "text/x-solr", mode: "solr"},
+	    {name: "Soy", mime: "text/x-soy", mode: "soy", ext: ["soy"], alias: ["closure template"]},
+	    {name: "SPARQL", mime: "application/sparql-query", mode: "sparql", ext: ["rq", "sparql"], alias: ["sparul"]},
+	    {name: "Spreadsheet", mime: "text/x-spreadsheet", mode: "spreadsheet", alias: ["excel", "formula"]},
+	    {name: "SQL", mime: "text/x-sql", mode: "sql", ext: ["sql"]},
+	    {name: "Squirrel", mime: "text/x-squirrel", mode: "clike", ext: ["nut"]},
+	    {name: "Stylus", mime: "text/x-styl", mode: "stylus", ext: ["styl"]},
+	    {name: "Swift", mime: "text/x-swift", mode: "swift", ext: ["swift"]},
+	    {name: "sTeX", mime: "text/x-stex", mode: "stex"},
+	    {name: "LaTeX", mime: "text/x-latex", mode: "stex", ext: ["text", "ltx"], alias: ["tex"]},
+	    {name: "SystemVerilog", mime: "text/x-systemverilog", mode: "verilog", ext: ["v"]},
+	    {name: "Tcl", mime: "text/x-tcl", mode: "tcl", ext: ["tcl"]},
+	    {name: "Textile", mime: "text/x-textile", mode: "textile", ext: ["textile"]},
+	    {name: "TiddlyWiki ", mime: "text/x-tiddlywiki", mode: "tiddlywiki"},
+	    {name: "Tiki wiki", mime: "text/tiki", mode: "tiki"},
+	    {name: "TOML", mime: "text/x-toml", mode: "toml", ext: ["toml"]},
+	    {name: "Tornado", mime: "text/x-tornado", mode: "tornado"},
+	    {name: "troff", mime: "text/troff", mode: "troff", ext: ["1", "2", "3", "4", "5", "6", "7", "8", "9"]},
+	    {name: "TTCN", mime: "text/x-ttcn", mode: "ttcn", ext: ["ttcn", "ttcn3", "ttcnpp"]},
+	    {name: "TTCN_CFG", mime: "text/x-ttcn-cfg", mode: "ttcn-cfg", ext: ["cfg"]},
+	    {name: "Turtle", mime: "text/turtle", mode: "turtle", ext: ["ttl"]},
+	    {name: "TypeScript", mime: "application/typescript", mode: "javascript", ext: ["ts"], alias: ["ts"]},
+	    {name: "Twig", mime: "text/x-twig", mode: "twig"},
+	    {name: "Web IDL", mime: "text/x-webidl", mode: "webidl", ext: ["webidl"]},
+	    {name: "VB.NET", mime: "text/x-vb", mode: "vb", ext: ["vb"]},
+	    {name: "VBScript", mime: "text/vbscript", mode: "vbscript", ext: ["vbs"]},
+	    {name: "Velocity", mime: "text/velocity", mode: "velocity", ext: ["vtl"]},
+	    {name: "Verilog", mime: "text/x-verilog", mode: "verilog", ext: ["v"]},
+	    {name: "VHDL", mime: "text/x-vhdl", mode: "vhdl", ext: ["vhd", "vhdl"]},
+	    {name: "Vue.js Component", mimes: ["script/x-vue", "text/x-vue"], mode: "vue", ext: ["vue"]},
+	    {name: "XML", mimes: ["application/xml", "text/xml"], mode: "xml", ext: ["xml", "xsl", "xsd", "svg"], alias: ["rss", "wsdl", "xsd"]},
+	    {name: "XQuery", mime: "application/xquery", mode: "xquery", ext: ["xy", "xquery"]},
+	    {name: "Yacas", mime: "text/x-yacas", mode: "yacas", ext: ["ys"]},
+	    {name: "YAML", mimes: ["text/x-yaml", "text/yaml"], mode: "yaml", ext: ["yaml", "yml"], alias: ["yml"]},
+	    {name: "Z80", mime: "text/x-z80", mode: "z80", ext: ["z80"]},
+	    {name: "mscgen", mime: "text/x-mscgen", mode: "mscgen", ext: ["mscgen", "mscin", "msc"]},
+	    {name: "xu", mime: "text/x-xu", mode: "mscgen", ext: ["xu"]},
+	    {name: "msgenny", mime: "text/x-msgenny", mode: "mscgen", ext: ["msgenny"]}
+	  ];
+	  // Ensure all modes have a mime property for backwards compatibility
+	  for (var i = 0; i < CodeMirror.modeInfo.length; i++) {
+	    var info = CodeMirror.modeInfo[i];
+	    if (info.mimes) info.mime = info.mimes[0];
+	  }
+
+	  CodeMirror.findModeByMIME = function(mime) {
+	    mime = mime.toLowerCase();
+	    for (var i = 0; i < CodeMirror.modeInfo.length; i++) {
+	      var info = CodeMirror.modeInfo[i];
+	      if (info.mime == mime) return info;
+	      if (info.mimes) for (var j = 0; j < info.mimes.length; j++)
+	        if (info.mimes[j] == mime) return info;
+	    }
+	    if (/\+xml$/.test(mime)) return CodeMirror.findModeByMIME("application/xml")
+	    if (/\+json$/.test(mime)) return CodeMirror.findModeByMIME("application/json")
+	  };
+
+	  CodeMirror.findModeByExtension = function(ext) {
+	    for (var i = 0; i < CodeMirror.modeInfo.length; i++) {
+	      var info = CodeMirror.modeInfo[i];
+	      if (info.ext) for (var j = 0; j < info.ext.length; j++)
+	        if (info.ext[j] == ext) return info;
+	    }
+	  };
+
+	  CodeMirror.findModeByFileName = function(filename) {
+	    for (var i = 0; i < CodeMirror.modeInfo.length; i++) {
+	      var info = CodeMirror.modeInfo[i];
+	      if (info.file && info.file.test(filename)) return info;
+	    }
+	    var dot = filename.lastIndexOf(".");
+	    var ext = dot > -1 && filename.substring(dot + 1, filename.length);
+	    if (ext) return CodeMirror.findModeByExtension(ext);
+	  };
+
+	  CodeMirror.findModeByName = function(name) {
+	    name = name.toLowerCase();
+	    for (var i = 0; i < CodeMirror.modeInfo.length; i++) {
+	      var info = CodeMirror.modeInfo[i];
+	      if (info.name.toLowerCase() == name) return info;
+	      if (info.alias) for (var j = 0; j < info.alias.length; j++)
+	        if (info.alias[j].toLowerCase() == name) return info;
+	    }
+	  };
+	});
+
 
 /***/ }
 /******/ ]);
