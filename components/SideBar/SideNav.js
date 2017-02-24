@@ -33,4 +33,8 @@ class SideNav extends React.Component {
     }
 }
 
+SideNav.propsType = {
+    buttonGradient: React.PropTypes.array
+};
+
 export default SideNav

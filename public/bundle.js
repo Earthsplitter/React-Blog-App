@@ -36219,6 +36219,10 @@
 	    return SideNav;
 	}(_react2.default.Component);
 
+	SideNav.propsType = {
+	    buttonGradient: _react2.default.PropTypes.array
+	};
+
 	exports.default = SideNav;
 
 /***/ },
@@ -38864,6 +38868,10 @@
 
 	    return TopNav;
 	}(_react2.default.Component);
+
+	TopNav.propsType = {
+	    style: _react2.default.PropTypes.object.isRequired
+	};
 
 	exports.default = TopNav;
 

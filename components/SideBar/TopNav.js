@@ -47,4 +47,8 @@ class TopNav extends React.Component {
     }
 }
 
+TopNav.propsType = {
+    style: React.PropTypes.object.isRequired
+};
+
 export default TopNav;
