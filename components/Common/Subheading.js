@@ -21,4 +21,10 @@ class Subheading extends React.Component {
     }
 }
 
+Subheading.propsType = {
+    colorStyle: React.PropTypes.array.isRequired,
+    title: React.PropTypes.string.isRequired,
+    motto: React.PropTypes.string.isRequired
+};
+
 export default Subheading

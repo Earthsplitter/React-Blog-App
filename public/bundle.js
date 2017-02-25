@@ -26693,7 +26693,6 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var motto = "At school you are engaged not so much in acquiring knowledge as in making mental efforts under " + "criticism. A certain amount of knowledge you can indeed with average faculties acquire so as to retain; nor" + " need you regret the hours you spent on much that is forgotten, for the shadow of lost knowledge at least " + "protects you from many illusions.";
 	            var mq = window.matchMedia("(max-width: 800px)");
 	            var margin = mq.matches ? "0 10px" : "0 100px";
 	            return _react2.default.createElement(
@@ -26840,6 +26839,12 @@
 
 	    return Subheading;
 	}(_react2.default.Component);
+
+	Subheading.propsType = {
+	    colorStyle: _react2.default.PropTypes.array.isRequired,
+	    title: _react2.default.PropTypes.string.isRequired,
+	    motto: _react2.default.PropTypes.string.isRequired
+	};
 
 	exports.default = Subheading;
 
@@ -27274,6 +27279,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _Subheading = __webpack_require__(236);
+
+	var _Subheading2 = _interopRequireDefault(_Subheading);
+
 	var _reactRouter = __webpack_require__(178);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -27304,10 +27313,13 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var mq = window.matchMedia("(max-width: 800px)");
+	            var margin = mq.matches ? "0 10px" : "0 100px";
+	            var motto = 'Blogging is just writing \u2014 writing using a particularly efficient type of publishing technology.';
 	            return _react2.default.createElement(
 	                'div',
-	                null,
-	                'Articles'
+	                { style: { display: "flex", flexDirection: "column", alignItems: "center", margin: margin } },
+	                _react2.default.createElement(_Subheading2.default, { colorStyle: this.props.colorStyle, title: 'Articles', motto: motto })
 	            );
 	        }
 	    }]);
@@ -39007,6 +39019,11 @@
 
 	    return Login;
 	}(_react2.default.Component);
+
+	Login.propTypes = {
+	    setLogin: _react2.default.PropTypes.func.isRequired,
+	    login: _react2.default.PropTypes.bool.isRequired
+	};
 
 	exports.default = Login;
 
