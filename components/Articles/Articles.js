@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import Subheading from '../Common/Subheading'
+import ArticlesList from './ArticlesList'
 import {browserHistory} from 'react-router'
 
 class Articles extends React.Component {
@@ -18,6 +19,7 @@ class Articles extends React.Component {
         return (
             <div style={{display: "flex", flexDirection: "column", alignItems: "center", margin: margin}}>
                 <Subheading colorStyle={this.props.colorStyle} title="Articles" motto={motto}/>
+                <ArticlesList/>
             </div>
         )
     }
