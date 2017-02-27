@@ -30,7 +30,7 @@ app.post("/login", function (req, res) {
         if (user.username === account.username && user.password === account.password) {
             switch (user.staySignIn) {
                 case "no":
-                    token.setHours(token.getHours()+1);
+                    token.setHours(token.getHours() + 1);
                     break;
                 case "one day":
                     keepTime += 1;
@@ -52,7 +52,7 @@ app.post("/login", function (req, res) {
     });
 });
 
-app.post("/settings\*",function (req, res) {
+app.post("/settings\*", function (req, res) {
     const queryClass = req.path.slice(10);
     let token = req.body.token;
     let currentToken = new Date().getTime();
@@ -88,11 +88,11 @@ app.post("/settings\*",function (req, res) {
             if (pic !== '') {
                 let data = pic.slice(22);
                 let buffer = new Buffer(data, 'base64');
-                fs.writeFile('public/assets/image/'+ project.title +'.png', buffer);
+                fs.writeFile('public/assets/image/' + project.title + '.png', buffer);
             }
 
-            fs.writeFile('public/assets/projects/'+ project.title +".md", project.code, function () {
-                console.log("Write File: "+project.title+".md");
+            fs.writeFile('public/assets/projects/' + project.title + ".md", project.code, function () {
+                console.log("Write File: " + project.title + ".md");
             });
 
             delete project.img;
@@ -156,6 +156,24 @@ app.get("/data\*", function (req, res) {
                     console.log(err);
                 } else {
                     res.send(data);
+                }
+            });
+            break;
+        case "articles":
+            fs.readdir("public/assets/articles", (err, files) => {
+                let send = [];
+                if(err) {
+                    console.log(err);
+                } else {
+                    for(let i = req.query.position; i < req.query.position+10 && files[i]; i++) {
+                        let info = fs.statSync("public/assets/articles/"+files[i]);
+                        let fileInfo = {
+                            title: files[i],
+                            ctime: info.ctime
+                        };
+                        send.push(fileInfo);
+                    }
+                    res.send(send);
                 }
             });
             break;
