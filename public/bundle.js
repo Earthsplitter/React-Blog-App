@@ -39721,25 +39721,29 @@
 	                _react2.default.createElement(
 	                    _InputBar2.default,
 	                    { item: 'github', value: this.state.contactMethod.github, handleInput: this.handleInput },
-	                    _react2.default.createElement('span', { className: 'fa fa-github' }),
+	                    _react2.default.createElement('span', {
+	                        className: 'fa fa-github' }),
 	                    'GitHub: '
 	                ),
 	                _react2.default.createElement(
 	                    _InputBar2.default,
 	                    { item: 'linkedin', value: this.state.contactMethod.linkedin, handleInput: this.handleInput },
-	                    _react2.default.createElement('span', { className: 'fa fa-linkedin' }),
+	                    _react2.default.createElement('span', {
+	                        className: 'fa fa-linkedin' }),
 	                    'LinkedIn: '
 	                ),
 	                _react2.default.createElement(
 	                    _InputBar2.default,
 	                    { item: 'email', value: this.state.contactMethod.email, handleInput: this.handleInput },
-	                    _react2.default.createElement('span', { className: 'fa fa-envelope' }),
+	                    _react2.default.createElement('span', {
+	                        className: 'fa fa-envelope' }),
 	                    'Email: '
 	                ),
 	                _react2.default.createElement(
 	                    _InputBar2.default,
 	                    { item: 'phone', value: this.state.contactMethod.phone, handleInput: this.handleInput },
-	                    _react2.default.createElement('span', { className: 'fa fa-phone' }),
+	                    _react2.default.createElement('span', {
+	                        className: 'fa fa-phone' }),
 	                    'Phone: '
 	                ),
 	                _react2.default.createElement(
@@ -39762,7 +39766,15 @@
 	                    { style: { width: "100%", display: "flex", justifyContent: "center", margin: "20px 0" } },
 	                    _react2.default.createElement(
 	                        'button',
-	                        { className: 'cursorHoverPointer', style: { borderRadius: "100%", backgroundColor: "red", height: "36px", width: "36px", color: "white", border: "1px solid #ccc" }, type: 'submit' },
+	                        { className: 'cursorHoverPointer', style: {
+	                                borderRadius: "100%",
+	                                backgroundColor: "green",
+	                                height: "64px",
+	                                width: "64px",
+	                                fontSize: "20px",
+	                                color: "white",
+	                                border: "1px solid #ccc"
+	                            }, type: 'submit' },
 	                        'Save'
 	                    )
 	                )
@@ -40201,7 +40213,9 @@
 	                            'Introduction: '
 	                        )
 	                    ),
-	                    _react2.default.createElement('input', { size: 56, style: { lineHeight: "2em", border: "1px solid #ccc", boxShadow: "1px 1px 1px grey" }, type: 'text', id: 'intro',
+	                    _react2.default.createElement('input', { size: 56,
+	                        style: { lineHeight: "2em", border: "1px solid #ccc", boxShadow: "1px 1px 1px grey" },
+	                        type: 'text', id: 'intro',
 	                        name: 'intro', value: this.state.intro, onChange: this.handleInput }),
 	                    _react2.default.createElement('br', null)
 	                ),
@@ -40219,13 +40233,22 @@
 	                    ),
 	                    _react2.default.createElement('input', { id: 'image', name: 'img', onChange: this.handleImg, type: 'file' })
 	                ),
-	                _react2.default.createElement(_reactCodemirror2.default, { value: this.state.code, onChange: this.updateCode, options: { lineNumbers: true, mode: 'markdown' } }),
+	                _react2.default.createElement(_reactCodemirror2.default, { value: this.state.code, onChange: this.updateCode,
+	                    options: { lineNumbers: true, mode: 'markdown' } }),
 	                _react2.default.createElement(
 	                    'div',
 	                    { style: { width: "100%", display: "flex", justifyContent: "center", margin: "20px 0 40px 0" } },
 	                    _react2.default.createElement(
 	                        'button',
-	                        { className: 'cursorHoverPointer', style: { borderRadius: "100%", backgroundColor: "red", height: "36px", width: "36px", color: "white", border: "1px solid #ccc" }, type: 'submit' },
+	                        { className: 'cursorHoverPointer', style: {
+	                                borderRadius: "100%",
+	                                backgroundColor: "green",
+	                                height: "64px",
+	                                width: "64px",
+	                                fontSize: "20px",
+	                                color: "white",
+	                                border: "1px solid #ccc"
+	                            }, type: 'submit' },
 	                        'Save'
 	                    )
 	                )

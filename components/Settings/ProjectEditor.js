@@ -12,7 +12,7 @@ class ProjectEditor extends React.Component {
         this.state = {
             title: "",
             intro: "",
-            date:"",
+            date: "",
             serial: "",
             img: "",
             code: "here"
@@ -35,7 +35,7 @@ class ProjectEditor extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         let self = this;
-        fetch('/assets/projects/'+nextProps.project.title+".md").then(response => response.text()).then(text => {
+        fetch('/assets/projects/' + nextProps.project.title + ".md").then(response => response.text()).then(text => {
             console.log("a");
             this.setState({
                 title: nextProps.project.title,
@@ -49,7 +49,7 @@ class ProjectEditor extends React.Component {
 
     componentWillMount() {
         let self = this;
-        fetch('/assets/projects/'+this.props.project.title+".md").then(response => response.text()).then(text => {
+        fetch('/assets/projects/' + this.props.project.title + ".md").then(response => response.text()).then(text => {
             console.log("b");
             this.setState({
                 title: self.props.project.title,
@@ -88,7 +88,7 @@ class ProjectEditor extends React.Component {
         let JSONHeaders = new Headers({
             "Content-Type": "application/json"
         });
-        fetch('/settings/projects',{
+        fetch('/settings/projects', {
             method: 'POST',
             headers: JSONHeaders,
             body: formalSendInfo
@@ -108,21 +108,33 @@ class ProjectEditor extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit} style={{display:"flex",flexWrap:"wrap"}}>
+            <form onSubmit={this.handleSubmit} style={{display: "flex", flexWrap: "wrap"}}>
                 <InputBar item="title" value={this.state.title} handleInput={this.handleInput}>Title: </InputBar>
                 <InputBar item="date" value={this.state.date} handleInput={this.handleInput}>Start Date: </InputBar>
                 <div style={{width: "100%", padding: "20px 10px 0 10px"}}>
                     <label htmlFor="intro"><p style={{display: "inline", fontWeight: "bold"}}>Introduction: </p></label>
-                    <input size={56} style={{lineHeight: "2em", border: "1px solid #ccc", boxShadow:"1px 1px 1px grey"}} type="text" id="intro"
+                    <input size={56}
+                           style={{lineHeight: "2em", border: "1px solid #ccc", boxShadow: "1px 1px 1px grey"}}
+                           type="text" id="intro"
                            name="intro" value={this.state.intro} onChange={this.handleInput}/><br/>
                 </div>
                 <div style={{width: "100%", padding: "20px 10px"}}>
                     <label htmlFor="image"><p style={{display: "inline", fontWeight: "bold"}}>Cover image: </p></label>
                     <input id="image" name="img" onChange={this.handleImg} type="file"/>
                 </div>
-                <CodeMirror value={this.state.code} onChange={this.updateCode} options={{lineNumbers: true, mode: 'markdown'}}/>
-                <div style={{width: "100%", display:"flex", justifyContent:"center",margin:"20px 0 40px 0"}}>
-                    <button className="cursorHoverPointer" style={{borderRadius:"100%", backgroundColor:"red",height:"36px",width:"36px",color:"white",border:"1px solid #ccc"}} type="submit">Save</button>
+                <CodeMirror value={this.state.code} onChange={this.updateCode}
+                            options={{lineNumbers: true, mode: 'markdown'}}/>
+                <div style={{width: "100%", display: "flex", justifyContent: "center", margin: "20px 0 40px 0"}}>
+                    <button className="cursorHoverPointer" style={{
+                        borderRadius: "100%",
+                        backgroundColor: "green",
+                        height: "64px",
+                        width: "64px",
+                        fontSize: "20px",
+                        color: "white",
+                        border: "1px solid #ccc"
+                    }} type="submit">Save
+                    </button>
                 </div>
             </form>
         )
