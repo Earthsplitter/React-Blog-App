@@ -25,11 +25,13 @@ class ArticleItem extends React.Component {
     }
 
     render() {
+        let intro = this.state.content.slice(0,128).replace(/\s|#|`/g," ") + " ......";
         return(
-            <article>
-                <h3>{this.props.file.slice(0,-3)}</h3>
-                <p>{this.props.ctime.slice(0,10)}</p>
-                <p>{this.state.content.slice(0,30)}</p>
+            <article style={{marginBottom: "50px"}}>
+                <h2 style={{fontFamily: "'Open Sans', sans-serif"}}>{this.props.file.slice(0,-3)}</h2>
+                <hr style={{border: "2px solid grey"}}/>
+                <p style={{fontSize: "11px", fontStyle: "italic", margin:"3px 0"}}>{this.props.ctime.slice(0,10)}</p>
+                <p style={{fontSize: "13px"}}>{intro}</p>
             </article>
         )
     }

@@ -27473,23 +27473,25 @@
 	    }, {
 	        key: "render",
 	        value: function render() {
+	            var intro = this.state.content.slice(0, 128).replace(/\s|#|`/g, " ") + " ......";
 	            return _react2.default.createElement(
 	                "article",
-	                null,
+	                { style: { marginBottom: "50px" } },
 	                _react2.default.createElement(
-	                    "h3",
-	                    null,
+	                    "h2",
+	                    { style: { fontFamily: "'Open Sans', sans-serif" } },
 	                    this.props.file.slice(0, -3)
 	                ),
+	                _react2.default.createElement("hr", { style: { border: "2px solid grey" } }),
 	                _react2.default.createElement(
 	                    "p",
-	                    null,
+	                    { style: { fontSize: "11px", fontStyle: "italic", margin: "3px 0" } },
 	                    this.props.ctime.slice(0, 10)
 	                ),
 	                _react2.default.createElement(
 	                    "p",
-	                    null,
-	                    this.state.content.slice(0, 30)
+	                    { style: { fontSize: "13px" } },
+	                    intro
 	                )
 	            );
 	        }
