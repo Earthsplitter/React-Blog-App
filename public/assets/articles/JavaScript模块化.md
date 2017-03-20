@@ -74,7 +74,7 @@ RequireJS实现了AMD规范，首先需要加载requireJS文件：
 ```javascript
 //定义模块
 define(function (){
-    var add = function (x,y){
+    let add = function (x,y){
         return x+y;
     };
     return {

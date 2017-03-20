@@ -1,14 +1,17 @@
-#A Blog Framework (Still in development)
+# A Blog Framework (Still in development)
 
-##Features
+## Before I finish this, my blog is at [here](https://earthsplitter.github.io)
 
-#####In Code
+
+## Features
+
+##### In Code
 
 1. Use React.js and React-Router for Front-End and Node.js and Express.js for Back-End Data processing.
 2. With detailed comments, it's a good example to learn React.js and its component.
 3. With a user friendly manage system, users can easily edit everything in **browser** rather than **source code** (*Still in development stage*)
 
-#####UI Interaction
+##### UI Interaction
 
 *Recommand Use Google Chrome Browser*
 
@@ -17,7 +20,7 @@
 3. A Markdown Editor in Management System and Markdown interpreter on front-end.
 4. Responsive Design
 
-##Getting Started
+## Getting Started
 
 1. Install `npm` (skip if already have npm on your device).
 2. Clone/Fork this repo.
@@ -25,7 +28,7 @@
 4. Run `NODE_ENV=production npm start`(production), this step will need several to tens of seconds.
 5. open [http://localhost:8080/](http://localhost:8080/).
 
-##Structure
+## Structure
 
 #### General Structure
 
